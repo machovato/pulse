@@ -20,8 +20,8 @@ interface LayoutSplitProps {
 }
 
 const BACKGROUNDS = {
-    blue: "linear-gradient(160deg, #1B8FE0 0%, #2255A4 55%, #003057 100%)",
-    navy: "linear-gradient(160deg, #2255A4 0%, #003057 100%)",
+    blue: "var(--surface-split)",
+    navy: "var(--surface-split-alt)",
 };
 
 export function LayoutSplit({

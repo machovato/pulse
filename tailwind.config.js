@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     darkMode: ["class"],
+    safelist: [
+        'bg-surface-split',
+        'bg-surface-split-alt'
+    ],
     content: [
         "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -41,8 +45,49 @@ module.exports = {
                 success: "var(--color-success)",
                 warning: "var(--color-warning)",
                 danger: "var(--color-error)",
-                accent: "var(--color-accent)",
-                border: "var(--color-border)",
+                accent: {
+                    DEFAULT: "var(--color-accent)",
+                    success: "var(--accent-success)",
+                    warning: "var(--accent-warning)",
+                    danger: "var(--accent-danger)",
+                    info: "var(--accent-info)",
+                    progress: "var(--accent-progress)",
+                },
+                surface: {
+                    hero: "var(--surface-hero)",
+                    primary: "var(--surface-primary)",
+                    secondary: "var(--surface-secondary)",
+                    muted: "var(--surface-muted)",
+                    page: "var(--surface-page)",
+                    split: "var(--surface-split)",
+                    "split-alt": "var(--surface-split-alt)",
+                },
+                text: {
+                    "on-hero": "var(--text-on-hero)",
+                    primary: "var(--text-primary)",
+                    secondary: "var(--text-secondary)",
+                    muted: "var(--text-muted)",
+                    "on-emphasis": "var(--text-on-emphasis)",
+                },
+                border: {
+                    DEFAULT: "var(--border-default)",
+                    strong: "var(--border-strong)",
+                    muted: "var(--border-muted)",
+                },
+                badge: {
+                    "critical-bg": "var(--badge-critical-bg)",
+                    "critical-text": "var(--badge-critical-text)",
+                    "high-bg": "var(--badge-high-bg)",
+                    "high-text": "var(--badge-high-text)",
+                    "moderate-bg": "var(--badge-moderate-bg)",
+                    "moderate-text": "var(--badge-moderate-text)",
+                    "action-bg": "var(--badge-action-bg)",
+                    "action-text": "var(--badge-action-text)",
+                    "approval-bg": "var(--badge-approval-bg)",
+                    "approval-text": "var(--badge-approval-text)",
+                    "fyi-bg": "var(--badge-fyi-bg)",
+                    "fyi-text": "var(--badge-fyi-text)",
+                },
             },
             fontFamily: {
                 sans: ["Inter", "system-ui", "sans-serif"],

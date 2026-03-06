@@ -40,7 +40,7 @@ export function TimelineSlide({ slide }: { slide: LooseSlide }) {
             {/* Slide Eyebrow and Title */}
             <div className="shrink-0 text-center pt-10 pb-6 w-full relative z-10">
                 <motion.p
-                    className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1B8FE0] mb-2"
+                    className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent-info mb-2"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.4 }}
@@ -48,7 +48,7 @@ export function TimelineSlide({ slide }: { slide: LooseSlide }) {
                     Timeline
                 </motion.p>
                 <motion.h2
-                    className="font-bold text-[#0D2240]"
+                    className="font-bold text-text-primary"
                     style={{ fontSize: "clamp(28px, 3.2vw, 48px)" }}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -64,8 +64,8 @@ export function TimelineSlide({ slide }: { slide: LooseSlide }) {
                     {/* The Spine */}
                     {milestones.length > 0 && (
                         <motion.div
-                            className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1 origin-top rounded-full"
-                            style={{ background: "linear-gradient(to bottom, #1B8FE0, #4CB944)", zIndex: 0 }}
+                            className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-3 origin-top rounded-full shadow-inner"
+                            style={{ background: "linear-gradient(to bottom, var(--accent-info), var(--accent-success))", zIndex: 0 }}
                             initial={{ scaleY: 0 }}
                             animate={{ scaleY: 1 }}
                             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -96,56 +96,60 @@ export function TimelineSlide({ slide }: { slide: LooseSlide }) {
                                 >
                                     {/* Milestone Dot */}
                                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center justify-center">
-                                        {m.state === "current" && (
-                                            <span
-                                                className={`absolute top-1/2 -translate-y-1/2 text-[11px] font-bold text-[#1B8FE0] uppercase tracking-[0.15em] whitespace-nowrap ${isLeft ? "left-full ml-4 text-left" : "right-full mr-4 text-right"
-                                                    }`}
-                                            >
-                                                You Are Here
-                                            </span>
-                                        )}
                                         <motion.div
-                                            className={`w-8 h-8 rounded-full flex items-center justify-center relative shadow-sm ${m.state === "done" ? "bg-[#4CB944]" :
-                                                m.state === "current" ? "bg-[#1B8FE0] text-[#1B8FE0] pulse-ring-active" :
-                                                    "bg-[#F5F5F5] border-[3px] border-[#BDBDBD]"
+                                            className={`w-12 h-12 rounded-full flex items-center justify-center relative shadow-md border-4 border-surface-page ${m.state === "done" ? "bg-accent-success" :
+                                                m.state === "current" ? "bg-accent-info pulse-ring-active" :
+                                                    "bg-surface-muted border-border-muted"
                                                 }`}
                                             initial={{ opacity: 0, scale: 0.5 }}
                                             animate={{ opacity: 1, scale: 1 }}
                                             transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }}
                                         >
-                                            {m.state === "done" && <Check className="w-5 h-5 text-white" strokeWidth={3} />}
+                                            {m.state === "done" && <Check className="w-6 h-6 text-white" strokeWidth={3} />}
+                                            {m.state === "current" && <div className="w-3 h-3 bg-white rounded-full" />}
                                         </motion.div>
                                     </div>
 
                                     {/* Milestone Card Container */}
                                     <motion.div
-                                        className={`w-[calc(50%-2.5rem)] flex flex-col justify-center ${isLeft ? "items-end text-right" : "items-start text-left ml-auto"
+                                        className={`w-[calc(50%-3.5rem)] flex flex-col justify-center ${isLeft ? "items-end text-right" : "items-start text-left ml-auto"
                                             }`}
                                         initial={{ opacity: 0, x: isLeft ? -20 : 20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ duration: 0.5, delay: 0.6 + i * 0.08, ease: "easeOut" }}
                                     >
                                         <div className={`
-                                            flex flex-col gap-1 w-full max-w-sm transition-all duration-300
-                                            ${m.state === "upcoming" ? "opacity-60" : "opacity-100"}
-                                            ${m.state === "current" ? "shadow-lg border-l-[4px] border-[#1B8FE0] bg-white rounded-r-xl rounded-l-md py-5 px-6" : "py-2 px-2"}
+                                            flex flex-col gap-3 w-full max-w-xl transition-all duration-300 rounded-2xl p-6 md:p-8 shadow-xl border border-border-default
+                                            ${isLeft ? "border-r-[8px]" : "border-l-[8px]"}
+                                            ${isLeft ? (m.state === "done" ? "border-r-accent-success" : m.state === "current" ? "border-r-accent-info" : "border-r-border-muted") : (m.state === "done" ? "border-l-accent-success" : m.state === "current" ? "border-l-accent-info" : "border-l-border-muted")}
+                                            ${m.state === "current" ? "bg-surface-primary" : m.state === "upcoming" ? "bg-surface-muted opacity-80" : "bg-surface-secondary"}
                                         `}>
-                                            <h3 className="font-bold text-[#0D2240] text-lg sm:text-xl leading-tight">{m.label}</h3>
-                                            {m.date && (
-                                                <p className={`font-semibold text-sm mt-0.5 ${m.state === "current" ? "text-[#1B8FE0]" : "text-[#757575]"
-                                                    }`}>
-                                                    {m.date}
-                                                </p>
-                                            )}
+                                            <div className={`flex flex-col sm:flex-row sm:items-center gap-3 mb-1 ${isLeft ? "sm:flex-row-reverse" : ""}`}>
+                                                <h3 className={`font-bold text-2xl md:text-3xl leading-tight ${m.state === "current" ? "text-text-on-emphasis" : "text-text-primary"}`}>{m.label}</h3>
+                                                <div className={`flex flex-wrap gap-2 ${isLeft ? "justify-end" : "justify-start"}`}>
+                                                    {m.state === "current" && (
+                                                        <span className="px-2.5 py-1 text-[11px] font-bold uppercase rounded tracking-wider shrink-0 w-fit bg-accent-info text-white shadow-sm">
+                                                            You Are Here
+                                                        </span>
+                                                    )}
+                                                    {m.date && (
+                                                        <span className={`px-2.5 py-1 text-[11px] font-bold uppercase rounded tracking-wider shrink-0 w-fit ${m.state === "current" ? "bg-white/20 text-white" : "bg-border-muted text-text-primary"
+                                                            }`}>
+                                                            {m.date}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+
                                             {m.detail && (
-                                                <p className="text-[#757575] text-sm leading-relaxed mt-1.5">{m.detail}</p>
+                                                <p className={`text-lg leading-relaxed ${m.state === "current" ? "text-text-on-emphasis opacity-90" : "text-text-secondary"}`}>{m.detail}</p>
                                             )}
 
                                             {m.state === "current" && m.detail && (
-                                                <div className="w-full mt-4">
-                                                    <div className="w-full h-1.5 bg-[#E0E0E0] rounded-full overflow-hidden">
+                                                <div className="w-full mt-3">
+                                                    <div className="w-full h-2 bg-black/20 rounded-full overflow-hidden shadow-inner">
                                                         <motion.div
-                                                            className="h-full bg-[#1B8FE0] rounded-full"
+                                                            className="h-full bg-accent-success rounded-full"
                                                             initial={{ width: 0 }}
                                                             animate={{ width: `${pctValue}%` }}
                                                             transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
@@ -164,19 +168,19 @@ export function TimelineSlide({ slide }: { slide: LooseSlide }) {
 
             {/* Fixed Stat Bar - Absolute bottom */}
             <motion.div
-                className="absolute bottom-0 left-0 right-0 w-full bg-[#F5F5F5] border-t border-[#BDBDBD] py-6 px-16 flex items-center justify-between z-20 shadow-[0_-4px_20px_rgba(0,0,0,0.03)]"
+                className="absolute bottom-0 left-0 right-0 w-full bg-surface-muted border-t border-border-muted py-6 px-16 flex items-center justify-between z-20 shadow-[0_-4px_20px_rgba(0,0,0,0.03)]"
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
             >
                 <div className="flex-1 max-w-xs">
                     <div className="flex justify-between items-end mb-2">
-                        <span className="text-[12px] uppercase tracking-[0.1em] text-[#757575] font-semibold">Overall Progress</span>
-                        <span className="text-[#0D2240] font-bold">{Math.round(overallProgress)}%</span>
+                        <span className="text-[12px] uppercase tracking-[0.1em] text-text-muted font-semibold">Overall Progress</span>
+                        <span className="text-text-primary font-bold">{Math.round(overallProgress)}%</span>
                     </div>
-                    <div className="w-full bg-[#E0E0E0] h-1.5 rounded-full overflow-hidden">
+                    <div className="w-full bg-surface-muted border border-border-default/50 h-1.5 rounded-full overflow-hidden">
                         <motion.div
-                            className="bg-[#1B8FE0] h-full rounded-full"
+                            className="bg-accent-progress h-full rounded-full"
                             style={{ width: `${overallProgress}%` }}
                             initial={{ width: 0 }}
                             animate={{ width: `${overallProgress}%` }}
@@ -187,13 +191,13 @@ export function TimelineSlide({ slide }: { slide: LooseSlide }) {
 
                 <div className="flex items-center gap-16 justify-end flex-1">
                     <div className="flex flex-col items-center">
-                        <span className="text-[12px] uppercase tracking-[0.1em] text-[#757575] font-semibold mb-0.5">Milestones</span>
-                        <span className="text-[#0D2240] font-bold text-lg">{doneCount} <span className="text-[#757575] font-medium opacity-50 px-1">/</span> {totalCount}</span>
+                        <span className="text-[12px] uppercase tracking-[0.1em] text-text-muted font-semibold mb-0.5">Milestones</span>
+                        <span className="text-text-primary font-bold text-lg">{doneCount} <span className="text-text-muted font-medium opacity-50 px-1">/</span> {totalCount}</span>
                     </div>
 
                     <div className="flex flex-col items-center min-w-[120px]">
-                        <span className="text-[12px] uppercase tracking-[0.1em] text-[#757575] font-semibold mb-0.5">Target Launch</span>
-                        <span className="text-[#0D2240] font-bold text-lg">{targetLaunchDate}</span>
+                        <span className="text-[12px] uppercase tracking-[0.1em] text-text-muted font-semibold mb-0.5">Target Launch</span>
+                        <span className="text-text-primary font-bold text-lg">{targetLaunchDate}</span>
                     </div>
                 </div>
             </motion.div>

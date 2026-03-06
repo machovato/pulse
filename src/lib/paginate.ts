@@ -14,6 +14,11 @@ const ARRAY_KEYS: Record<string, string> = {
     blockers: "items",
     agenda: "items",
     decision_log: "items",
+    context: "cards",
+    problem: "cards",
+    evidence: "cards",
+    framework: "cards",
+    roadmap: "milestones",
 };
 
 /**
@@ -23,7 +28,8 @@ export function applyDensity(slide: LooseSlide, density: DensityMode): LooseSlid
     if (density === "full") return slide;
 
     const key = ARRAY_KEYS[slide.type];
-    if (!key || !slide.data || slide.type === "timeline" || slide.type === "pipeline") return slide;
+    const skipTypes = ["timeline", "pipeline", "roadmap", "context", "problem", "evidence", "framework"];
+    if (!key || !slide.data || skipTypes.includes(slide.type)) return slide;
 
     const arr = (slide.data as Record<string, unknown>)[key];
     if (!Array.isArray(arr)) return slide;
@@ -43,7 +49,8 @@ export function applyDensity(slide: LooseSlide, density: DensityMode): LooseSlid
  */
 function paginateSlide(slide: LooseSlide): LooseSlide[] {
     const key = ARRAY_KEYS[slide.type];
-    if (!key || !slide.data || slide.type === "timeline" || slide.type === "pipeline") return [slide];
+    const skipTypes = ["timeline", "pipeline", "roadmap", "context", "problem", "evidence", "framework"];
+    if (!key || !slide.data || skipTypes.includes(slide.type)) return [slide];
 
     const data = slide.data as Record<string, unknown>;
     const arr = data[key];

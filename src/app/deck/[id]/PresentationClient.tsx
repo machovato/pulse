@@ -18,6 +18,7 @@ function SlideGridOverlay({
     currentIndex,
     density,
     deckMeta,
+    schemaVersion,
     onSelect,
     onClose,
 }: {
@@ -25,6 +26,7 @@ function SlideGridOverlay({
     currentIndex: number;
     density: DensityMode;
     deckMeta: Record<string, string>;
+    schemaVersion: number;
     onSelect: (i: number) => void;
     onClose: () => void;
 }) {
@@ -86,9 +88,9 @@ function SlideGridOverlay({
                                         }`}
                                     style={{ width: THUMB_W, height: THUMB_H }}
                                 >
-                                    {/* Scaled slide render */}
                                     <div
                                         className="absolute top-0 left-0 pointer-events-none"
+                                        data-template={deckMeta.template || "status"}
                                         style={{
                                             width: DESIGN_W,
                                             height: DESIGN_H,
@@ -96,7 +98,7 @@ function SlideGridOverlay({
                                             transformOrigin: "top left",
                                         }}
                                     >
-                                        <SlideRenderer slide={slide} density={density} deckMeta={deckMeta} />
+                                        <SlideRenderer slide={slide} density={density} deckMeta={deckMeta} schemaVersion={schemaVersion} />
                                     </div>
 
                                     {/* Current slide highlight overlay */}
@@ -308,7 +310,7 @@ export function PresentationClient({ deck, deckId }: PresentationClientProps) {
     return (
         <>
             {/* Full-viewport slide stage */}
-            <div className="fixed inset-0 overflow-hidden bg-white">
+            <div className="fixed inset-0 overflow-hidden bg-white" data-template={deck.meta.template || "status"}>
                 <AnimatePresence initial={false} custom={direction} mode="popLayout">
                     <motion.div
                         key={currentIndex}
@@ -320,7 +322,7 @@ export function PresentationClient({ deck, deckId }: PresentationClientProps) {
                         exit="exit"
                         transition={{ duration: 0.35, ease: [0.32, 0, 0.67, 0] }}
                     >
-                        <SlideRenderer slide={currentSlide} density={density} deckMeta={deck.meta} />
+                        <SlideRenderer slide={currentSlide} density={density} deckMeta={deck.meta} schemaVersion={deck.schemaVersion || 1} />
                     </motion.div>
                 </AnimatePresence>
 
@@ -371,6 +373,7 @@ export function PresentationClient({ deck, deckId }: PresentationClientProps) {
                         currentIndex={currentIndex}
                         density={density}
                         deckMeta={deck.meta}
+                        schemaVersion={deck.schemaVersion || 1}
                         onSelect={(i) => { goTo(i); setShowGrid(false); }}
                         onClose={() => setShowGrid(false)}
                     />

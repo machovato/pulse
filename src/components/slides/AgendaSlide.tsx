@@ -20,18 +20,18 @@ export function AgendaSlide({ slide }: { slide: LooseSlide }) {
 
     const left = (
         <div className="flex flex-col gap-4">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-text-on-emphasis opacity-60">
                 Agenda
             </p>
             <h2
-                className="font-bold text-white leading-tight"
+                className="font-bold text-text-on-emphasis leading-tight"
                 style={{ fontSize: "clamp(28px, 3.2vw, 44px)" }}
             >
                 {slide.title}
             </h2>
-            <div className="w-8 h-0.5 bg-white/30 mt-2" />
+            <div className="w-8 h-0.5 bg-text-on-emphasis opacity-30 mt-2" />
             {items.length > 0 && (
-                <p className="text-white/50 text-sm mt-1">
+                <p className="text-text-on-emphasis opacity-50 text-sm mt-1">
                     {items.length} item{items.length !== 1 ? "s" : ""}
                 </p>
             )}
@@ -50,7 +50,7 @@ export function AgendaSlide({ slide }: { slide: LooseSlide }) {
                         paddingTop: "clamp(6px, 0.8vh, 14px)",
                         paddingBottom: "clamp(6px, 0.8vh, 14px)",
                         borderBottom: i < items.length - 1
-                            ? "1px solid #E6E7E8"
+                            ? "1px solid var(--border-default)"
                             : "none",
                     }}
                     initial={{ opacity: 0, x: 14 }}
@@ -59,7 +59,7 @@ export function AgendaSlide({ slide }: { slide: LooseSlide }) {
                 >
                     {/* Number badge — sized for presentation readability */}
                     <div
-                        className="rounded-full bg-[#1B8FE0] flex items-center justify-center shrink-0 text-white font-bold"
+                        className="rounded-full bg-accent-info flex items-center justify-center shrink-0 text-surface-page font-bold"
                         style={{
                             width: "clamp(32px, 6cqi, 48px)",
                             height: "clamp(32px, 6cqi, 48px)",
@@ -72,7 +72,7 @@ export function AgendaSlide({ slide }: { slide: LooseSlide }) {
                     {/* Topic + meta */}
                     <div className="flex-1 min-w-0">
                         <p
-                            className="font-bold text-[#003057] leading-tight"
+                            className="font-bold text-text-primary leading-tight"
                             style={{ fontSize: "clamp(16px, 3.2cqi, 28px)" }}
                         >
                             {item.topic}
@@ -80,7 +80,7 @@ export function AgendaSlide({ slide }: { slide: LooseSlide }) {
                         <div className="flex gap-4 mt-2 flex-wrap items-center">
                             {item.time && (
                                 <span
-                                    className="text-[#1B8FE0] font-bold bg-blue-50 border border-blue-100 rounded"
+                                    className="text-accent-info font-bold bg-surface-muted border border-border-default rounded"
                                     style={{
                                         fontSize: "clamp(11px, 1.8cqi, 16px)",
                                         padding: "clamp(2px, 0.4cqi, 4px) clamp(6px, 1cqi, 12px)"
@@ -91,7 +91,7 @@ export function AgendaSlide({ slide }: { slide: LooseSlide }) {
                             )}
                             {item.owner && (
                                 <span
-                                    className="text-[#6D6E71] font-semibold"
+                                    className="text-text-secondary font-semibold"
                                     style={{ fontSize: "clamp(12px, 1.8cqi, 16px)" }}
                                 >
                                     {item.owner}

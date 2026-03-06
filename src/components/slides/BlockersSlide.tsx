@@ -19,21 +19,21 @@ interface BlockersData {
 
 const SEVERITY_CONFIG = {
     action: {
-        border: "border-l-[#C8192B]", // DTN Red
-        badgeBg: "rgba(200,25,43,0.15)",
-        badgeText: "#C8192B",
+        borderClass: "border-badge-action-bg border-l-[8px]",
+        badgeBg: "var(--badge-action-bg)",
+        badgeText: "var(--badge-action-text)",
         label: "Action Required",
     },
     approval: {
-        border: "border-l-[#F5A400]", // DTN Orange
-        badgeBg: "rgba(245,164,0,0.15)",
-        badgeText: "#F5A400",
+        borderClass: "border-badge-approval-bg border-l-[8px]",
+        badgeBg: "var(--badge-approval-bg)",
+        badgeText: "var(--badge-approval-text)",
         label: "Approval",
     },
     fyi: {
-        border: "border-l-[#00796B]", // DTN Teal
-        badgeBg: "rgba(0,121,107,0.15)",
-        badgeText: "#00796B",
+        borderClass: "border-badge-fyi-bg border-l-[8px]",
+        badgeBg: "var(--badge-fyi-bg)",
+        badgeText: "var(--badge-fyi-text)",
         label: "FYI",
     },
 };
@@ -62,7 +62,7 @@ export function BlockersSlide({ slide, deckMeta }: { slide: LooseSlide; deckMeta
             <div className="flex flex-col gap-6 relative z-10 w-full pr-8">
                 <div className="flex flex-col gap-2">
                     <h2
-                        className="font-bold text-white leading-tight mt-0 mb-0 pt-0"
+                        className="font-bold text-text-on-emphasis leading-tight mt-0 mb-0 pt-0"
                         style={{ fontSize: "clamp(32px, 4vw, 56px)" }}
                     >
                         {panelTitle.split(' ').length > 2 ? panelTitle : (
@@ -72,7 +72,7 @@ export function BlockersSlide({ slide, deckMeta }: { slide: LooseSlide; deckMeta
                             </>
                         )}
                     </h2>
-                    <p className="text-white/90 text-sm mt-4 leading-relaxed max-w-[90%]" style={{ fontSize: "clamp(16px, 1.8vw, 20px)" }}>
+                    <p className="text-text-on-emphasis opacity-90 text-sm mt-4 leading-relaxed max-w-[90%]" style={{ fontSize: "clamp(16px, 1.8vw, 20px)" }}>
                         Current impediments requiring leadership attention or team coordination.
                     </p>
                 </div>
@@ -92,16 +92,16 @@ export function BlockersSlide({ slide, deckMeta }: { slide: LooseSlide; deckMeta
                                 }}
                             >
                                 <div className="flex items-center gap-4">
-                                    <Icon className="w-5 h-5 text-white" />
+                                    <Icon className="w-5 h-5 text-text-on-emphasis" />
                                     <span
-                                        className="font-medium text-white/80"
+                                        className="font-medium text-text-on-emphasis opacity-80"
                                         style={{ fontSize: "clamp(14px, 1.5vw, 18px)" }}
                                     >
                                         {label}
                                     </span>
                                 </div>
                                 <span
-                                    className="font-bold text-white"
+                                    className="font-bold text-text-on-emphasis"
                                     style={{ fontSize: "clamp(24px, 2.5vw, 32px)" }}
                                 >
                                     {count}
@@ -113,7 +113,7 @@ export function BlockersSlide({ slide, deckMeta }: { slide: LooseSlide; deckMeta
             </div>
 
             {meta.subtitle && (
-                <div className="absolute bottom-0 left-0 w-full pt-8 flex gap-4 text-white/50 text-sm">
+                <div className="absolute bottom-0 left-0 w-full pt-8 flex gap-4 text-text-on-emphasis opacity-50 text-sm">
                     <span>Update: {meta.subtitle}</span>
                 </div>
             )}
@@ -127,21 +127,20 @@ export function BlockersSlide({ slide, deckMeta }: { slide: LooseSlide; deckMeta
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.45 }}
         >
-            <CheckCircle2 className="w-14 h-14" style={{ color: "#4CB944" }} />
-            <p className="text-xl font-semibold" style={{ color: "#005741" }}>No blockers. All clear.</p>
-            <p className="text-sm text-[#6D6E71]">The team is unblocked and moving forward.</p>
+            <CheckCircle2 className="w-14 h-14 text-accent-success" />
+            <p className="text-xl font-semibold text-accent-success">No blockers. All clear.</p>
+            <p className="text-sm text-text-secondary">The team is unblocked and moving forward.</p>
         </motion.div>
     ) : (
-        <div className="flex flex-col h-full bg-[#FAFAFA] overflow-hidden">
+        <div className="flex flex-col h-full bg-surface-muted overflow-hidden">
             <div className="flex-1 min-h-0 flex flex-col gap-4 w-full overflow-y-auto px-[clamp(24px,4vw,64px)] pt-[clamp(24px,4vw,64px)] pb-8 relative z-10">
                 {items.map((item, i) => {
                     const cfg = SEVERITY_CONFIG[item.severity] ?? SEVERITY_CONFIG.fyi;
                     return (
                         <motion.div
                             key={i}
-                            className={`bg-white rounded-r-xl shadow-sm border border-gray-200`}
+                            className={`bg-surface-secondary rounded-2xl shadow-md border border-border-default ${cfg.borderClass}`}
                             style={{
-                                borderLeft: `4px solid ${cfg.border.replace('border-l-[', '').replace(']', '')}`,
                                 padding: "clamp(20px, 3vw, 32px)"
                             }}
                             initial={{ opacity: 0, y: 16 }}
@@ -159,37 +158,37 @@ export function BlockersSlide({ slide, deckMeta }: { slide: LooseSlide; deckMeta
                                 >
                                     {cfg.label}
                                 </span>
-                                <MoreHorizontal className="w-5 h-5 text-[#BDBDBD]" />
+                                <MoreHorizontal className="w-5 h-5 text-text-muted" />
                             </div>
 
                             <p
-                                className={`text-[#0D2240] leading-snug ${item.severity === "action" ? "font-medium" : "font-normal"}`}
-                                style={{ fontSize: "clamp(16px, 1.8vw, 24px)" }}
+                                className={`text-text-primary leading-tight mt-1 ${item.severity === "action" ? "font-bold" : "font-semibold"}`}
+                                style={{ fontSize: "clamp(20px, 2.2vw, 32px)" }}
                             >
                                 {item.text}
                             </p>
 
-                            <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-100 min-h-[40px]">
+                            <div className="flex justify-between items-center mt-6 pt-4 border-t border-border-default min-h-[40px]">
                                 {item.owner ? (
                                     <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-[#1B8FE0] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                                        <div className="w-8 h-8 rounded-full bg-accent-info flex items-center justify-center text-text-on-emphasis text-xs font-bold shrink-0">
                                             {getInitials(item.owner)}
                                         </div>
                                         <div className="flex flex-col">
-                                            <span className="text-[11px] text-[#757575] uppercase tracking-wider font-semibold">Owner</span>
-                                            <span className="text-sm font-bold text-[#0D2240]">{item.owner}</span>
+                                            <span className="text-[11px] text-text-muted uppercase tracking-wider font-semibold">Owner</span>
+                                            <span className="text-sm font-bold text-text-primary">{item.owner}</span>
                                         </div>
                                     </div>
                                 ) : <div />}
 
                                 {item.severity === "action" && (
-                                    <div className="flex items-center gap-1.5 text-[#C8192B]">
+                                    <div className="flex items-center gap-1.5 text-accent-danger">
                                         <Clock className="w-4 h-4" />
                                         <span className="text-sm font-bold">High Priority</span>
                                     </div>
                                 )}
                                 {(item.severity === "fyi" || item.severity === "approval") && item.badges && item.badges.length > 0 && (
-                                    <div className="flex items-center gap-1.5 text-[#757575]">
+                                    <div className="flex items-center gap-1.5 text-text-muted">
                                         <span className="text-sm font-semibold">{item.badges.join(" · ")}</span>
                                     </div>
                                 )}
@@ -199,17 +198,17 @@ export function BlockersSlide({ slide, deckMeta }: { slide: LooseSlide; deckMeta
                 })}
 
                 {items.length < 3 && items.length > 0 && (
-                    <div className="border border-dashed border-[#BDBDBD] rounded-xl p-8 flex flex-col items-center justify-center gap-3 mt-4 min-h-[160px] bg-[#F5F5F5]/50">
-                        <ClipboardX className="w-6 h-6 text-[#BDBDBD]" />
-                        <span className="text-[#6D6E71] text-sm font-medium">No additional blockers reported</span>
+                    <div className="border border-dashed border-border-muted rounded-xl p-8 flex flex-col items-center justify-center gap-3 mt-4 min-h-[160px] bg-surface-muted">
+                        <ClipboardX className="w-6 h-6 text-text-muted" />
+                        <span className="text-text-secondary text-sm font-medium">No additional blockers reported</span>
                     </div>
                 )}
             </div>
 
-            <div className="h-[80px] bg-[#FAFAFA] border-t border-gray-200 px-[clamp(24px,4vw,64px)] flex items-center justify-between shrink-0">
+            <div className="h-[80px] bg-surface-muted border-t border-border-default px-[clamp(24px,4vw,64px)] flex items-center justify-between shrink-0">
                 <div className="flex flex-col justify-center">
-                    <span className="text-[10px] uppercase tracking-[0.15em] text-[#757575] font-bold">Active Sprint</span>
-                    <span className="text-sm font-bold text-[#0D2240]">{meta.subtitle || "Sprint Phase"}</span>
+                    <span className="text-[10px] uppercase tracking-[0.15em] text-text-muted font-bold">Active Sprint</span>
+                    <span className="text-sm font-bold text-text-primary">{meta.subtitle || "Sprint Phase"}</span>
                 </div>
             </div>
         </div>
@@ -221,7 +220,7 @@ export function BlockersSlide({ slide, deckMeta }: { slide: LooseSlide; deckMeta
             rightContent={right}
             leftBackground={leftBg}
             rightPadding={false}
-            rightBg="bg-[#FAFAFA]"
+            rightBg="bg-surface-muted"
         />
     );
 }

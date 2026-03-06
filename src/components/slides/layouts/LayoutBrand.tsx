@@ -15,7 +15,7 @@ export function LayoutBrand({ children }: LayoutBrandProps) {
     return (
         <div
             className="relative w-full h-full overflow-hidden"
-            style={{ background: "linear-gradient(135deg, #1B8FE0 0%, #1672B8 50%, #003057 100%)" }}
+            style={{ background: "var(--surface-hero)" }}
         >
             {/* Concentric circles — upper right, large and subtle */}
             <ConcentricCircles

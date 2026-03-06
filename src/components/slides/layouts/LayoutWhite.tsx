@@ -15,7 +15,7 @@ interface LayoutWhiteProps {
 
 export function LayoutWhite({ children, center = true }: LayoutWhiteProps) {
     return (
-        <div className="relative w-full h-full bg-white overflow-hidden">
+        <div className="relative w-full h-full min-h-[100vh] flex flex-col bg-surface-page text-text-secondary overflow-hidden">
             {/* Background texture — barely perceptible */}
             <ConcentricCircles
                 rings={7}
@@ -28,7 +28,7 @@ export function LayoutWhite({ children, center = true }: LayoutWhiteProps) {
 
             {/* Content layer */}
             <div
-                className={`relative z-10 w-full h-full flex flex-col px-16 ${center ? "justify-center items-center" : ""
+                className={`relative z-10 w-full h-full flex flex-col flex-1 px-16 ${center ? "justify-center items-center" : ""
                     }`}
             >
                 {children}

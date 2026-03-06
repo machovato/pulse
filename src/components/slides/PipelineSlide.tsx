@@ -33,28 +33,25 @@ function resolveIconFromLabel(label: string): React.ElementType {
 
 const STATUS_CONFIG = {
     done: {
-        dotClass: "border-[#4CB944]",
-        dotBg: "#4CB944",
-        iconColor: "text-white",
-        labelClass: "text-[#005741] font-semibold",
+        dotClass: "border-accent-success bg-accent-success text-surface-page",
+        iconClass: "text-surface-page",
+        labelClass: "text-accent-success font-semibold",
         statusText: "Done",
-        statusColor: "text-[#005741]",
+        statusClass: "text-accent-success",
     },
     current: {
-        dotClass: "border-[#1B8FE0]",
-        dotBg: "#1B8FE0",
-        iconColor: "text-white",
-        labelClass: "text-[#0D2240] font-bold",
+        dotClass: "border-accent-info bg-accent-info text-surface-page shadow-md",
+        iconClass: "text-surface-page",
+        labelClass: "text-text-primary font-extrabold tracking-tight",
         statusText: "In Progress",
-        statusColor: "text-[#1B8FE0]",
+        statusClass: "text-accent-info font-bold",
     },
     next: {
-        dotClass: "border-[#BDBDBD]",
-        dotBg: "white",
-        iconColor: "text-[#BDBDBD]",
-        labelClass: "text-[#757575] font-medium",
+        dotClass: "border-border-muted bg-surface-page text-border-muted",
+        iconClass: "text-border-muted",
+        labelClass: "text-text-secondary font-medium",
         statusText: "Up Next",
-        statusColor: "text-[#757575]",
+        statusClass: "text-text-muted",
     },
 } as const;
 
@@ -65,7 +62,7 @@ export function PipelineSlide({ slide }: { slide: LooseSlide }) {
     return (
         <LayoutWhite center={false}>
             <motion.p
-                className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1B8FE0] pt-10 pb-0 text-center w-full"
+                className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent-info pt-10 pb-0 text-center w-full"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4 }}
@@ -74,7 +71,7 @@ export function PipelineSlide({ slide }: { slide: LooseSlide }) {
             </motion.p>
 
             <motion.h2
-                className="font-bold text-[#0D2240] text-center mb-0 mt-2"
+                className="font-bold text-text-primary text-center mb-0 mt-2"
                 style={{ fontSize: "clamp(28px, 3vw, 44px)" }}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -107,14 +104,12 @@ export function PipelineSlide({ slide }: { slide: LooseSlide }) {
                                     <div
                                         className={`rounded-full flex items-center justify-center shadow-md relative ${status === "current" ? "pulse-ring-active" : ""} ${cfg.dotClass}`}
                                         style={{
-                                            background: cfg.dotBg,
-                                            color: cfg.dotBg,
                                             width: "clamp(64px, 7vw, 110px)",
                                             height: "clamp(64px, 7vw, 110px)",
                                             borderWidth: "clamp(4px, 0.4vw, 8px)"
                                         }}
                                     >
-                                        <IconComponent className={`w-1/2 h-1/2 ${cfg.iconColor}`} strokeWidth={status === "current" ? 2.5 : 2} />
+                                        <IconComponent className={`w-1/2 h-1/2 ${cfg.iconClass}`} strokeWidth={status === "current" ? 2.5 : 2} />
                                     </div>
 
                                     <span
@@ -125,16 +120,16 @@ export function PipelineSlide({ slide }: { slide: LooseSlide }) {
                                     </span>
 
                                     <span
-                                        className={`font-semibold uppercase tracking-wider ${cfg.statusColor}`}
+                                        className={`font-semibold uppercase tracking-wider ${cfg.statusClass}`}
                                         style={{ fontSize: "clamp(10px, 1vw, 14px)", marginTop: "-4px" }}
                                     >
                                         {cfg.statusText}
                                     </span>
 
                                     {status === "current" && (
-                                        <div className="w-full max-w-[85%] h-1 mt-1 bg-[#E0E7EF] rounded-full overflow-hidden">
+                                        <div className="w-full max-w-[85%] h-1 mt-1 bg-surface-muted border border-border-default/50 rounded-full overflow-hidden">
                                             <motion.div
-                                                className="h-full bg-[#1B8FE0] rounded-full"
+                                                className="h-full bg-accent-progress rounded-full"
                                                 initial={{ width: 0 }}
                                                 animate={{ width: "65%" }}
                                                 transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
@@ -147,7 +142,7 @@ export function PipelineSlide({ slide }: { slide: LooseSlide }) {
                                             {step.badges.map((b, bi) => (
                                                 <span
                                                     key={bi}
-                                                    className="bg-[#F5F7FA] text-[#1B8FE0] border border-[#E0E7EF] font-semibold"
+                                                    className="bg-surface-muted text-accent-info border border-border-default font-semibold"
                                                     style={{
                                                         fontSize: "clamp(12px, 1.1vw, 16px)",
                                                         padding: "clamp(4px, 0.4vw, 8px) clamp(8px, 0.8vw, 16px)",
@@ -165,18 +160,17 @@ export function PipelineSlide({ slide }: { slide: LooseSlide }) {
                                             {step.blockers.map((bl, bli) => (
                                                 <div
                                                     key={bli}
-                                                    className="flex items-start gap-2"
+                                                    className="flex items-start gap-2 bg-badge-action-bg"
                                                     style={{
-                                                        background: "#FDEAEC",
-                                                        border: "1px solid #F0A0A8",
+                                                        border: "1px solid var(--accent-danger, #F0A0A8)",
                                                         padding: "clamp(6px, 0.6vw, 12px)",
                                                         borderRadius: "clamp(4px, 0.4vw, 8px)"
                                                     }}
                                                 >
-                                                    <AlertTriangle className="shrink-0 mt-0.5" style={{ color: "#C8192B", width: "clamp(16px, 1.4vw, 24px)", height: "clamp(16px, 1.4vw, 24px)" }} />
+                                                    <AlertTriangle className="shrink-0 mt-0.5 text-accent-danger" style={{ width: "clamp(16px, 1.4vw, 24px)", height: "clamp(16px, 1.4vw, 24px)" }} />
                                                     <span
-                                                        className="leading-tight font-medium"
-                                                        style={{ color: "#8B0F1A", fontSize: "clamp(13px, 1.2vw, 18px)" }}
+                                                        className="leading-tight font-medium text-badge-action-text"
+                                                        style={{ fontSize: "clamp(13px, 1.2vw, 18px)" }}
                                                     >
                                                         {bl}
                                                     </span>
@@ -194,14 +188,14 @@ export function PipelineSlide({ slide }: { slide: LooseSlide }) {
                                         }}
                                     >
                                         <div
-                                            className="bg-[#E0E7EF]"
+                                            className="bg-border-default"
                                             style={{
                                                 width: "clamp(24px, 4vw, 70px)",
-                                                height: "clamp(2px, 0.2vw, 4px)"
+                                                height: "clamp(4px, 0.4vw, 8px)"
                                             }}
                                         />
                                         <ChevronRight
-                                            className="text-[#BDBDBD] -ml-1.5"
+                                            className="text-border-muted -ml-1.5"
                                             style={{
                                                 width: "clamp(20px, 2vw, 36px)",
                                                 height: "clamp(20px, 2vw, 36px)"

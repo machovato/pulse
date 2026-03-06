@@ -108,6 +108,60 @@ const DecisionLogDataSchema = z.object({
     ),
 });
 
+// ─── V2 Strategy Slide Data schemas ──────────────────────────────────────────
+
+const V2ContextDataSchema = z.object({
+    items: z.array(
+        z.object({
+            title: z.string(),
+            body: z.string(),
+            icon: z.string(),
+            status: z.enum(["confirmed", "in-progress", "pending"]),
+        })
+    ),
+});
+
+const V2ProblemDataSchema = z.object({
+    primary: z.object({
+        title: z.string(),
+        body: z.string(),
+        icon: z.string(),
+        severity: z.enum(["critical", "high", "moderate"]),
+    }),
+    secondary: z.array(
+        z.object({
+            title: z.string(),
+            body: z.string(),
+            icon: z.string(),
+            severity: z.enum(["critical", "high", "moderate"]),
+        })
+    ),
+});
+
+const V2EvidenceDataSchema = z.object({
+    points: z.array(
+        z.object({
+            metric: z.string(),
+            label: z.string(),
+            source: z.string(),
+            type: z.enum(["quantified", "qualitative"]),
+            body: z.string(),
+        })
+    ),
+});
+
+const V2FrameworkDataSchema = z.object({
+    lanes: z.array(
+        z.object({
+            title: z.string(),
+            body: z.string(),
+            icon: z.string(),
+            type: z.enum(["control", "influence", "concern"]),
+            rank: z.number(),
+        })
+    ),
+});
+
 // ─── Base slide fields ────────────────────────────────────────────────────────
 
 const BaseSlideSchema = z.object({
@@ -118,7 +172,7 @@ const BaseSlideSchema = z.object({
 
 // ─── Discriminated union ──────────────────────────────────────────────────────
 
-export const SlideSchema = z.discriminatedUnion("type", [
+export const V1SlideSchema = z.discriminatedUnion("type", [
     BaseSlideSchema.extend({ type: z.literal("hero"), data: HeroDataSchema }),
     BaseSlideSchema.extend({ type: z.literal("kpis"), data: KpisDataSchema }),
     BaseSlideSchema.extend({ type: z.literal("pipeline"), data: PipelineDataSchema }),
@@ -128,10 +182,33 @@ export const SlideSchema = z.discriminatedUnion("type", [
     BaseSlideSchema.extend({ type: z.literal("callout"), data: CalloutDataSchema }),
     BaseSlideSchema.extend({ type: z.literal("agenda"), data: AgendaDataSchema }),
     BaseSlideSchema.extend({ type: z.literal("decision_log"), data: DecisionLogDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("context"), data: GridDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("problem"), data: GridDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("evidence"), data: GridDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("framework"), data: GridDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("roadmap"), data: TimelineDataSchema }),
 ]);
 
+export const V2SlideSchema = z.discriminatedUnion("type", [
+    BaseSlideSchema.extend({ type: z.literal("hero"), data: HeroDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("kpis"), data: KpisDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("pipeline"), data: PipelineDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("grid"), data: GridDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("timeline"), data: TimelineDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("blockers"), data: BlockersDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("callout"), data: CalloutDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("agenda"), data: AgendaDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("decision_log"), data: DecisionLogDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("context"), data: V2ContextDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("problem"), data: V2ProblemDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("evidence"), data: V2EvidenceDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("framework"), data: V2FrameworkDataSchema }),
+    BaseSlideSchema.extend({ type: z.literal("roadmap"), data: TimelineDataSchema }),
+]);
+
+export const SlideSchema = z.union([V1SlideSchema, V2SlideSchema]);
 export type Slide = z.infer<typeof SlideSchema>;
-export type SlideType = Slide["type"];
+export type SlideType = z.infer<typeof V1SlideSchema>["type"] | z.infer<typeof V2SlideSchema>["type"];
 
 // A relaxed version for unknown types — used in the renderer fallback
 export const LooseSlideSchema = z.object({
@@ -150,7 +227,7 @@ export const MetaSchema = z.object({
     subtitle: z.string().optional(),
     date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be YYYY-MM-DD"),
     audience: z.enum(["exec", "team", "customer", "mixed"]),
-    template: z.enum(["status", "allHands", "requirements", "custom"]),
+    template: z.enum(["status", "allHands", "requirements", "strategy", "custom"]),
     rag: RAGSchema.optional(),
     headline: z.string().optional(),
 });
@@ -159,18 +236,37 @@ export type Meta = z.infer<typeof MetaSchema>;
 
 // ─── Full deck schema ─────────────────────────────────────────────────────────
 
-export const DeckSchema = z.object({
-    schemaVersion: z.literal(1),
+export const V1DeckSchema = z.object({
+    schemaVersion: z.literal(1).optional().default(1),
     meta: MetaSchema,
-    slides: z.array(SlideSchema),
+    slides: z.array(V1SlideSchema),
 });
+
+export const V2DeckSchema = z.object({
+    schemaVersion: z.literal(2),
+    meta: MetaSchema,
+    slides: z.array(V2SlideSchema),
+});
+
+export const DeckSchema = z.preprocess(
+    (val: any) => {
+        if (typeof val === "object" && val !== null && !("schemaVersion" in val)) {
+            return { ...val, schemaVersion: 1 };
+        }
+        return val;
+    },
+    z.discriminatedUnion("schemaVersion", [
+        V1DeckSchema,
+        V2DeckSchema,
+    ])
+);
 
 export type Deck = z.infer<typeof DeckSchema>;
 
 // ─── Loose deck (for parsing with unknown slide types) ────────────────────────
 
 export const LooseDeckSchema = z.object({
-    schemaVersion: z.literal(1),
+    schemaVersion: z.number().optional().default(1),
     meta: MetaSchema,
     slides: z.array(LooseSlideSchema),
 });
@@ -189,6 +285,11 @@ export const SLIDE_TYPES: SlideType[] = [
     "callout",
     "agenda",
     "decision_log",
+    "context",
+    "problem",
+    "evidence",
+    "framework",
+    "roadmap",
 ];
 
 export const RAG_VALUES = ["green", "yellow", "red"] as const;

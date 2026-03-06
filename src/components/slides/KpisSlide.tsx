@@ -23,16 +23,16 @@ interface KpisData {
 // flat = DTN Neutral Mid #BCBEC0  — no significant change
 function TrendIcon({ trend }: { trend?: "up" | "down" | "flat" }) {
     if (!trend) return null;
-    if (trend === "up") return <LucideIcons.TrendingUp className="w-5 h-5" style={{ color: "#8DC63F" }} />;
-    if (trend === "down") return <LucideIcons.TrendingDown className="w-5 h-5" style={{ color: "#C8192B" }} />;
-    return <LucideIcons.Minus className="w-5 h-5" style={{ color: "#BCBEC0" }} />;
+    if (trend === "up") return <LucideIcons.TrendingUp className="w-5 h-5 text-accent-success" />;
+    if (trend === "down") return <LucideIcons.TrendingDown className="w-5 h-5 text-accent-danger" />;
+    return <LucideIcons.Minus className="w-5 h-5 text-text-muted" />;
 }
 
 function getIcon(name?: string) {
     if (!name) return null;
     const key = name.charAt(0).toUpperCase() + name.slice(1);
     const Icon = (LucideIcons as Record<string, unknown>)[key] as React.ComponentType<{ className?: string }>;
-    return Icon ? <Icon className="w-6 h-6 text-[#1B8FE0]" /> : null;
+    return Icon ? <Icon className="w-6 h-6 text-accent-info" /> : null;
 }
 
 export function KpisSlide({ slide }: { slide: LooseSlide }) {
@@ -44,7 +44,7 @@ export function KpisSlide({ slide }: { slide: LooseSlide }) {
         <LayoutWhite center={false}>
             {/* Slide title — eyebrow style at top */}
             <motion.p
-                className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1B8FE0] mb-8 pt-10 text-center w-full"
+                className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent-info mb-8 pt-10 text-center w-full"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4 }}
@@ -68,7 +68,7 @@ export function KpisSlide({ slide }: { slide: LooseSlide }) {
                         >
                             {/* Icon */}
                             {kpi.icon && (
-                                <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center mb-1">
+                                <div className="w-12 h-12 rounded-2xl bg-surface-muted border border-border-default/50 flex items-center justify-center mb-1">
                                     {getIcon(kpi.icon)}
                                 </div>
                             )}
@@ -76,8 +76,8 @@ export function KpisSlide({ slide }: { slide: LooseSlide }) {
                             {/* Value — scoreboard */}
                             <div className="flex items-baseline gap-2">
                                 <span
-                                    className="font-bold text-[#003057] whitespace-nowrap"
-                                    style={{ fontSize: "clamp(36px, 4vw, 60px)", lineHeight: 1 }}
+                                    className="font-extrabold text-text-primary whitespace-nowrap drop-shadow-sm tracking-tight"
+                                    style={{ fontSize: "clamp(42px, 5vw, 72px)", lineHeight: 1 }}
                                 >
                                     {kpi.value}
                                 </span>
@@ -92,8 +92,8 @@ export function KpisSlide({ slide }: { slide: LooseSlide }) {
                                     const den = parseFloat(match[2]);
                                     const pct = den > 0 ? Math.min(100, Math.max(0, (num / den) * 100)) : 0;
                                     return (
-                                        <div className="w-full h-1.5 mt-0.5 mb-1 bg-black/10 rounded-full overflow-hidden shadow-inner">
-                                            <div className="h-full bg-[#1B8FE0] rounded-full transition-all duration-500 ease-out" style={{ width: `${pct}%` }} />
+                                        <div className="w-full h-1.5 mt-0.5 mb-1 bg-surface-muted border border-border-default/50 rounded-full overflow-hidden shadow-inner">
+                                            <div className="h-full bg-accent-progress rounded-full transition-all duration-500 ease-out" style={{ width: `${pct}%` }} />
                                         </div>
                                     );
                                 }
@@ -101,13 +101,13 @@ export function KpisSlide({ slide }: { slide: LooseSlide }) {
                             })()}
 
                             {/* Label */}
-                            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6D6E71]">
+                            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-text-secondary">
                                 {kpi.label}
                             </span>
 
                             {/* Note */}
                             {kpi.note && (
-                                <span className="text-xs text-gray-400">{kpi.note}</span>
+                                <span className="text-xs text-text-muted">{kpi.note}</span>
                             )}
                         </motion.div>
                     ))}

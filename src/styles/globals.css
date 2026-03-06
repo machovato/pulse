@@ -253,6 +253,7 @@ body {
     transform: scale(1);
     opacity: 0.4;
   }
+
   100% {
     transform: scale(2);
     opacity: 0;
@@ -274,4 +275,86 @@ body {
   background-color: currentColor;
   z-index: -1;
   animation: pulse-ring 2s ease-out infinite;
+}
+
+/* ─── TEMPLATE TOKENS: Status (Default) ─────────────────────────────────── */
+[data-template="status"],
+[data-template="default"],
+:root {
+  --surface-hero: linear-gradient(135deg, #4A90D9 0%, #6BA3E0 50%, #8BB8E8 100%);
+  --surface-primary: var(--dtn-blue);
+  --surface-secondary: #FFFFFF;
+  --surface-muted: var(--dtn-neutral-bg);
+  --surface-page: #FFFFFF;
+  --surface-split: var(--dtn-gradient-blue);
+  --surface-split-alt: var(--dtn-gradient-navy);
+
+  --text-on-hero: #FFFFFF;
+  --text-primary: var(--dtn-navy);
+  --text-secondary: var(--dtn-neutral-dark);
+  --text-muted: var(--dtn-neutral-mid);
+  --text-on-emphasis: #FFFFFF;
+
+  --accent-success: var(--dtn-green);
+  --accent-warning: var(--dtn-orange);
+  --accent-danger: var(--dtn-red);
+  --accent-info: var(--dtn-blue);
+  --accent-progress: var(--dtn-blue);
+
+  --border-default: var(--dtn-neutral-light);
+  --border-strong: var(--dtn-blue);
+  --border-muted: var(--dtn-neutral-mid);
+
+  --badge-critical-bg: var(--dtn-red);
+  --badge-critical-text: #FFFFFF;
+  --badge-high-bg: var(--dtn-orange);
+  --badge-high-text: var(--dtn-navy);
+  --badge-moderate-bg: var(--dtn-neutral-mid);
+  --badge-moderate-text: var(--dtn-navy);
+  --badge-action-bg: #FDEAEC;
+  --badge-action-text: #8B0F1A;
+  --badge-approval-bg: #FFF8DC;
+  --badge-approval-text: #8A6A00;
+  --badge-fyi-bg: var(--dtn-neutral-light);
+  --badge-fyi-text: var(--dtn-neutral-dark);
+}
+
+/* ─── TEMPLATE TOKENS: Strategy ─────────────────────────────────────────── */
+[data-template="strategy"] {
+  --surface-hero: linear-gradient(135deg, #003057 0%, #1B4F7A 50%, #2255A4 100%);
+  --surface-primary: var(--dtn-navy);
+  --surface-secondary: #FFFFFF;
+  --surface-muted: var(--dtn-neutral-bg);
+  --surface-page: #FFFFFF;
+  --surface-split: var(--surface-hero);
+  --surface-split-alt: var(--dtn-gradient-navy);
+
+  --text-on-hero: #FFFFFF;
+  --text-primary: var(--dtn-navy);
+  --text-secondary: var(--dtn-neutral-dark);
+  --text-muted: var(--dtn-neutral-mid);
+  --text-on-emphasis: #FFFFFF;
+
+  --accent-success: var(--dtn-green);
+  --accent-warning: var(--dtn-orange);
+  --accent-danger: var(--dtn-red);
+  --accent-info: var(--dtn-blue);
+  --accent-progress: var(--dtn-blue);
+
+  --border-default: var(--dtn-neutral-light);
+  --border-strong: var(--dtn-navy);
+  --border-muted: var(--dtn-neutral-mid);
+
+  --badge-critical-bg: var(--dtn-red);
+  --badge-critical-text: #FFFFFF;
+  --badge-high-bg: var(--dtn-orange);
+  --badge-high-text: var(--dtn-navy);
+  --badge-moderate-bg: var(--dtn-neutral-mid);
+  --badge-moderate-text: var(--dtn-navy);
+  --badge-action-bg: #FDEAEC;
+  --badge-action-text: #8B0F1A;
+  --badge-approval-bg: #FFF8DC;
+  --badge-approval-text: #8A6A00;
+  --badge-fyi-bg: var(--dtn-neutral-light);
+  --badge-fyi-text: var(--dtn-neutral-dark);
 }

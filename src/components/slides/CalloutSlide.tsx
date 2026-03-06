@@ -22,17 +22,17 @@ const LEFT_EYEBROW = {
 // highlight  = DTN Lime    #8DC63F — positive emphasis, good news
 // quote      = DTN Teal    #007074 — neutral informational, voice
 const RIGHT_ACCENT = {
-    decision: "border-l-4 border-[#2255A4]",
-    risk: "border-l-4 border-[#C8192B]",
+    decision: "border-l-[12px] border-accent-info",
+    risk: "border-l-[12px] border-accent-danger",
     quote: "",
-    highlight: "border-l-4 border-[#8DC63F]",
+    highlight: "border-l-[12px] border-accent-success",
 };
 
 const QUOTE_MARK_COLOR: Record<string, string> = {
-    decision: "#2255A4",
-    risk: "#C8192B",
-    highlight: "#8DC63F",
-    quote: "#007074",
+    decision: "var(--accent-info)",
+    risk: "var(--accent-danger)",
+    highlight: "var(--accent-success)",
+    quote: "var(--accent-info)",
 };
 
 export function CalloutSlide({ slide }: { slide: LooseSlide }) {
@@ -42,16 +42,16 @@ export function CalloutSlide({ slide }: { slide: LooseSlide }) {
 
     const left = (
         <div className="flex flex-col gap-4">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-text-on-emphasis opacity-60">
                 {LEFT_EYEBROW[kind]}
             </p>
             <h2
-                className="font-bold text-white leading-tight"
+                className="font-bold text-text-on-emphasis leading-tight"
                 style={{ fontSize: "clamp(24px, 3vw, 42px)" }}
             >
                 {slide.title}
             </h2>
-            <div className="w-8 h-0.5 bg-white/30 mt-3" />
+            <div className="w-8 h-0.5 bg-text-on-emphasis opacity-30 mt-3" />
         </div>
     );
 
@@ -71,10 +71,10 @@ export function CalloutSlide({ slide }: { slide: LooseSlide }) {
 
             {isQuote ? (
                 // Quote style — large italic text, no accent border
-                <div className={isQuote ? "pl-0" : "pl-6"}>
+                <div className={isQuote ? "pl-0" : "pl-8"}>
                     <motion.p
-                        className="font-bold text-[#003057] italic leading-snug"
-                        style={{ fontSize: "clamp(22px, 2.8vw, 38px)" }}
+                        className="font-bold text-text-primary italic leading-snug"
+                        style={{ fontSize: "clamp(24px, 3.2vw, 44px)" }}
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.45, delay: 0.1 }}
@@ -84,8 +84,8 @@ export function CalloutSlide({ slide }: { slide: LooseSlide }) {
                 </div>
             ) : (
                 <motion.p
-                    className="font-bold text-[#003057] leading-snug pl-6"
-                    style={{ fontSize: "clamp(22px, 2.8vw, 38px)" }}
+                    className="font-extrabold text-text-primary leading-tight pl-8"
+                    style={{ fontSize: "clamp(28px, 3.6vw, 52px)", letterSpacing: "-0.02em" }}
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.45, delay: 0.1 }}
@@ -96,7 +96,7 @@ export function CalloutSlide({ slide }: { slide: LooseSlide }) {
 
             {data.attribution && (
                 <motion.p
-                    className="text-sm text-[#6D6E71] font-medium pl-6"
+                    className="text-base text-text-secondary font-bold pl-8 mt-2 uppercase tracking-widest"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.4, delay: 0.25 }}
