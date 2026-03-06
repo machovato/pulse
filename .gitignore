@@ -23,3 +23,6 @@ Thumbs.db
 # Editor
 .vscode/
 *.swp
+
+# Gemini Temp Artifacts
+*-DTN-*.*
