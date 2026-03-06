@@ -23,7 +23,7 @@ export function applyDensity(slide: LooseSlide, density: DensityMode): LooseSlid
     if (density === "full") return slide;
 
     const key = ARRAY_KEYS[slide.type];
-    if (!key || !slide.data || slide.type === "timeline") return slide;
+    if (!key || !slide.data || slide.type === "timeline" || slide.type === "pipeline") return slide;
 
     const arr = (slide.data as Record<string, unknown>)[key];
     if (!Array.isArray(arr)) return slide;
@@ -43,7 +43,7 @@ export function applyDensity(slide: LooseSlide, density: DensityMode): LooseSlid
  */
 function paginateSlide(slide: LooseSlide): LooseSlide[] {
     const key = ARRAY_KEYS[slide.type];
-    if (!key || !slide.data || slide.type === "timeline") return [slide];
+    if (!key || !slide.data || slide.type === "timeline" || slide.type === "pipeline") return [slide];
 
     const data = slide.data as Record<string, unknown>;
     const arr = data[key];
