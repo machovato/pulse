@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { staggerContainer, slideUpItem } from "@/lib/motion";
 import { LayoutSplit } from "./layouts/LayoutSplit";
 import type { LooseSlide } from "@/lib/schema";
 
@@ -14,12 +15,12 @@ interface AgendaData {
     items: AgendaItem[];
 }
 
-export function AgendaSlide({ slide }: { slide: LooseSlide }) {
+export function AgendaSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
     const data = (slide.data ?? { items: [] }) as unknown as AgendaData;
     const items = data.items ?? [];
 
     const left = (
-        <div className="flex flex-col gap-4">
+        <motion.div className="flex flex-col gap-4" variants={slideUpItem(disableAnimation)}>
             <p className="text-badge font-semibold uppercase tracking-[0.18em] text-accent-info opacity-60">
                 Agenda
             </p>
@@ -35,7 +36,7 @@ export function AgendaSlide({ slide }: { slide: LooseSlide }) {
                     {items.length} item{items.length !== 1 ? "s" : ""}
                 </p>
             )}
-        </div>
+        </motion.div>
     );
 
     const right = (
@@ -53,9 +54,7 @@ export function AgendaSlide({ slide }: { slide: LooseSlide }) {
                             ? "1px solid var(--border-default)"
                             : "none",
                     }}
-                    initial={{ opacity: 0, x: 14 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.15, delay: 0.1 + i * 0.05 }}
+                    variants={slideUpItem(disableAnimation)}
                 >
                     {/* Number badge — sized for presentation readability */}
                     <div
@@ -104,5 +103,14 @@ export function AgendaSlide({ slide }: { slide: LooseSlide }) {
         </div>
     );
 
-    return <LayoutSplit leftContent={left} rightContent={right} />;
+    return (
+        <motion.div
+            className="w-full h-full"
+            variants={staggerContainer(disableAnimation)}
+            initial="hidden"
+            animate="visible"
+        >
+            <LayoutSplit leftContent={left} rightContent={right} />
+        </motion.div>
+    );
 }

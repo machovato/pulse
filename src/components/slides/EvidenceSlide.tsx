@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import * as LucideIcons from "lucide-react";
 import { CircleDot } from "lucide-react";
+import { staggerContainer, slideUpItem } from "@/lib/motion";
 import { LayoutWhite } from "./layouts/LayoutWhite";
 import type { LooseSlide } from "@/lib/schema";
 
@@ -66,71 +67,71 @@ function renderMetric(metricStr: string, isQualitative: boolean) {
     );
 }
 
-export function EvidenceSlide({ slide }: { slide: LooseSlide }) {
+export function EvidenceSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
     const data = (slide.data ?? { points: [] }) as unknown as EvidenceData;
     const points = data.points ?? [];
 
     return (
-        <LayoutWhite center={false}>
-            <div className="w-full flex-1 flex flex-col justify-center py-12">
-                <div className="mb-12 shrink-0">
-                    <p className="text-badge font-semibold uppercase tracking-[0.18em] text-accent-info opacity-60 mb-2">
-                        Evidence
-                    </p>
-                    <h2
-                        className="font-bold text-text-primary leading-tight"
-                        style={{ fontSize: "clamp(32px, 4vw, 56px)" }}
-                    >
-                        {slide.title}
-                    </h2>
-                </div>
+        <motion.div className="w-full h-full" variants={staggerContainer(disableAnimation)} initial="hidden" animate="visible">
+            <LayoutWhite center={false}>
+                <div className="w-full flex-1 flex flex-col justify-center py-12">
+                    <motion.div className="mb-12 shrink-0" variants={slideUpItem(disableAnimation)}>
+                        <p className="text-badge font-semibold uppercase tracking-[0.18em] text-accent-info opacity-60 mb-2">
+                            Evidence
+                        </p>
+                        <h2
+                            className="font-bold text-text-primary leading-tight"
+                            style={{ fontSize: "clamp(32px, 4vw, 56px)" }}
+                        >
+                            {slide.title}
+                        </h2>
+                    </motion.div>
 
-                <div
-                    className={`flex-1 grid gap-6 w-full mt-4 items-stretch
+                    <div
+                        className={`flex-1 grid gap-6 w-full mt-4 items-stretch
                     ${points.length === 1 ? 'grid-cols-1 max-w-2xl mx-auto' :
-                            points.length === 2 ? 'grid-cols-2 max-w-5xl mx-auto' :
-                                'grid-cols-3 w-full'}`}
-                >
-                    {points.map((point, i) => {
-                        const isQualitative = point.type === "qualitative";
+                                points.length === 2 ? 'grid-cols-2 max-w-5xl mx-auto' :
+                                    'grid-cols-3 w-full'}`}
+                    >
+                        {points.map((point, i) => {
+                            const isQualitative = point.type === "qualitative";
 
-                        return (
-                            <motion.div
-                                key={i}
-                                className={`flex flex-col justify-between p-8 md:p-10 rounded-2xl shadow-xl transition-all h-full border border-border-default
+                            return (
+                                <motion.div
+                                    key={i}
+                                    className={`flex flex-col justify-between p-8 md:p-10 rounded-2xl shadow-xl transition-all h-full border border-border-default
                                     ${isQualitative
-                                        ? 'border-t-[10px] border-t-accent-warning bg-surface-primary'
-                                        : 'border-t-[10px] border-t-accent-info bg-surface-primary'
-                                    }
+                                            ? 'border-t-[10px] border-t-accent-warning bg-surface-primary'
+                                            : 'border-t-[10px] border-t-accent-info bg-surface-primary'
+                                        }
                                 `}
-                                style={{ minHeight: "280px" }}
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.1 + i * 0.15 }}
-                                whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                            >
-                                <div className="mb-auto">
-                                    <p className="text-sm font-bold uppercase tracking-[0.15em] text-text-on-emphasis/60 mb-4">
-                                        {point.label}
-                                    </p>
-                                    <div className="mb-6 leading-none">
-                                        {renderMetric(point.metric, isQualitative)}
+                                    style={{ minHeight: "280px" }}
+                                    variants={slideUpItem(disableAnimation)}
+                                    whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                                >
+                                    <div className="mb-auto">
+                                        <p className="text-sm font-bold uppercase tracking-[0.15em] text-text-on-emphasis/60 mb-4">
+                                            {point.label}
+                                        </p>
+                                        <div className="mb-6 leading-none">
+                                            {renderMetric(point.metric, isQualitative)}
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className="mt-10 relative bg-surface-muted p-5 rounded-xl border border-border-default/50">
-                                    <p className="text-lg text-text-primary font-medium leading-relaxed mb-4">
-                                        {isQualitative ? `"${point.body}"` : point.body}
-                                    </p>
-                                    <p className="text-[13px] font-bold uppercase tracking-wider text-accent-info flex items-center gap-2 before:content-['—'] before:mr-1">
-                                        {point.source}
-                                    </p>
-                                </div>
-                            </motion.div>
-                        );
-                    })}
+                                    <div className="mt-10 relative bg-surface-muted p-5 rounded-xl border border-border-default/50">
+                                        <p className="text-lg text-text-primary font-medium leading-relaxed mb-4">
+                                            {isQualitative ? `"${point.body}"` : point.body}
+                                        </p>
+                                        <p className="text-[13px] font-bold uppercase tracking-wider text-accent-info flex items-center gap-2 before:content-['—'] before:mr-1">
+                                            {point.source}
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
-        </LayoutWhite>
+            </LayoutWhite>
+        </motion.div>
     );
 }

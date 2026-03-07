@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { CheckCircle2, AlertCircle, CheckSquare, Info, MoreHorizontal, Clock, ClipboardX } from "lucide-react";
+import { staggerContainer, slideUpItem } from "@/lib/motion";
 import { LayoutSplit } from "./layouts/LayoutSplit";
 import type { LooseSlide } from "@/lib/schema";
 import { cn } from "@/lib/utils";
@@ -43,7 +44,7 @@ function getInitials(name: string) {
     return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 }
 
-export function BlockersSlide({ slide, deckMeta }: { slide: LooseSlide; deckMeta?: Record<string, string> }) {
+export function BlockersSlide({ slide, deckMeta, disableAnimation = false }: { slide: LooseSlide; deckMeta?: Record<string, string>; disableAnimation?: boolean }) {
     const data = (slide.data ?? { items: [] }) as unknown as BlockersData;
     const items = data.items ?? [];
     const meta = deckMeta ?? {};
@@ -59,7 +60,7 @@ export function BlockersSlide({ slide, deckMeta }: { slide: LooseSlide; deckMeta
     const allClear = items.length === 0;
 
     const left = (
-        <div className="flex flex-col h-full relative">
+        <motion.div className="flex flex-col h-full relative" variants={slideUpItem(disableAnimation)}>
             <div className="flex flex-col gap-6 relative z-10 w-full pr-8">
                 <div className="flex flex-col gap-2">
                     <p className="text-badge font-semibold uppercase tracking-[0.18em] text-accent-info opacity-60 mb-1">
@@ -98,13 +99,13 @@ export function BlockersSlide({ slide, deckMeta }: { slide: LooseSlide; deckMeta
                                 <div className="flex items-center gap-4">
                                     <Icon className="w-5 h-5 text-text-on-emphasis" />
                                     <span
-                                        className="font-medium text-text-on-emphasis opacity-80 text-sm"
+                                        className="font-semibold text-text-on-emphasis opacity-90 text-base"
                                     >
                                         {label}
                                     </span>
                                 </div>
                                 <span
-                                    className="font-medium text-text-on-emphasis text-card-title"
+                                    className="font-bold text-text-on-emphasis text-2xl"
                                 >
                                     {count}
                                 </span>
@@ -114,20 +115,14 @@ export function BlockersSlide({ slide, deckMeta }: { slide: LooseSlide; deckMeta
                 )}
             </div>
 
-            {meta.subtitle && (
-                <div className="absolute bottom-0 left-0 w-full pt-8 flex gap-4 text-text-on-emphasis opacity-50 text-sm">
-                    <span>Update: {meta.subtitle}</span>
-                </div>
-            )}
-        </div>
+
+        </motion.div>
     );
 
     const right = allClear ? (
         <motion.div
             className="flex flex-col items-center justify-center gap-4 h-full text-center"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.45 }}
+            variants={slideUpItem(disableAnimation)}
         >
             <CheckCircle2 className="w-14 h-14 text-accent-success" />
             <p className="text-xl font-semibold text-accent-success">No blockers. All clear.</p>
@@ -141,67 +136,57 @@ export function BlockersSlide({ slide, deckMeta }: { slide: LooseSlide; deckMeta
                     return (
                         <motion.div
                             key={i}
-                            className={cn(
-                                "bg-surface-secondary rounded-card shadow-md border border-border-default",
-                                cfg.borderClass
-                            )}
-                            style={{
-                                padding: "var(--spacing-card-padding)",
-                                borderWidth: "var(--border-width-card)",
-                                borderLeftWidth: "var(--border-width-accent)"
-                            }}
-                            initial={{ opacity: 0, y: 16 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.15, delay: 0.1 + i * 0.05 }}
+                            className="bg-surface-secondary rounded-card shadow-card border border-border-default flex flex-col overflow-hidden"
+                            variants={staggerContainer(disableAnimation)}
                         >
-                            <div className="flex justify-between items-center mb-4">
-                                <span
-                                    className="font-bold uppercase tracking-wider rounded-badge px-3 py-0.5 text-badge"
-                                    style={{
-                                        background: cfg.badgeBg,
-                                        color: cfg.badgeText,
-                                    }}
-                                >
+                            {/* Loud Priority Flag Header */}
+                            <motion.div
+                                className="w-full px-5 py-2.5 flex justify-between items-center border-b border-black/5"
+                                style={{
+                                    background: cfg.badgeBg,
+                                    color: cfg.badgeText,
+                                }}
+                            >
+                                <span className="font-extrabold uppercase tracking-widest text-[11px]">
                                     {cfg.label}
                                 </span>
-                                <MoreHorizontal className="w-5 h-5 text-text-muted" />
-                            </div>
-
-                            <p
-                                className={cn(
-                                    "text-text-primary leading-tight mt-1 text-card-title",
-                                    item.severity === "action" ? "font-bold" : "font-semibold"
-                                )}
-                                style={{ fontWeight: item.severity === "action" ? "var(--font-weight-title)" : "var(--font-weight-card-title)" }}
-                            >
-                                {item.text}
-                            </p>
-
-                            <div className="flex justify-between items-center mt-6 pt-4 border-t border-border-default min-h-[40px]">
-                                {item.owner ? (
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-accent-info flex items-center justify-center text-text-on-emphasis text-xs font-bold shrink-0">
-                                            {getInitials(item.owner)}
-                                        </div>
-                                        <div className="flex flex-col">
-                                            <span className="text-[11px] text-text-muted uppercase tracking-wider font-semibold">Owner</span>
-                                            <span className="text-sm font-bold text-text-primary">{item.owner}</span>
-                                        </div>
-                                    </div>
-                                ) : <div />}
-
                                 {item.severity === "action" && (
-                                    <div className="flex items-center gap-1.5 text-accent-danger">
-                                        <Clock className="w-4 h-4" />
-                                        <span className="text-sm font-bold">High Priority</span>
+                                    <div className="flex items-center gap-1.5 opacity-90">
+                                        <Clock className="w-3.5 h-3.5" strokeWidth={3} />
+                                        <span className="text-[10px] uppercase font-bold tracking-wider">High Priority</span>
                                     </div>
                                 )}
-                                {(item.severity === "fyi" || item.severity === "approval") && item.badges && item.badges.length > 0 && (
-                                    <div className="flex items-center gap-1.5 text-text-muted">
-                                        <span className="text-sm font-semibold">{item.badges.join(" · ")}</span>
-                                    </div>
-                                )}
-                            </div>
+                            </motion.div>
+
+                            {/* Card Body */}
+                            <motion.div className="p-5 flex flex-col gap-4" variants={slideUpItem(disableAnimation)}>
+                                <p
+                                    className="text-text-primary leading-snug text-card-title font-semibold"
+                                    style={{ fontWeight: "var(--font-weight-card-title)" }}
+                                >
+                                    {item.text}
+                                </p>
+
+                                <div className="flex justify-between items-center mt-2 pt-4 border-t border-border-default/50 min-h-[40px]">
+                                    {item.owner ? (
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-8 h-8 rounded-full bg-accent-info flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-sm">
+                                                {getInitials(item.owner)}
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-[10px] text-text-muted uppercase tracking-[0.2em] font-bold">Owner</span>
+                                                <span className="text-sm font-bold text-text-primary">{item.owner}</span>
+                                            </div>
+                                        </div>
+                                    ) : <div />}
+
+                                    {(item.severity === "fyi" || item.severity === "approval") && item.badges && item.badges.length > 0 && (
+                                        <div className="flex items-center gap-1.5 text-text-muted bg-surface-muted px-2.5 py-1 rounded shadow-inner border border-border-default/50">
+                                            <span className="text-[11px] font-bold uppercase tracking-wider">{item.badges.join(" · ")}</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </motion.div>
                         </motion.div>
                     );
                 })}
@@ -214,22 +199,24 @@ export function BlockersSlide({ slide, deckMeta }: { slide: LooseSlide; deckMeta
                 )}
             </div>
 
-            <div className="h-[80px] bg-surface-muted border-t border-border-default px-slide flex items-center justify-between shrink-0">
-                <div className="flex flex-col justify-center">
-                    <span className="text-[10px] uppercase tracking-[0.15em] text-text-muted font-bold">Active Sprint</span>
-                    <span className="text-sm font-bold text-text-primary">{meta.subtitle || "Sprint Phase"}</span>
-                </div>
-            </div>
+
         </div>
     );
 
     return (
-        <LayoutSplit
-            leftContent={left}
-            rightContent={right}
-            leftBackground={leftBg}
-            rightPadding={false}
-            rightBg="bg-surface-muted"
-        />
+        <motion.div
+            className="w-full h-full"
+            variants={staggerContainer(disableAnimation)}
+            initial="hidden"
+            animate="visible"
+        >
+            <LayoutSplit
+                leftContent={left}
+                rightContent={right}
+                leftBackground={leftBg}
+                rightPadding={false}
+                rightBg="bg-surface-muted"
+            />
+        </motion.div>
     );
 }

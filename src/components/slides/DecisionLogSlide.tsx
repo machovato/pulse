@@ -1,8 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { staggerContainer, slideUpItem } from "@/lib/motion";
 import { LayoutSplit } from "./layouts/LayoutSplit";
 import type { LooseSlide } from "@/lib/schema";
+import { cn } from "@/lib/utils";
 
 interface DecisionItem {
     decision: string;
@@ -26,12 +28,12 @@ const STATUS_CONFIG: Record<string, { bg: string; text: string; border: string; 
     done: { bg: "var(--surface-muted)", text: "var(--text-muted)", border: "var(--border-muted)", label: "Done" },
 };
 
-export function DecisionLogSlide({ slide }: { slide: LooseSlide }) {
+export function DecisionLogSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
     const data = (slide.data ?? { items: [] }) as unknown as DecisionLogData;
     const items = data.items ?? [];
 
     const left = (
-        <div className="flex flex-col gap-4">
+        <motion.div className="flex flex-col gap-4" variants={slideUpItem(disableAnimation)}>
             <p className="text-badge font-semibold uppercase tracking-[0.18em] text-accent-info opacity-60">
                 Decision Log
             </p>
@@ -45,75 +47,85 @@ export function DecisionLogSlide({ slide }: { slide: LooseSlide }) {
             <p className="text-text-on-emphasis opacity-55 text-xs mt-1">
                 {items.length} decision{items.length !== 1 ? "s" : ""} recorded
             </p>
-        </div>
+        </motion.div>
     );
 
     const right = (
         <div className="w-full h-full flex flex-col justify-center">
-            <div className="w-full bg-surface-secondary rounded-card border border-border-default shadow-card overflow-hidden">
-                <div className="p-card overflow-auto">
-                    {/* Header row */}
-                    <div className="grid grid-cols-[1fr_auto_auto_auto] gap-4 pb-4 border-b border-border-default mb-1">
+            <motion.div
+                className="w-full bg-surface-muted rounded-card border border-border-default shadow-sm overflow-hidden flex flex-col h-full max-h-[600px]"
+                variants={staggerContainer(disableAnimation)}
+            >
+                <div className="px-8 py-6 flex-1 overflow-y-auto w-full">
+                    {/* Header row - Ledger Style */}
+                    <motion.div className="grid grid-cols-[1fr_2fr_1.5fr_1.5fr] gap-6 pb-4 border-b-2 border-border-default mb-2" variants={slideUpItem(disableAnimation)}>
                         {["Decision", "Owner", "Date", "Status"].map((h) => (
-                            <span
+                            <div
                                 key={h}
-                                className="font-bold uppercase tracking-wider text-text-secondary"
-                                style={{ fontSize: "var(--type-badge)" }}
+                                className={cn(
+                                    "font-bold uppercase tracking-[0.15em] text-text-muted text-[11px]",
+                                    h === "Status" && "text-right"
+                                )}
                             >
                                 {h}
-                            </span>
+                            </div>
                         ))}
-                    </div>
+                    </motion.div>
 
                     {/* Rows */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col w-full">
                         {items.map((item, i) => {
                             const cfg = STATUS_CONFIG[item.status ?? "proposed"];
                             return (
                                 <motion.div
                                     key={i}
-                                    className="grid grid-cols-[1fr_auto_auto_auto] gap-3 py-4 border-b border-border-default/50 last:border-0 items-start"
-                                    initial={{ opacity: 0, y: 6 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.15, delay: 0.1 + i * 0.05 }}
+                                    className="grid grid-cols-[1fr_2fr_1.5fr_1.5fr] gap-6 py-5 border-b border-border-default/40 last:border-0 items-center w-full group hover:bg-black/[0.02] transition-colors px-2 -mx-2 rounded"
+                                    variants={slideUpItem(disableAnimation)}
                                 >
                                     <p
-                                        className="text-text-primary font-semibold leading-snug"
-                                        style={{ fontSize: "var(--type-card-title)" }}
+                                        className="text-text-primary font-bold leading-snug text-sm max-w-[280px]"
                                     >
                                         {item.decision}
                                     </p>
                                     <span
-                                        className="text-text-secondary whitespace-nowrap pt-1"
-                                        style={{ fontSize: "var(--type-card-body)" }}
+                                        className="text-text-secondary whitespace-nowrap text-sm font-medium"
                                     >
                                         {item.owner ?? "—"}
                                     </span>
                                     <span
-                                        className="text-text-muted whitespace-nowrap pt-1"
-                                        style={{ fontSize: "var(--type-card-body)" }}
+                                        className="text-text-muted whitespace-nowrap text-sm font-medium"
                                     >
                                         {item.date ?? "—"}
                                     </span>
-                                    <span
-                                        className="font-bold uppercase tracking-wider px-2.5 py-1 rounded whitespace-nowrap border"
-                                        style={{
-                                            background: cfg.bg,
-                                            color: cfg.text,
-                                            borderColor: cfg.border,
-                                            fontSize: "var(--type-badge)",
-                                        }}
-                                    >
-                                        {cfg.label}
-                                    </span>
+                                    <div className="flex justify-end w-full">
+                                        <span
+                                            className="font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-sm whitespace-nowrap border-2 text-[10px] shadow-sm transform group-hover:-translate-y-0.5 transition-transform"
+                                            style={{
+                                                background: cfg.bg,
+                                                color: cfg.text,
+                                                borderColor: cfg.border,
+                                            }}
+                                        >
+                                            {cfg.label}
+                                        </span>
+                                    </div>
                                 </motion.div>
                             );
                         })}
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </div>
     );
 
-    return <LayoutSplit leftContent={left} rightContent={right} />;
+    return (
+        <motion.div
+            className="w-full h-full"
+            variants={staggerContainer(disableAnimation)}
+            initial="hidden"
+            animate="visible"
+        >
+            <LayoutSplit leftContent={left} rightContent={right} />
+        </motion.div>
+    );
 }

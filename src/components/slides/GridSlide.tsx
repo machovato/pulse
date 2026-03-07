@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import * as LucideIcons from "lucide-react";
 import { CircleDot } from "lucide-react";
+import { staggerContainer, slideUpItem } from "@/lib/motion";
 import { LayoutSplit } from "./layouts/LayoutSplit";
 import type { LooseSlide } from "@/lib/schema";
 import { cn } from "@/lib/utils";
@@ -55,7 +56,7 @@ function getIcon(name?: string) {
     };
 }
 
-export function GridSlide({ slide }: { slide: LooseSlide }) {
+export function GridSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
     const { template } = useTemplate();
     const data = (slide.data ?? { cards: [] }) as unknown as GridData;
     const cards = data.cards ?? [];
@@ -63,7 +64,7 @@ export function GridSlide({ slide }: { slide: LooseSlide }) {
     const cols = isStrategy ? (cards.length <= 2 ? 1 : cards.length <= 4 ? 2 : 3) : 2;
 
     const left = (
-        <div className="flex flex-col gap-4">
+        <motion.div className="flex flex-col gap-4" variants={slideUpItem(disableAnimation)}>
 
             <h2
                 className="font-bold text-text-on-emphasis text-slide-title leading-tight"
@@ -72,7 +73,7 @@ export function GridSlide({ slide }: { slide: LooseSlide }) {
                 {slide.title}
             </h2>
             <div className="w-8 h-0.5 bg-text-on-emphasis opacity-30 mt-2" />
-        </div>
+        </motion.div>
     );
 
     const right = (
@@ -91,9 +92,7 @@ export function GridSlide({ slide }: { slide: LooseSlide }) {
                         key={i}
                         className="bg-surface-secondary p-card flex flex-col justify-center h-full border-card shadow-card hover:shadow-xl hover:border-border-strong transition-all duration-200 ease-out hover:scale-[1.02] rounded-card @container"
                         style={{ borderWidth: "var(--border-width-card)" }}
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.15, delay: 0.1 + i * 0.05 }}
+                        variants={slideUpItem(disableAnimation)}
                     >
                         <div
                             className={cn(
@@ -129,5 +128,14 @@ export function GridSlide({ slide }: { slide: LooseSlide }) {
         </div>
     );
 
-    return <LayoutSplit leftContent={left} rightContent={right} />;
+    return (
+        <motion.div
+            className="w-full h-full"
+            variants={staggerContainer(disableAnimation)}
+            initial="hidden"
+            animate="visible"
+        >
+            <LayoutSplit leftContent={left} rightContent={right} />
+        </motion.div>
+    );
 }

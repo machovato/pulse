@@ -29,14 +29,17 @@ function TrendIcon({ trend }: { trend?: "up" | "down" | "flat" }) {
     return <LucideIcons.Minus className="text-text-on-hero opacity-50 w-[1.2em] h-[1.2em]" />;
 }
 
-function getIcon(name?: string) {
+function getIcon(name?: string, isStrategy?: boolean) {
     if (!name) return null;
     const key = name.charAt(0).toUpperCase() + name.slice(1);
     const Icon = (LucideIcons as Record<string, unknown>)[key] as React.ComponentType<{ className?: string }>;
-    return Icon ? <Icon className="w-5 h-5 text-text-on-hero opacity-70" /> : null;
+    if (!Icon) return null;
+    return <Icon className={cn("w-5 h-5", isStrategy ? "text-text-on-hero opacity-70" : "text-text-on-hero opacity-90")} />;
 }
 
-export function HeroSlide({ slide }: { slide: LooseSlide }) {
+import { staggerContainer, slideUpItem } from "@/lib/motion";
+
+export function HeroSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
     const { template } = useTemplate();
     const data = (slide.data ?? {}) as HeroData;
     const rag = data.rag;
@@ -44,15 +47,18 @@ export function HeroSlide({ slide }: { slide: LooseSlide }) {
 
     return (
         <LayoutBrand>
-            <div className={cn(
-                "flex flex-col h-full px-slide pb-slide pt-12 justify-center"
-            )}>
+            <motion.div
+                className={cn(
+                    "flex flex-col h-full px-slide pb-slide pt-12 justify-center"
+                )}
+                variants={staggerContainer(disableAnimation)}
+                initial="hidden"
+                animate="visible"
+            >
                 {/* Eyebrow */}
                 <motion.p
                     className="text-badge font-semibold uppercase tracking-[0.18em] text-accent-info opacity-60 mb-5"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.15 }}
+                    variants={slideUpItem(disableAnimation)}
                 >
                     Project Update
                 </motion.p>
@@ -64,9 +70,7 @@ export function HeroSlide({ slide }: { slide: LooseSlide }) {
                         isStrategy ? "text-slide-title" : ""
                     )}
                     style={{ fontSize: isStrategy ? undefined : "clamp(48px, 6.5vw, 96px)" }}
-                    initial={{ opacity: 0, y: 14 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.15, delay: 0.05 }}
+                    variants={slideUpItem(disableAnimation)}
                 >
                     {slide.title}
                 </motion.h1>
@@ -75,9 +79,7 @@ export function HeroSlide({ slide }: { slide: LooseSlide }) {
                 {data.subtitle && (
                     <motion.p
                         className="text-text-on-hero text-slide-subtitle opacity-75 mb-3"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.15, delay: 0.1 }}
+                        variants={slideUpItem(disableAnimation)}
                     >
                         {data.subtitle}
                     </motion.p>
@@ -87,9 +89,7 @@ export function HeroSlide({ slide }: { slide: LooseSlide }) {
                 {!isStrategy && data.headline && (
                     <motion.p
                         className="text-text-on-hero opacity-90 italic mb-6 border-l-accent border-white/40 pl-5 py-1 max-w-2xl bg-white/5 rounded-r-lg text-card-body"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.15, delay: 0.15 }}
+                        variants={slideUpItem(disableAnimation)}
                     >
                         {data.headline}
                     </motion.p>
@@ -99,9 +99,7 @@ export function HeroSlide({ slide }: { slide: LooseSlide }) {
                 {rag && (
                     <motion.div
                         className="mb-8 flex"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.3, delay: 0.2 }}
+                        variants={slideUpItem(disableAnimation)}
                     >
                         <span
                             className="inline-flex items-center gap-3 bg-white/20 border-2 border-white/40 shadow-lg text-text-on-hero font-bold px-5 py-2.5 rounded-full backdrop-blur-md text-card-body"
@@ -128,20 +126,15 @@ export function HeroSlide({ slide }: { slide: LooseSlide }) {
                                     padding: isStrategy ? "var(--spacing-card-padding)" : undefined,
                                     borderWidth: isStrategy ? "var(--border-width-card)" : "0px"
                                 }}
-                                initial={{ opacity: 0, y: 18 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.15, delay: 0.2 + i * 0.05 }}
+                                variants={slideUpItem(disableAnimation)}
                                 whileHover={{ backgroundColor: "rgba(255,255,255,0.25)" }}
                             >
                                 <div className="flex items-center gap-2 mb-1 text-badge">
-                                    {isStrategy ? getIcon(kpi.icon) : (
-                                        kpi.icon && (LucideIcons as any)[kpi.icon.charAt(0).toUpperCase() + kpi.icon.slice(1)] &&
-                                        React.createElement((LucideIcons as any)[kpi.icon.charAt(0).toUpperCase() + kpi.icon.slice(1)], { className: "w-5 h-5 text-white opacity-90" })
-                                    )}
+                                    {getIcon(kpi.icon, isStrategy)}
                                     <span
                                         className={cn(
                                             "font-semibold uppercase tracking-widest",
-                                            isStrategy ? "text-text-on-hero opacity-60" : "text-white opacity-70"
+                                            isStrategy ? "text-text-on-hero opacity-60" : "text-text-on-hero opacity-70"
                                         )}
                                     >
                                         {kpi.label}
@@ -151,7 +144,7 @@ export function HeroSlide({ slide }: { slide: LooseSlide }) {
                                     <span
                                         className={cn(
                                             "font-bold",
-                                            isStrategy ? "text-text-on-hero text-metric-lg" : "text-white text-metric-lg"
+                                            isStrategy ? "text-text-on-hero text-metric-lg" : "text-text-on-hero text-3xl md:text-4xl"
                                         )}
                                         style={{ lineHeight: 1 }}
                                     >
@@ -160,9 +153,9 @@ export function HeroSlide({ slide }: { slide: LooseSlide }) {
                                     {isStrategy ? (
                                         <TrendIcon trend={kpi.trend} />
                                     ) : (
-                                        kpi.trend === "up" ? <LucideIcons.TrendingUp className="text-white w-5 h-5" /> :
-                                            kpi.trend === "down" ? <LucideIcons.TrendingDown className="text-white w-5 h-5" /> :
-                                                kpi.trend === "flat" ? <LucideIcons.Minus className="text-white opacity-50 w-5 h-5" /> : null
+                                        kpi.trend === "up" ? <LucideIcons.TrendingUp className="text-text-on-hero w-5 h-5" /> :
+                                            kpi.trend === "down" ? <LucideIcons.TrendingDown className="text-text-on-hero w-5 h-5" /> :
+                                                kpi.trend === "flat" ? <LucideIcons.Minus className="text-text-on-hero opacity-50 w-5 h-5" /> : null
                                     )}
                                 </div>
                                 {/* Fraction Progress Bar */}
@@ -184,7 +177,7 @@ export function HeroSlide({ slide }: { slide: LooseSlide }) {
                         ))}
                     </div>
                 )}
-            </div>
+            </motion.div>
         </LayoutBrand>
     );
 }

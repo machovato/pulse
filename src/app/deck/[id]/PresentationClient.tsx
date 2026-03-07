@@ -239,6 +239,18 @@ export function PresentationClient({ deck, deckId }: PresentationClientProps) {
     const [showGrid, setShowGrid] = useState(false);
     const [showFormEditor, setShowFormEditor] = useState(false);
 
+    // Track viewed slides to only animate them once
+    const [viewedSlides, setViewedSlides] = useState<Set<number>>(new Set([0]));
+
+    useEffect(() => {
+        setViewedSlides(prev => {
+            if (prev.has(currentIndex)) return prev;
+            const next = new Set(prev);
+            next.add(currentIndex);
+            return next;
+        });
+    }, [currentIndex]);
+
     const slides = processSlides(deck.slides, density);
     const total = slides.length;
 
