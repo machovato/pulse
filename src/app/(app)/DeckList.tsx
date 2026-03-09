@@ -8,9 +8,22 @@ import { deleteDeck, renameDeck, togglePinDeck } from "@/app/actions";
 
 const TEMPLATE_LABELS: Record<string, string> = {
     status: "Project Status",
+    strategy: "Strategy",
     allHands: "All Hands",
     requirements: "Requirements",
     custom: "Custom",
+};
+
+const BUTTON_STYLES: Record<string, string> = {
+    status: "bg-[#1497E3] hover:scale-105 hover:bg-blue-500 hover:shadow-lg hover:shadow-[#1497E3]/40 tracking-wide",
+    strategy: "bg-[#003E6A] hover:scale-105 hover:bg-[#005b9f] hover:shadow-lg hover:shadow-[#005b9f]/30 tracking-wide",
+    default: "bg-slate-500 hover:scale-105 hover:bg-slate-600 hover:shadow-md tracking-wide",
+};
+
+const BUTTON_LABELS: Record<string, string> = {
+    status: "Play Status",
+    strategy: "Play Strategy",
+    default: "Play Deck",
 };
 
 const RAG_CLASSES: Record<string, string> = {
@@ -167,13 +180,16 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
 
     if (deleted) return null;
 
+    const buttonStyle = BUTTON_STYLES[deck.template] || BUTTON_STYLES.default;
+    const buttonLabel = BUTTON_LABELS[deck.template] || BUTTON_LABELS.default;
+
     return (
         <div className="card p-4 flex items-center gap-4 hover:shadow-md transition-all group relative">
-            <Link href={`/deck/${deck.id}`} className="absolute inset-0 z-0" aria-label={`View deck ${deck.title}`} />
 
-            <div className="w-12 h-12 bg-[#1B8FE0] rounded-full shrink-0 relative z-10 flex items-center justify-center text-white shadow-md group-hover:scale-110 group-hover:bg-blue-600 transition-all pointer-events-none">
-                <Play className="w-5 h-5 fill-current ml-1" />
-            </div>
+            <Link href={`/deck/${deck.id}`} className={`w-[130px] px-2 py-2 ${buttonStyle} rounded-full shrink-0 relative z-10 flex items-center justify-center gap-1.5 text-white font-medium text-sm transition-all duration-300`}>
+                <Play className="w-4 h-4 fill-current" />
+                {buttonLabel}
+            </Link>
 
             <div className="flex-1 min-w-0 relative z-10">
                 <div className="flex items-center gap-2">

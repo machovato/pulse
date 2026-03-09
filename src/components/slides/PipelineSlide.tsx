@@ -106,12 +106,24 @@ export function PipelineSlide({ slide, disableAnimation = false }: { slide: Loos
                                     return (
                                         <div key={i} className="flex flex-col items-center relative gap-4">
                                             {/* Incoming Spine Segment */}
-                                            {!isFirst && (
-                                                <div className={cn(
-                                                    "absolute top-[40px] right-[50%] w-full h-1 -z-10 transition-colors duration-500",
-                                                    isPrevDone ? "bg-accent-success" : "bg-border-default/60"
-                                                )} />
-                                            )}
+                                            {!isFirst && (() => {
+                                                const prevStatus = steps[i - 1].status ?? "next";
+                                                const currentStatus = status;
+                                                // If previous is done or current AND we are in progress or done, make it a solid connected line.
+                                                // Even if current is 'next', if the previous was completed/current, the line LEADING to us is the 'future' line,
+                                                // so we want it dashed. But the line LEAVING a done node is solid.
+                                                // Based on the prompt: Solid between completed/current node and the next. Leading to UP NEXT nodes is dashed.
+                                                // This means the line from Current -> Next is dashed. The line from Done -> Current is solid.
+                                                const isSolid = prevStatus === "done" || (prevStatus === "current" && currentStatus !== "next");
+                                                const isDashed = !isSolid;
+
+                                                return (
+                                                    <div className={cn(
+                                                        "absolute top-[40px] right-[50%] w-full h-[2px] -z-10 transition-colors duration-500",
+                                                        isSolid ? "bg-accent-info" : "bg-transparent border-t-2 border-dashed border-border-muted/70"
+                                                    )} />
+                                                );
+                                            })()}
 
                                             {/* Node Circle */}
                                             <motion.div
