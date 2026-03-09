@@ -37,7 +37,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <footer className="bg-[var(--dtn-blue)] no-print" style={{ minHeight: "40px" }}>
                 <div className="max-w-7xl mx-auto px-6 h-10 flex items-center justify-end">
                     <span className="text-white text-xs font-medium opacity-80">
-                        DTN · Proprietary and Confidential
+                        {process.env.NEXT_PUBLIC_APP_VERSION} • DTN · Proprietary and Confidential
                     </span>
                 </div>
             </footer>

@@ -9,7 +9,7 @@ import type { LooseSlide } from "@/lib/schema";
 import { Typography } from "../ui/Typography";
 import { CardBase } from "../ui/CardBase";
 
-const MotionCard = motion(CardBase);
+const MotionCard = motion.create(CardBase);
 
 interface EvidencePoint {
     metric: string;

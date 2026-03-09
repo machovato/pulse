@@ -36,7 +36,7 @@ export function TimelineSlide({ slide, disableAnimation = false }: { slide: Loos
     if (lastMilestone?.date) {
         const d = new Date(lastMilestone.date + "T00:00:00");
         if (!isNaN(d.getTime())) {
-            targetLaunchDate = d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+            targetLaunchDate = d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
         } else {
             targetLaunchDate = lastMilestone.date;
         }
