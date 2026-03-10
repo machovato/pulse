@@ -7,6 +7,8 @@
  * Right panel: white (#FFFFFF), generous padding, content lives here.
  */
 import { ConcentricCircles } from "../ConcentricCircles";
+import { useTemplate } from "@/components/TemplateContext";
+import { cn } from "@/lib/utils";
 
 interface LayoutSplitProps {
     leftContent: React.ReactNode;
@@ -17,6 +19,10 @@ interface LayoutSplitProps {
     rightPadding?: boolean;
     /** Override background for the right panel. Defaults to white. */
     rightBg?: string;
+    /** Alignment of the left panel content. Defaults to "center". */
+    leftAlign?: "center" | "start";
+    /** Padding classes for the left panel. Defaults to "px-10". */
+    leftPadding?: string;
 }
 
 const BACKGROUNDS = {
@@ -30,12 +36,21 @@ export function LayoutSplit({
     leftBackground = "blue",
     rightPadding = true,
     rightBg = "bg-white",
+    leftAlign = "center",
+    leftPadding = "px-10",
 }: LayoutSplitProps) {
+    const { template } = useTemplate();
+    const isKickoff = template === "kickoff";
     return (
         <div className="relative w-full h-full flex overflow-hidden">
             {/* LEFT PANEL — 40% */}
             <div
-                className="relative flex flex-col justify-center px-10 overflow-hidden dark-surface"
+                className={cn(
+                    "relative flex flex-col overflow-hidden",
+                    leftAlign === "start" ? "justify-start py-12" : "justify-center",
+                    leftPadding,
+                    !isKickoff && "dark-surface"
+                )}
                 style={{
                     width: "40%",
                     flexShrink: 0,

@@ -4,9 +4,10 @@ import { motion } from "framer-motion";
 import * as LucideIcons from "lucide-react";
 import { CircleDot } from "lucide-react";
 import { staggerContainer, slideUpItem } from "@/lib/motion";
-import { LayoutWhite } from "./layouts/LayoutWhite";
+import { LayoutSplitPrimarySecondary } from "./layouts/LayoutSplitPrimarySecondary";
 import type { LooseSlide } from "@/lib/schema";
 import { cn } from "@/lib/utils";
+import { useTemplate } from "@/components/TemplateContext";
 import { Typography } from "../ui/Typography";
 import { CardBase } from "../ui/CardBase";
 
@@ -52,103 +53,98 @@ function getBorderColor(severity: string) {
 }
 
 export function ProblemSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
+    const { template } = useTemplate();
+    const isKickoff = template === "kickoff";
     const data = (slide.data ?? {}) as unknown as ProblemData;
     const primary = data.primary;
     const secondary = data.secondary ?? [];
 
-    return (
-        <motion.div className="w-full h-full" variants={staggerContainer(disableAnimation)} initial="hidden" animate="visible">
-            <LayoutWhite center={false}>
-                <div className="w-full flex-1 flex flex-col justify-center py-12 px-slide">
-                    <motion.div className="mb-8 shrink-0" variants={slideUpItem(disableAnimation)}>
-                        <Typography variant="eyebrow" className="text-accent-info mb-2">
-                            Problem Space
-                        </Typography>
-                        <Typography as="h2" variant="h1" className="leading-tight mt-0 pt-0">
-                            {slide.title}
-                        </Typography>
-                    </motion.div>
-
-                    <div className="flex flex-col md:flex-row gap-8 flex-1 w-full mt-4">
-                        {/* Primary Focus */}
-                        {primary && (
-                            <motion.div
-                                className={cn(
-                                    "w-full md:w-1/2 flex flex-col pt-8 px-8 pb-10 rounded-card bg-surface-primary border-card border-l-accent relative overflow-hidden h-full max-h-[600px] justify-start shadow-xl dark-surface",
-                                    getBorderColor(primary.severity)
-                                )}
-                                style={{
-                                    borderWidth: "var(--border-width-card)",
-                                    borderLeftWidth: "var(--border-width-accent)"
-                                }}
-                                variants={slideUpItem(disableAnimation)}
-                            >
-                                <div
-                                    className="flex flex-col h-full w-full dark-surface"
-                                >
-                                    <div className="mb-8 flex justify-between items-start">
-                                        <Typography variant="badge" className={cn("px-3 py-1 rounded-badge", getBadgeProps(primary.severity))}>
-                                            {primary.severity} Focus
-                                        </Typography>
-                                        <div className="p-3 bg-white/10 Backdrop-blur-sm rounded-xl border border-white/20">
-                                            {getLucideIcon(primary.icon, "w-8 h-8 text-surface-page")}
-                                        </div>
-                                    </div>
-                                    <Typography as="h3" variant="h1" className="mb-6 leading-[1.05] drop-shadow-sm pr-4">
-                                        {primary.title}
-                                    </Typography>
-                                    <Typography variant="subtitle" className="opacity-90 max-w-xl mt-auto pb-2">
-                                        {primary.body}
-                                    </Typography>
-                                </div>
-                            </motion.div>
-                        )}
-
-                        {/* Secondary Cluster */}
-                        {secondary.length > 0 && (
-                            <div className="w-full md:w-1/2 flex flex-col h-full max-h-[600px] justify-between gap-4">
-                                {secondary.map((item, i) => {
-                                    // Scale padding and text size slightly based on how many cards there are
-                                    const isDense = secondary.length > 3;
-
-                                    return (
-                                        <MotionCard
-                                            key={i}
-                                            accent={
-                                                item.severity === "critical" ? "danger" :
-                                                    item.severity === "high" ? "warning" :
-                                                        "neutral"
-                                            }
-                                            className={cn(
-                                                "flex-1 w-full bg-surface-muted shadow-sm flex flex-row items-start gap-5",
-                                                isDense ? "p-4" : "p-card"
-                                            )}
-                                            variants={slideUpItem(disableAnimation)}
-                                        >
-                                            <div className="mt-1 shrink-0 shadow-sm rounded-xl p-3 bg-surface-page border border-border-default">
-                                                {getLucideIcon(item.icon, cn("text-text-secondary", isDense ? "w-6 h-6" : "w-8 h-8"))}
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-2">
-                                                    <Typography as="h4" variant="h2" className={cn("truncate", isDense && "text-lg")}>
-                                                        {item.title}
-                                                    </Typography>
-                                                    <Typography variant="eyebrow" className={cn("px-2 py-0.5 rounded-badge shrink-0 w-fit", getBadgeProps(item.severity))}>
-                                                        {item.severity}
-                                                    </Typography>
-                                                </div>
-                                                <Typography variant="body" className="line-clamp-3">
-                                                    {item.body}
-                                                </Typography>
-                                            </div>
-                                        </MotionCard>
-                                    );
-                                })}
-                            </div>
-                        )}
+    const leftNode = primary ? (
+        <motion.div
+            className={cn(
+                "w-full h-full flex flex-col pt-8 px-8 pb-10 rounded-card bg-surface-primary border-card border-l-accent relative justify-start shadow-xl",
+                !isKickoff && "dark-surface",
+                getBorderColor(primary.severity)
+            )}
+            style={{
+                borderWidth: "var(--border-width-card)",
+                borderLeftWidth: "var(--border-width-accent)"
+            }}
+            variants={slideUpItem(disableAnimation)}
+        >
+            <div
+                className={cn("flex flex-col h-full w-full", !isKickoff && "dark-surface")}
+            >
+                <div className="mb-8 flex justify-between items-start">
+                    <Typography variant="badge" className={cn("px-3 py-1 rounded-badge", getBadgeProps(primary.severity))}>
+                        {primary.severity} Focus
+                    </Typography>
+                    <div className="p-3 bg-white/10 Backdrop-blur-sm rounded-xl border border-white/20">
+                        {getLucideIcon(primary.icon, "w-8 h-8 text-surface-page")}
                     </div>
                 </div>
-            </LayoutWhite>
+                <Typography as="h3" variant="h1" className="mb-6 leading-[1.05] drop-shadow-sm pr-4 !text-text-primary">
+                    {primary.title}
+                </Typography>
+                <Typography variant="subtitle" className="opacity-90 max-w-xl mt-auto line-clamp-none">
+                    {primary.body}
+                </Typography>
+            </div>
+        </motion.div>
+    ) : null;
+
+    const rightNode = secondary.length > 0 ? (
+        <>
+            {secondary.map((item, i) => {
+                // Scale padding and text size slightly based on how many cards there are
+                const isDense = secondary.length > 3;
+
+                return (
+                    <MotionCard
+                        key={i}
+                        accent={
+                            item.severity === "critical" ? "danger" :
+                                template === "kickoff" ? "info" :
+                                    item.severity === "high" ? "warning" :
+                                        "neutral"
+                        }
+                        className={cn(
+                            "flex-1 w-full bg-surface-muted shadow-sm flex flex-row items-center gap-5",
+                            isDense ? "p-4" : "p-card"
+                        )}
+                        variants={slideUpItem(disableAnimation)}
+                    >
+                        <div className="mt-1 shrink-0 shadow-sm rounded-xl p-3 bg-surface-page border border-border-default">
+                            {getLucideIcon(item.icon, cn("text-text-secondary", isDense ? "w-6 h-6" : "w-8 h-8"))}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-2">
+                                <Typography as="h4" variant="h2" className={cn("truncate", isDense && "text-lg")}>
+                                    {item.title}
+                                </Typography>
+                                <Typography variant="eyebrow" className={cn("px-2 py-0.5 rounded-badge shrink-0 w-fit", getBadgeProps(item.severity))}>
+                                    {item.severity}
+                                </Typography>
+                            </div>
+                            <Typography variant="body" className="line-clamp-3">
+                                {item.body}
+                            </Typography>
+                        </div>
+                    </MotionCard>
+                );
+            })}
+        </>
+    ) : null;
+
+    return (
+        <motion.div className="w-full h-full" variants={staggerContainer(disableAnimation)} initial="hidden" animate="visible">
+            <LayoutSplitPrimarySecondary
+                eyebrow="Problem Space"
+                title={slide.title}
+                leftNode={leftNode}
+                rightNode={rightNode}
+                disableAnimation={disableAnimation}
+            />
         </motion.div>
     );
 }

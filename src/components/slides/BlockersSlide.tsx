@@ -6,6 +6,7 @@ import { staggerContainer, slideUpItem } from "@/lib/motion";
 import { LayoutSplit } from "./layouts/LayoutSplit";
 import type { LooseSlide } from "@/lib/schema";
 import { cn } from "@/lib/utils";
+import { useTemplate } from "@/components/TemplateContext";
 import { Typography } from "../ui/Typography";
 import { CardBase } from "../ui/CardBase";
 
@@ -46,6 +47,8 @@ function getInitials(name: string) {
 }
 
 export function BlockersSlide({ slide, deckMeta, disableAnimation = false }: { slide: LooseSlide; deckMeta?: Record<string, string>; disableAnimation?: boolean }) {
+    const { template } = useTemplate();
+    const isKickoff = template === "kickoff";
     const data = (slide.data ?? { items: [] }) as unknown as BlockersData;
     const items = data.items ?? [];
     const meta = deckMeta ?? {};
@@ -62,7 +65,7 @@ export function BlockersSlide({ slide, deckMeta, disableAnimation = false }: { s
 
     const left = (
         <motion.div
-            className="flex flex-col h-full relative dark-surface"
+            className={cn("flex flex-col h-full relative", !isKickoff && "dark-surface")}
             variants={slideUpItem(disableAnimation)}
         >
             <div className="flex flex-col gap-6 relative z-10 w-full pr-8">
@@ -90,9 +93,9 @@ export function BlockersSlide({ slide, deckMeta, disableAnimation = false }: { s
                 {!allClear && (
                     <div className="flex flex-col gap-3 mt-8 max-w-sm">
                         {[
-                            { label: "Actions Required", count: actions, icon: AlertCircle, colorClass: "text-accent-danger", borderClass: "border-accent-danger/50", bgClass: "bg-accent-danger/15" },
-                            { label: "Approvals", count: approvals, icon: CheckSquare, colorClass: "text-accent-warning", borderClass: "border-accent-warning/50", bgClass: "bg-accent-warning/15" },
-                            { label: "FYIs", count: fyis, icon: Info, colorClass: "text-text-muted", borderClass: "border-text-muted/50", bgClass: "bg-text-muted/15" },
+                            { label: "Actions Required", count: actions, icon: AlertCircle, colorClass: "text-accent-danger", borderClass: isKickoff ? "border-accent-danger/30" : "border-accent-danger/50", bgClass: isKickoff ? "bg-white shadow-sm" : "bg-accent-danger/15" },
+                            { label: "Approvals", count: approvals, icon: CheckSquare, colorClass: "text-accent-warning", borderClass: isKickoff ? "border-accent-warning/40" : "border-accent-warning/50", bgClass: isKickoff ? "bg-white shadow-sm" : "bg-accent-warning/15" },
+                            { label: "FYIs", count: fyis, icon: Info, colorClass: isKickoff ? "text-text-secondary" : "text-text-muted", borderClass: isKickoff ? "border-border-muted" : "border-text-muted/50", bgClass: isKickoff ? "bg-white shadow-sm" : "bg-text-muted/15" },
                         ].map(({ label, count, icon: Icon, colorClass, borderClass, bgClass }) => (
                             <div
                                 key={label}
@@ -106,14 +109,14 @@ export function BlockersSlide({ slide, deckMeta, disableAnimation = false }: { s
                                     <Icon className={cn("w-4 h-4", colorClass)} strokeWidth={2.5} />
                                     <Typography
                                         variant="caption"
-                                        className="font-bold uppercase tracking-wider text-white"
+                                        className={cn("font-bold uppercase tracking-wider", isKickoff ? "text-text-secondary" : "text-white")}
                                     >
                                         {label}
                                     </Typography>
                                 </div>
                                 <Typography
                                     variant="body"
-                                    className="font-black text-white"
+                                    className={cn("font-black", isKickoff ? "text-text-primary" : "text-white")}
                                 >
                                     {count}
                                 </Typography>

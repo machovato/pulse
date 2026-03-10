@@ -25,7 +25,7 @@ export function TimelineSlide({ slide, disableAnimation = false }: { slide: Loos
     const data = (slide.data ?? { milestones: [] }) as unknown as TimelineData;
     const milestones = data.milestones ?? [];
 
-    const isStrategy = template === "strategy";
+    const isStrategy = template === "strategy" || template === "kickoff";
 
     const doneCount = milestones.filter(m => m.state === "done").length;
     const totalCount = milestones.length;
@@ -158,7 +158,7 @@ export function TimelineSlide({ slide, disableAnimation = false }: { slide: Loos
                                                 flex flex-col gap-3 w-full max-w-2xl transition-all duration-300 rounded-card p-card shadow-xl border border-card
                                                 ${isLeft ? "border-r-accent" : "border-l-accent"}
                                                 ${isLeft ? (m.state === "done" ? "border-r-accent-success" : m.state === "current" ? "border-r-accent-info" : "border-r-border-muted") : (m.state === "done" ? "border-l-accent-success" : m.state === "current" ? "border-l-accent-info" : "border-l-border-muted")}
-                                                ${m.state === "current" ? "bg-surface-primary dark-surface" : m.state === "upcoming" ? "bg-surface-muted opacity-80" : "bg-surface-secondary"}
+                                                ${m.state === "current" ? cn(template === "kickoff" ? "bg-orange-50/50" : "bg-surface-primary", template !== "kickoff" && "dark-surface") : m.state === "done" && template === "kickoff" ? "bg-emerald-50/30" : m.state === "upcoming" ? "bg-surface-muted opacity-80" : "bg-surface-secondary"}
                                             `}>
                                                     <div className={`flex flex-col sm:flex-row sm:items-center gap-3 mb-1 ${isLeft ? "sm:flex-row-reverse" : ""}`}>
                                                         <Typography as="h3" variant="h2" className={cn("leading-tight", m.state === "upcoming" ? "text-text-secondary" : "text-text-primary")}>

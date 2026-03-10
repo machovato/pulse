@@ -162,7 +162,8 @@ body {
 
 /* ─── Surface Overrides ─────────────────────────────────────────────────── */
 .dark-surface {
-  color: #ffffff; /* Forces CSS inheritance downwards for Typography base elements */
+  color: #ffffff;
+  /* Forces CSS inheritance downwards for Typography base elements */
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.9);
   --text-muted: rgba(255, 255, 255, 0.6);
@@ -478,4 +479,74 @@ body {
   --timeline-card-style: card;
   --kpi-card-style: boxed;
   --hero-content-position: bottom;
+}
+
+/* ─── KICKOFF THEME OVERRIDES ───────────────────────────────────────────── */
+/* Industrial Safety Orange & Midnight Indigo (Black) */
+[data-template="kickoff"] {
+  --surface-page: #FFFFFF;
+  --surface-primary: #FFFFFF;
+  --surface-secondary: #F8FAFC;
+  --surface-muted: #F1F5F9;
+  --surface-card: #FFFFFF;
+  --surface-emphasis: #0A1128;
+  --surface-split: #F8FAFC;
+  --surface-split-alt: #F8FAFC;
+  --surface-hero: #0A1128;
+
+  --text-primary: #0A1128;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --text-on-emphasis: #FFFFFF;
+
+  --border-default: #E2E8F0;
+  --border-strong: #EA580C;
+  --border-muted: #F1F5F9;
+
+  --accent-success: #10B981;
+  --accent-warning: #F59E0B;
+  --accent-danger: #EF4444;
+  --accent-info: #EA580C;
+  --accent-progress: #EA580C;
+
+  --badge-critical-bg: #EF4444;
+  --badge-critical-text: #FFFFFF;
+  --badge-high-bg: #F59E0B;
+  --badge-high-text: #FFFFFF;
+  --badge-moderate-bg: #F1F5F9;
+  --badge-moderate-text: #0A1128;
+  --badge-action-bg: #EF4444;
+  --badge-action-text: #FFFFFF;
+  --badge-approval-bg: #F59E0B;
+  --badge-approval-text: #FFFFFF;
+  --badge-fyi-bg: #F1F5F9;
+  --badge-fyi-text: #0A1128;
+
+  /* typography */
+  --type-slide-title: 3rem;
+  --type-slide-subtitle: 1.35rem;
+  --type-headline: 2rem;
+  --type-card-title: 1.25rem;
+  --type-card-body: 1rem;
+  --type-metric-large: 5rem;
+  --type-metric-medium: 2.5rem;
+  --type-metric-unit: 1.35rem;
+  --type-badge: 0.85rem;
+}
+
+/* Kickoff Component Overrides */
+[data-template="kickoff"] .dtn-slide-title {
+  color: var(--accent-info);
+}
+
+[data-template="kickoff"] .dark-surface .dtn-slide-title {
+  color: #FFFFFF;
+}
+
+[data-template="kickoff"] .dtn-eyebrow {
+  color: var(--text-secondary);
+}
+
+[data-template="kickoff"] .dark-surface .dtn-eyebrow {
+  color: #FFFFFF;
 }

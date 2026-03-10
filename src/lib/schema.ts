@@ -227,7 +227,7 @@ export const MetaSchema = z.object({
     subtitle: z.string().optional(),
     date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be YYYY-MM-DD"),
     audience: z.enum(["exec", "team", "customer", "mixed"]),
-    template: z.enum(["status", "allHands", "requirements", "strategy", "custom"]),
+    template: z.enum(["status", "allHands", "requirements", "strategy", "custom", "kickoff"]),
     rag: RAGSchema.optional(),
     headline: z.string().optional(),
 });

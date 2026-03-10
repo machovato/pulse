@@ -36,12 +36,12 @@ const variantConfig: Record<
     },
     eyebrow: {
         element: "span",
-        className: "uppercase font-semibold opacity-60 truncate block max-w-full",
+        className: "dtn-eyebrow uppercase font-semibold opacity-60 truncate block max-w-full",
         style: { fontSize: "var(--type-eyebrow)", letterSpacing: "0.18em" },
     },
     h1: {
         element: "h1",
-        className: "",
+        className: "dtn-slide-title",
         style: {
             fontSize: "var(--type-slide-title)",
             fontWeight: "var(--font-weight-title)",

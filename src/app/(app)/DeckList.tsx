@@ -12,17 +12,20 @@ const TEMPLATE_LABELS: Record<string, string> = {
     allHands: "All Hands",
     requirements: "Requirements",
     custom: "Custom",
+    kickoff: "Launch Kickoff",
 };
 
 const BUTTON_STYLES: Record<string, string> = {
-    status: "bg-[#1497E3] hover:scale-105 hover:bg-blue-500 hover:shadow-lg hover:shadow-[#1497E3]/40 tracking-wide",
-    strategy: "bg-[#003E6A] hover:scale-105 hover:bg-[#005b9f] hover:shadow-lg hover:shadow-[#005b9f]/30 tracking-wide",
-    default: "bg-slate-500 hover:scale-105 hover:bg-slate-600 hover:shadow-md tracking-wide",
+    status: "bg-[#1497E3] text-white hover:scale-105 hover:bg-blue-500 hover:shadow-lg hover:shadow-[#1497E3]/40 tracking-wide",
+    strategy: "bg-[#003E6A] text-white hover:scale-105 hover:bg-[#005b9f] hover:shadow-lg hover:shadow-[#005b9f]/30 tracking-wide",
+    kickoff: "bg-[#1E293B] text-[#C4652A] hover:scale-105 hover:bg-slate-800 hover:shadow-lg hover:shadow-[#1E293B]/40 tracking-wide",
+    default: "bg-slate-500 text-white hover:scale-105 hover:bg-slate-600 hover:shadow-md tracking-wide",
 };
 
 const BUTTON_LABELS: Record<string, string> = {
     status: "Play Status",
     strategy: "Play Strategy",
+    kickoff: "Play Kickoff",
     default: "Play Deck",
 };
 
@@ -186,7 +189,7 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
     return (
         <div className="card p-4 flex items-center gap-4 hover:shadow-md transition-all group relative">
 
-            <Link href={`/deck/${deck.id}`} className={`w-[130px] px-2 py-2 ${buttonStyle} rounded-full shrink-0 relative z-10 flex items-center justify-center gap-1.5 text-white font-medium text-sm transition-all duration-300`}>
+            <Link href={`/deck/${deck.id}`} className={`w-[130px] px-2 py-2 ${buttonStyle} rounded-full shrink-0 relative z-10 flex items-center justify-center gap-1.5 font-medium text-sm transition-all duration-300`}>
                 <Play className="w-4 h-4 fill-current" />
                 {buttonLabel}
             </Link>

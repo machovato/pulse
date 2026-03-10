@@ -78,7 +78,7 @@ export function EvidenceSlide({ slide, disableAnimation = false }: { slide: Loos
     return (
         <motion.div className="w-full h-full" variants={staggerContainer(disableAnimation)} initial="hidden" animate="visible">
             <LayoutWhite center={false}>
-                <div className="w-full flex-1 flex flex-col justify-center py-12">
+                <div className="w-full flex-1 flex flex-col justify-start py-12">
                     <motion.div className="mb-12 shrink-0" variants={slideUpItem(disableAnimation)}>
                         <Typography variant="eyebrow" className="text-accent-info opacity-60 mb-2">
                             Evidence
@@ -91,8 +91,9 @@ export function EvidenceSlide({ slide, disableAnimation = false }: { slide: Loos
                     <div
                         className={`flex-1 grid gap-6 w-full mt-4 items-start
                     ${points.length === 1 ? 'grid-cols-1 max-w-2xl mx-auto' :
-                                points.length === 2 ? 'grid-cols-2 max-w-5xl mx-auto' :
-                                    'grid-cols-3 w-full'}`}
+                                points.length === 2 ? 'grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto' :
+                                    points.length === 4 ? 'grid-cols-2 xl:grid-cols-4 w-full' :
+                                        'grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full'}`}
                     >
                         {points.map((point, i) => {
                             const isQualitative = point.type === "qualitative";
@@ -108,7 +109,7 @@ export function EvidenceSlide({ slide, disableAnimation = false }: { slide: Loos
                                     {/* Card content wrapper (CardBase usually handles padding, but we override padding to 0 and apply standard here to match the hover effects/styling. Actually, CardBase uses Var(--spacing-card-padding), so let's let CardBase apply padding naturally, since p-8 md:p-10 is standard card padding anyway. Let's remove padding: 0 from above) */}
                                     <div className="flex flex-col h-full" style={{ padding: "var(--spacing-card-padding)" }}>
                                         <div>
-                                            <Typography variant="metric-unit" className="opacity-90 tracking-wide font-bold mb-4 drop-shadow-sm">
+                                            <Typography variant="metric-unit" className="opacity-90 tracking-wide font-bold mb-4 drop-shadow-sm whitespace-normal break-words">
                                                 {point.label}
                                             </Typography>
                                             <div className="mb-2 leading-none">

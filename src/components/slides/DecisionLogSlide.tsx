@@ -5,6 +5,7 @@ import { staggerContainer, slideUpItem } from "@/lib/motion";
 import { LayoutSplit } from "./layouts/LayoutSplit";
 import type { LooseSlide } from "@/lib/schema";
 import { cn } from "@/lib/utils";
+import { useTemplate } from "@/components/TemplateContext";
 import { Typography } from "../ui/Typography";
 import { CardBase } from "../ui/CardBase";
 
@@ -33,12 +34,14 @@ const STATUS_CONFIG: Record<string, { bg: string; text: string; border: string; 
 };
 
 export function DecisionLogSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
-    const data = (slide.data ?? { items: [] }) as unknown as DecisionLogData;
+    const { template } = useTemplate();
+    const isKickoff = template === "kickoff";
+    const data = (slide.data ?? { decisions: [] }) as unknown as DecisionLogData;
     const items = data.items ?? [];
 
     const left = (
         <motion.div
-            className="flex flex-col gap-4 dark-surface"
+            className={cn("flex flex-col gap-4", !isKickoff && "dark-surface")}
             variants={slideUpItem(disableAnimation)}
         >
             <Typography variant="eyebrow" className="text-text-on-emphasis opacity-60">
@@ -64,7 +67,7 @@ export function DecisionLogSlide({ slide, disableAnimation = false }: { slide: L
             >
                 <div className="flex flex-col w-full h-full overflow-hidden">
                     {/* Header row - DTN Gradient Style */}
-                    <motion.div className="sticky top-0 z-10 grid grid-cols-[2.5fr_1fr_1fr_1fr] gap-6 px-8 py-3.5 bg-gradient-to-r from-[#1497E3] to-[#007074] border-b border-[#0F2942]/20 shadow-md" variants={slideUpItem(disableAnimation)}>
+                    <motion.div className="sticky top-0 z-10 grid grid-cols-[2.5fr_1fr_1fr_1fr] gap-6 px-8 py-3.5 bg-gradient-to-r from-[var(--surface-primary)] to-[var(--surface-split)] border-b border-[var(--border-default)] shadow-md" variants={slideUpItem(disableAnimation)}>
                         {["Decision", "Owner", "Date", "Status"].map((h) => (
                             <Typography
                                 key={h}

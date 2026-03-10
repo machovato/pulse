@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { staggerContainer, slideUpItem } from "@/lib/motion";
 import { LayoutSplit } from "./layouts/LayoutSplit";
+import { useTemplate } from "@/components/TemplateContext";
+import { cn } from "@/lib/utils";
 import type { LooseSlide } from "@/lib/schema";
 import { Typography } from "../ui/Typography";
 
@@ -17,12 +19,14 @@ interface AgendaData {
 }
 
 export function AgendaSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
+    const { template } = useTemplate();
+    const isKickoff = template === "kickoff";
     const data = (slide.data ?? { items: [] }) as unknown as AgendaData;
     const items = data.items ?? [];
 
     const left = (
         <motion.div
-            className="flex flex-col gap-4 dark-surface"
+            className={cn("flex flex-col gap-4", !isKickoff && "dark-surface")}
             variants={slideUpItem(disableAnimation)}
         >
             <Typography variant="eyebrow" className="text-text-on-emphasis mb-1">

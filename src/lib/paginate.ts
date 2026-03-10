@@ -67,16 +67,17 @@ function paginateSlide(slide: LooseSlide): LooseSlide[] {
     }
 
     // All other types: paginate at threshold
-    if (arr.length <= PAGINATION_THRESHOLD) return [slide];
+    const limit = slide.type === "grid" ? 6 : PAGINATION_THRESHOLD;
+    if (arr.length <= limit) return [slide];
 
     const pages: LooseSlide[] = [];
     let pageNum = 0;
-    while (pageNum * PAGINATION_THRESHOLD < arr.length) {
+    while (pageNum * limit < arr.length) {
         const chunk = arr.slice(
-            pageNum * PAGINATION_THRESHOLD,
-            (pageNum + 1) * PAGINATION_THRESHOLD
+            pageNum * limit,
+            (pageNum + 1) * limit
         );
-        const totalPages = Math.ceil(arr.length / PAGINATION_THRESHOLD);
+        const totalPages = Math.ceil(arr.length / limit);
         pages.push({
             ...slide,
             id: slide.id ? `${slide.id}-p${pageNum + 1}` : undefined,

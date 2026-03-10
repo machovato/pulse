@@ -147,7 +147,7 @@ function SpeakerNotesOverlay({
             transition={{ duration: 0.35, ease: [0.32, 0, 0.67, 0] }}
             onClick={(e) => e.stopPropagation()}
         >
-            <div className="max-w-4xl mx-auto w-full h-full flex flex-col p-8">
+            <div className="max-w-6xl mx-auto w-full h-full flex flex-col p-8">
                 <div className="flex justify-between items-center mb-6 shrink-0">
                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1B8FE0]">
                         Speaker Notes
@@ -361,12 +361,12 @@ export function PresentationClient({ deck, deckId }: PresentationClientProps) {
                         exit="exit"
                         transition={{ duration: 0.35, ease: [0.32, 0, 0.67, 0] }}
                     >
-                        <SlideRenderer 
-                            slide={currentSlide} 
-                            density={density} 
-                            deckMeta={deck.meta} 
-                            schemaVersion={deck.schemaVersion || 1} 
-                            disableAnimation={viewedSlides.has(currentIndex)} 
+                        <SlideRenderer
+                            slide={currentSlide}
+                            density={density}
+                            deckMeta={deck.meta}
+                            schemaVersion={deck.schemaVersion || 1}
+                            disableAnimation={viewedSlides.has(currentIndex)}
                         />
                     </motion.div>
                 </AnimatePresence>

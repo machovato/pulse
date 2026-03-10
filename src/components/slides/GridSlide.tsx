@@ -52,12 +52,16 @@ export function GridSlide({ slide, disableAnimation = false }: { slide: LooseSli
     const cards = data.cards ?? [];
     const isStrategy = template === "strategy";
     const cols = isStrategy ? (cards.length <= 2 ? 1 : cards.length <= 4 ? 2 : 3) : 2;
+    const isKickoff = template === "kickoff";
 
     const left = (
         <motion.div
-            className="flex flex-col gap-4 dark-surface"
+            className={cn("flex flex-col gap-4", !isKickoff && "dark-surface")}
             variants={slideUpItem(disableAnimation)}
         >
+            <Typography variant="eyebrow" className="text-accent-info opacity-60 mb-2">
+                {(slide.data as Record<string, string>)?.eyebrow || "DELIVERABLES"}
+            </Typography>
             <Typography variant="h1" className="leading-tight mt-0 mb-0 pt-0">
                 {slide.title}
             </Typography>
@@ -75,13 +79,27 @@ export function GridSlide({ slide, disableAnimation = false }: { slide: LooseSli
             }}
         >
             {cards.map((card, i) => {
-                const accent = !isStrategy ? ACCENT_SEQUENCE[i % ACCENT_SEQUENCE.length] : "none";
-                const classes = !isStrategy ? ACCENT_CLASSES[accent as AccentType] : { text: "text-text-muted", bg: "bg-surface-muted border border-border-default/50" };
+                const borderAccent = isKickoff ? "info" : ACCENT_SEQUENCE[i % ACCENT_SEQUENCE.length];
+
+                // Varied color palette for Kickoff icons
+                const KICKOFF_COLORS = [
+                    { text: "text-emerald-600", bg: "bg-emerald-50 text-emerald-600" },
+                    { text: "text-indigo-600", bg: "bg-indigo-50 text-indigo-600" },
+                    { text: "text-amber-600", bg: "bg-amber-50 text-amber-600" },
+                    { text: "text-rose-600", bg: "bg-rose-50 text-rose-600" },
+                    { text: "text-teal-600", bg: "bg-teal-50 text-teal-600" },
+                    { text: "text-violet-600", bg: "bg-violet-50 text-violet-600" },
+                ];
+
+                const iconAccent = ACCENT_SEQUENCE[i % ACCENT_SEQUENCE.length];
+                const classes = isKickoff
+                    ? KICKOFF_COLORS[i % KICKOFF_COLORS.length]
+                    : ACCENT_CLASSES[iconAccent as AccentType];
 
                 return (
                     <MotionCard
                         key={i}
-                        accent={accent}
+                        accent={borderAccent}
                         className="flex flex-col justify-center text-center items-center p-8 h-full hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-out"
                         variants={slideUpItem(disableAnimation)}
                     >
@@ -116,7 +134,10 @@ export function GridSlide({ slide, disableAnimation = false }: { slide: LooseSli
             initial="hidden"
             animate="visible"
         >
-            <LayoutSplit leftContent={left} rightContent={right} />
+            <LayoutSplit
+                leftContent={left}
+                rightContent={right}
+            />
         </motion.div>
     );
 }
