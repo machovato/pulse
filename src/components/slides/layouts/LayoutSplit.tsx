@@ -23,6 +23,8 @@ interface LayoutSplitProps {
     leftAlign?: "center" | "start";
     /** Padding classes for the left panel. Defaults to "px-10". */
     leftPadding?: string;
+    /** Optional background node to render behind the entire layout */
+    backgroundNode?: React.ReactNode;
 }
 
 const BACKGROUNDS = {
@@ -38,11 +40,14 @@ export function LayoutSplit({
     rightBg = "bg-white",
     leftAlign = "center",
     leftPadding = "px-10",
+    backgroundNode,
 }: LayoutSplitProps) {
     const { template } = useTemplate();
     const isKickoff = template === "kickoff";
     return (
         <div className="relative w-full h-full flex overflow-hidden">
+            {backgroundNode}
+            
             {/* LEFT PANEL — 40% */}
             <div
                 className={cn(

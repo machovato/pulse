@@ -13,6 +13,26 @@ import { CardBase } from "../ui/CardBase";
 
 const MotionCard = motion.create(CardBase);
 
+
+const ACCENT_SEQUENCE = ["info", "success", "warning", "danger"] as const;
+type AccentType = typeof ACCENT_SEQUENCE[number];
+
+const ACCENT_CLASSES: Record<AccentType, { text: string; bg: string }> = {
+    info: { text: "text-accent-info", bg: "bg-accent-info/10" },
+    success: { text: "text-accent-success", bg: "bg-accent-success/10" },
+    warning: { text: "text-accent-warning", bg: "bg-accent-warning/10" },
+    danger: { text: "text-accent-danger", bg: "bg-accent-danger/10" }
+};
+
+const KICKOFF_COLORS = [
+    { text: "text-emerald-600", bg: "bg-emerald-50 text-emerald-600" },
+    { text: "text-indigo-600", bg: "bg-indigo-50 text-indigo-600" },
+    { text: "text-amber-600", bg: "bg-amber-50 text-amber-600" },
+    { text: "text-rose-600", bg: "bg-rose-50 text-rose-600" },
+    { text: "text-teal-600", bg: "bg-teal-50 text-teal-600" },
+    { text: "text-violet-600", bg: "bg-violet-50 text-violet-600" },
+];
+
 interface ProblemItem {
     title: string;
     body: string;
@@ -99,6 +119,11 @@ export function ProblemSlide({ slide, disableAnimation = false }: { slide: Loose
                 // Scale padding and text size slightly based on how many cards there are
                 const isDense = secondary.length > 3;
 
+                const iconAccent = ACCENT_SEQUENCE[i % ACCENT_SEQUENCE.length];
+                const classes = isKickoff
+                    ? KICKOFF_COLORS[i % KICKOFF_COLORS.length]
+                    : ACCENT_CLASSES[iconAccent as AccentType];
+
                 return (
                     <MotionCard
                         key={i}
@@ -114,12 +139,21 @@ export function ProblemSlide({ slide, disableAnimation = false }: { slide: Loose
                         )}
                         variants={slideUpItem(disableAnimation)}
                     >
-                        <div className="mt-1 shrink-0 shadow-sm rounded-xl p-3 bg-surface-page border border-border-default">
-                            {getLucideIcon(item.icon, cn("text-text-secondary", isDense ? "w-6 h-6" : "w-8 h-8"))}
+                        <div
+                            className={cn(
+                                "flex items-center justify-center shrink-0 rounded-full",
+                                classes.bg
+                            )}
+                            style={{
+                                width: isDense ? "clamp(36px, 8cqi, 48px)" : "clamp(48px, 12cqi, 64px)",
+                                height: isDense ? "clamp(36px, 8cqi, 48px)" : "clamp(48px, 12cqi, 64px)",
+                            }}
+                        >
+                            {getLucideIcon(item.icon, cn(classes.text, isDense ? "w-5 h-5" : "w-7 h-7"))}
                         </div>
                         <div className="flex-1 min-w-0">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-2">
-                                <Typography as="h4" variant="h2" className={cn("truncate", isDense && "text-lg")}>
+                                <Typography as="h4" variant="h2" className={cn("truncate font-bold", isDense && "text-lg")}>
                                     {item.title}
                                 </Typography>
                                 <Typography variant="eyebrow" className={cn("px-2 py-0.5 rounded-badge shrink-0 w-fit", getBadgeProps(item.severity))}>

@@ -13,6 +13,7 @@ import { CardBase } from "../ui/CardBase";
 
 const MotionCard = motion.create(CardBase);
 
+
 interface Card {
     title: string;
     body: string;
@@ -56,7 +57,7 @@ export function GridSlide({ slide, disableAnimation = false }: { slide: LooseSli
 
     const left = (
         <motion.div
-            className={cn("flex flex-col gap-4", !isKickoff && "dark-surface")}
+            className={cn("flex flex-col gap-4 relative h-full w-full justify-center", !isKickoff && "dark-surface")}
             variants={slideUpItem(disableAnimation)}
         >
             <Typography variant="eyebrow" className="text-accent-info opacity-60 mb-2">

@@ -13,6 +13,7 @@ import { CardBase } from "../ui/CardBase";
 
 const MotionCard = motion.create(CardBase);
 
+
 interface Step {
     label: string;
     icon?: string;
@@ -76,7 +77,7 @@ export function PipelineSlide({ slide, disableAnimation = false }: { slide: Loos
             animate="visible"
         >
             <LayoutWhite center={false}>
-                <motion.div variants={slideUpItem(disableAnimation)}>
+                <motion.div variants={slideUpItem(disableAnimation)} className="relative z-10">
                     <Typography variant="eyebrow" className="text-accent-info pt-10 pb-0 text-center w-full">
                         Pipeline
                     </Typography>

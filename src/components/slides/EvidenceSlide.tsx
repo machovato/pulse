@@ -11,6 +11,8 @@ import { CardBase } from "../ui/CardBase";
 
 const MotionCard = motion.create(CardBase);
 
+import { SlideBackgroundIcon } from "./SlideBackgroundIcon";
+
 interface EvidencePoint {
     metric: string;
     label: string;
@@ -77,8 +79,8 @@ export function EvidenceSlide({ slide, disableAnimation = false }: { slide: Loos
 
     return (
         <motion.div className="w-full h-full" variants={staggerContainer(disableAnimation)} initial="hidden" animate="visible">
-            <LayoutWhite center={false}>
-                <div className="w-full flex-1 flex flex-col justify-start py-12">
+            <LayoutWhite center={false} backgroundNode={<SlideBackgroundIcon title={slide.title} position="bottom-right" />}>
+                <div className="w-full flex-1 flex flex-col justify-start py-12 relative z-10">
                     <motion.div className="mb-12 shrink-0" variants={slideUpItem(disableAnimation)}>
                         <Typography variant="eyebrow" className="text-accent-info opacity-60 mb-2">
                             Evidence

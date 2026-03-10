@@ -8,6 +8,7 @@ interface LayoutSplitPrimarySecondaryProps {
     title: React.ReactNode;
     leftNode: React.ReactNode;
     rightNode: React.ReactNode;
+    backgroundNode?: React.ReactNode;
     disableAnimation?: boolean;
 }
 
@@ -20,11 +21,13 @@ export function LayoutSplitPrimarySecondary({
     title,
     leftNode,
     rightNode,
+    backgroundNode,
     disableAnimation = false,
 }: LayoutSplitPrimarySecondaryProps) {
     return (
         <LayoutWhite center={false}>
-            <div className="w-full flex-1 flex flex-col justify-start py-12 px-slide">
+            {backgroundNode}
+            <div className="w-full flex-1 flex flex-col justify-start py-12 px-slide relative z-10">
                 <motion.div className="mb-8 shrink-0" variants={slideUpItem(disableAnimation)}>
                     <Typography variant="eyebrow" className="text-accent-info mb-2 opacity-60">
                         {eyebrow}

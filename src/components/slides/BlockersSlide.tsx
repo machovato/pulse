@@ -65,7 +65,7 @@ export function BlockersSlide({ slide, deckMeta, disableAnimation = false }: { s
 
     const left = (
         <motion.div
-            className={cn("flex flex-col h-full relative", !isKickoff && "dark-surface")}
+            className={cn("flex flex-col h-full relative justify-center", !isKickoff && "dark-surface")}
             variants={slideUpItem(disableAnimation)}
         >
             <div className="flex flex-col gap-6 relative z-10 w-full pr-8">
@@ -85,7 +85,13 @@ export function BlockersSlide({ slide, deckMeta, disableAnimation = false }: { s
                             </>
                         )}
                     </Typography>
-                    <Typography variant="subtitle" className="text-text-on-emphasis opacity-90 mt-4 leading-relaxed max-w-[90%]">
+                    <Typography 
+                        variant="subtitle" 
+                        className={cn(
+                            "opacity-90 mt-4 leading-relaxed max-w-[90%]",
+                            isKickoff ? "text-text-secondary" : "text-text-on-emphasis"
+                        )}
+                    >
                         Current impediments requiring leadership attention or team coordination.
                     </Typography>
                 </div>

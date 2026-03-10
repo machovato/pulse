@@ -11,11 +11,15 @@ interface LayoutWhiteProps {
     children: React.ReactNode;
     /** Center content vertically */
     center?: boolean;
+    /** Optional background node to render behind the entire layout */
+    backgroundNode?: React.ReactNode;
 }
 
-export function LayoutWhite({ children, center = true }: LayoutWhiteProps) {
+export function LayoutWhite({ children, center = true, backgroundNode }: LayoutWhiteProps) {
     return (
         <div className="relative w-full h-full min-h-[100vh] flex flex-col bg-surface-page text-text-secondary overflow-hidden">
+            {backgroundNode}
+            
             {/* Background texture — barely perceptible */}
             <ConcentricCircles
                 rings={7}

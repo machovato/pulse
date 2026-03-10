@@ -54,7 +54,7 @@ export function KpisSlide({ slide, disableAnimation = false }: { slide: LooseSli
         >
             <LayoutWhite center={true}>
                 {/* Slide title & eyebrow */}
-                <div className="w-full text-center mt-6 mb-4 flex flex-col items-center shrink-0">
+                <div className="w-full text-center mt-6 mb-4 flex flex-col items-center shrink-0 relative z-10">
                     <motion.div variants={slideUpItem(disableAnimation)}>
                         <Typography variant="eyebrow" className="mb-2 text-accent-info">
                             Project Status

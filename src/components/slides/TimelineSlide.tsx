@@ -86,7 +86,7 @@ export function TimelineSlide({ slide, disableAnimation = false }: { slide: Loos
 
                 {/* Scrollable Timeline Content */}
                 <div className="flex-1 w-full overflow-y-auto relative z-10 px-8 pb-32">
-                    <div className="relative w-full max-w-4xl mx-auto py-8">
+                    <div className="relative w-full max-w-7xl mx-auto py-8">
                         {/* The Spine */}
                         {milestones.length > 0 && (
                             <motion.div
@@ -148,14 +148,14 @@ export function TimelineSlide({ slide, disableAnimation = false }: { slide: Loos
 
                                         {/* Content Wrapper */}
                                         <motion.div
-                                            className={`w-[calc(50%-2rem)] flex flex-col justify-center ${isLeft ? "items-end text-right" : "items-start text-left ml-auto"
+                                            className={`w-[calc(50%-3rem)] flex flex-col justify-center ${isLeft ? "items-end text-right" : "items-start text-left ml-auto"
                                                 }`}
                                             variants={contentVariant(isLeft)}
                                         >
                                             {isStrategy ? (
                                                 /* Strategy Card Layout */
                                                 <div className={`
-                                                flex flex-col gap-3 w-full max-w-2xl transition-all duration-300 rounded-card p-card shadow-xl border border-card
+                                                flex flex-col gap-3 w-full transition-all duration-300 rounded-card p-card shadow-xl border border-card
                                                 ${isLeft ? "border-r-accent" : "border-l-accent"}
                                                 ${isLeft ? (m.state === "done" ? "border-r-accent-success" : m.state === "current" ? "border-r-accent-info" : "border-r-border-muted") : (m.state === "done" ? "border-l-accent-success" : m.state === "current" ? "border-l-accent-info" : "border-l-border-muted")}
                                                 ${m.state === "current" ? cn(template === "kickoff" ? "bg-orange-50/50" : "bg-surface-primary", template !== "kickoff" && "dark-surface") : m.state === "done" && template === "kickoff" ? "bg-emerald-50/30" : m.state === "upcoming" ? "bg-surface-muted opacity-80" : "bg-surface-secondary"}
@@ -198,7 +198,7 @@ export function TimelineSlide({ slide, disableAnimation = false }: { slide: Loos
                                                 </div>
                                             ) : (
                                                 /* Status Inline Layout (Restoration) */
-                                                <div className={`flex flex-col gap-1.5 w-full max-w-xl transition-all`}>
+                                                <div className={`flex flex-col gap-1.5 w-full transition-all`}>
                                                     <div className="flex items-center gap-2 flex-wrap">
                                                         <Typography as="h3" variant="h2" className={cn(
                                                             "leading-tight",

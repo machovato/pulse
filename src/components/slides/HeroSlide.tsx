@@ -85,17 +85,6 @@ export function HeroSlide({ slide, disableAnimation = false }: { slide: LooseSli
                     </motion.div>
                 )}
 
-                {/* Headline - Hidden horizontally on strategy to prevent redundancy */}
-                {!isStrategy && data.headline && (
-                    <motion.div variants={slideUpItem(disableAnimation)}>
-                        <Typography
-                            variant="body"
-                            className="opacity-90 italic mb-6 border-l-4 border-l-accent-info border-white/40 pl-5 py-1 max-w-2xl bg-white/5 rounded-r-lg"
-                        >
-                            {data.headline}
-                        </Typography>
-                    </motion.div>
-                )}
 
                 {/* RAG pill — white variant */}
                 {rag && (

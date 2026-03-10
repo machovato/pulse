@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils";
 import { Typography } from "../ui/Typography";
 import { useTemplate } from "@/components/TemplateContext";
 
+import { SlideBackgroundIcon } from "./SlideBackgroundIcon";
+
 interface ContextItem {
     title: string;
     body: string;
@@ -40,11 +42,12 @@ export function ContextSlide({ slide, disableAnimation = false }: { slide: Loose
     return (
         <motion.div className="w-full h-full" variants={staggerContainer(disableAnimation)} initial="hidden" animate="visible">
             <LayoutWhite center={false}>
-                <div className="w-full flex-1 flex flex-col justify-start py-12 px-slide">
+                <SlideBackgroundIcon title={slide.title} position="bottom-left" />
+                <div className="w-full flex-1 flex flex-col justify-start py-12 px-slide relative z-10">
                     <div className="w-full mb-8 shrink-0">
                         <motion.div variants={slideUpItem(disableAnimation)}>
                             <Typography variant="eyebrow" className="text-accent-info opacity-60 mb-2">
-                                Context
+                                {slide.title === "How We Measure Success" ? "SUCCESS CRITERIA" : "Context"}
                             </Typography>
                             <Typography as="h2" variant="h1" className="leading-tight mt-0 pt-0">
                                 {slide.title}
@@ -72,7 +75,7 @@ export function ContextSlide({ slide, disableAnimation = false }: { slide: Loose
                                             "shrink-0 flex items-center justify-center p-3 rounded-xl shadow-sm border",
                                             isKickoff ? "bg-white border-transparent" : "bg-white/10 backdrop-blur-sm border-white/20"
                                         )}>
-                                            {getLucideIcon(item.icon, cn("w-10 h-10", isKickoff ? "text-accent-info" : "text-white"))}
+                                            {getLucideIcon(item.icon, cn("w-10 h-10", isKickoff ? (slide.title === "How We Measure Success" ? "text-accent-success" : "text-accent-info") : "text-white"))}
                                         </div>
                                         <div className="flex-1 min-w-0 flex flex-col justify-center">
                                             <Typography as="h3" variant="h2" className={cn("leading-tight mb-2", isKickoff ? "text-text-primary" : "text-white")}>
