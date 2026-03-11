@@ -8,6 +8,8 @@ import {
     Calendar,
     ArrowRight,
     Keyboard,
+    Star,
+    Archive,
 } from "lucide-react";
 import { DeckList } from "./DeckList";
 
@@ -79,7 +81,7 @@ const BLANK_SCAFFOLD = JSON.stringify(
 );
 
 export default async function HomePage() {
-    const decks = await prisma.update.findMany({
+    const rawDecks = await prisma.update.findMany({
         orderBy: { created_at: "desc" },
         select: {
             id: true,
@@ -87,10 +89,42 @@ export default async function HomePage() {
             date: true,
             template: true,
             rag: true,
+            status: true,
             pinned: true,
+            archived: true,
             created_at: true,
+            content_json: true,
         },
     });
+
+    const decks = rawDecks.map(deck => {
+        let slideCount = 0;
+        let ragOverride = deck.rag;
+        try {
+            const parsed = JSON.parse(deck.content_json);
+            slideCount = Array.isArray(parsed.slides) ? parsed.slides.length : 0;
+            if (parsed.meta?.rag) {
+                ragOverride = parsed.meta.rag;
+            }
+        } catch (e) {
+            // ignore JSON parse errors
+        }
+        return {
+            id: deck.id,
+            title: deck.title,
+            date: deck.date,
+            template: deck.template,
+            rag: ragOverride,
+            status: deck.status,
+            pinned: deck.pinned,
+            archived: deck.archived,
+            created_at: deck.created_at,
+            slideCount
+        };
+    });
+
+    const activeDecks = decks.filter(d => !d.archived);
+    const pinnedCount = activeDecks.filter(d => d.pinned).length;
 
     const editorHref = `/editor?prefill=${encodeURIComponent(BLANK_SCAFFOLD)}`;
 
@@ -131,7 +165,7 @@ export default async function HomePage() {
                         Published Decks
                     </h2>
                     <span className="text-xs text-[var(--color-text-muted)] font-medium">
-                        {decks.length} record{decks.length !== 1 ? "s" : ""}
+                        {activeDecks.length} record{activeDecks.length !== 1 ? "s" : ""}
                     </span>
                 </div>
 
@@ -140,6 +174,19 @@ export default async function HomePage() {
                 ) : (
                     <DeckList decks={decks} />
                 )}
+            </section>
+
+            {/* ── Bottom Navigation Cards ── */}
+            <section className="grid grid-cols-1 sm:grid-cols-1 gap-4">
+                <Link href="/archive" className="card p-4 flex items-center gap-4 hover:border-[var(--dtn-blue)] hover:shadow-md transition-all group">
+                    <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center shrink-0">
+                        <Archive className="w-5 h-5 text-slate-500" />
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-sm text-[var(--color-text-heading)] group-hover:text-[var(--dtn-blue)] transition-colors">Archive</h3>
+                        <p className="text-xs text-[var(--color-text-muted)] mt-0.5">View past presentations</p>
+                    </div>
+                </Link>
             </section>
 
             {/* ── Quick links ── */}

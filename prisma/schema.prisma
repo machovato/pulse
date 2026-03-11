@@ -19,9 +19,11 @@ model Update {
   date           DateTime
   template       String
   rag            String?
+  status         String   @default("Draft")
   content_json   String
   source_raw     String
   schema_version Int      @default(1)
   pinned         Boolean  @default(false)
+  archived       Boolean  @default(false)
   created_at     DateTime @default(now())
 }

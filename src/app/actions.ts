@@ -137,3 +137,17 @@ export async function togglePinDeck(id: string, pinned: boolean): Promise<{ succ
         return { success: false, error: "Failed to pin deck." };
     }
 }
+
+export async function archiveDeck(id: string, archived: boolean): Promise<{ success: boolean; error?: string }> {
+    try {
+        await prisma.update.update({
+            where: { id },
+            data: { archived },
+        });
+        revalidatePath("/");
+        return { success: true };
+    } catch (err) {
+        console.error("Archive error:", err);
+        return { success: false, error: "Failed to archive deck." };
+    }
+}
