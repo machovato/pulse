@@ -9,8 +9,9 @@ node_modules/
 .env.*.local
 
 # Database
-prisma/*.db
-prisma/*.db-journal
+# Ignored by default but we want to sync dev.db across laptops
+# prisma/*.db
+# prisma/*.db-journal
 
 # Build
 dist/
