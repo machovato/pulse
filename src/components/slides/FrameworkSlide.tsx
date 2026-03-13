@@ -9,6 +9,7 @@ import type { LooseSlide } from "@/lib/schema";
 import { useTemplate } from "@/components/TemplateContext";
 import { cn } from "@/lib/utils";
 import { Typography } from "../ui/Typography";
+import { SlideEyebrow } from "./ui/SlideEyebrow";
 
 interface FrameworkLane {
     title: string;
@@ -31,7 +32,7 @@ function getLucideIcon(name?: string, className?: string) {
     return <IconComponent className={className || "w-5 h-5"} />;
 }
 
-export function FrameworkSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
+export function FrameworkSlide({ slide, deckMeta, disableAnimation = false }: { slide: LooseSlide, deckMeta?: Record<string, string>, disableAnimation?: boolean }) {
     const { template } = useTemplate();
     const data = (slide.data ?? { lanes: [] }) as unknown as FrameworkData;
     const lanes = data.lanes ?? [];
@@ -102,7 +103,7 @@ export function FrameworkSlide({ slide, disableAnimation = false }: { slide: Loo
     return (
         <motion.div className="w-full h-full" variants={staggerContainer(disableAnimation)} initial="hidden" animate="visible">
             <LayoutSplitPrimarySecondary
-                eyebrow="Framework"
+                eyebrow={<SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="text-accent-info mb-2 opacity-60" />}
                 title={slide.title}
                 leftNode={leftNode}
                 rightNode={rightNode}

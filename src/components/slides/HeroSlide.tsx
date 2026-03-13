@@ -8,6 +8,7 @@ import type { LooseSlide } from "@/lib/schema";
 import { useTemplate } from "@/components/TemplateContext";
 import { cn } from "@/lib/utils";
 import { Typography } from "../ui/Typography";
+import { SlideEyebrow } from "./ui/SlideEyebrow";
 
 interface HeroData {
     subtitle?: string;
@@ -40,7 +41,7 @@ function getIcon(name?: string) {
 
 import { staggerContainer, slideUpItem } from "@/lib/motion";
 
-export function HeroSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
+export function HeroSlide({ slide, deckMeta, disableAnimation = false }: { slide: LooseSlide, deckMeta?: Record<string, string>, disableAnimation?: boolean }) {
     const { template } = useTemplate();
     const data = (slide.data ?? {}) as HeroData;
     const rag = data.rag;
@@ -58,9 +59,7 @@ export function HeroSlide({ slide, disableAnimation = false }: { slide: LooseSli
             >
                 {/* Eyebrow */}
                 <motion.div variants={slideUpItem(disableAnimation)}>
-                    <Typography variant="eyebrow" className="text-text-on-emphasis opacity-70 mb-2">
-                        Project Update
-                    </Typography>
+                    <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="text-text-on-emphasis opacity-70 mb-2" />
                 </motion.div>
 
                 {/* Title — Display size */}

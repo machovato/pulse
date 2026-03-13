@@ -45,6 +45,7 @@ type DeckRow = {
     archived: boolean;
     created_at: Date;
     slideCount: number;
+    theme?: string | null;
 };
 
 export function DeckList({ decks }: { decks: DeckRow[] }) {
@@ -311,6 +312,11 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
                 <span className="text-[11px] font-medium text-[var(--text-secondary)] bg-slate-50 border border-slate-200 px-2 py-1 rounded-md">
                     {deck.slideCount} slide{deck.slideCount !== 1 ? 's' : ''}
                 </span>
+                {deck.theme && deck.theme !== "default" && (
+                    <span className="text-[11px] font-medium text-[var(--accent-primary)] bg-[var(--accent-primary-bg)]/10 border border-[var(--accent-primary)]/20 px-2 py-1 rounded-md capitalize">
+                        {deck.theme}
+                    </span>
+                )}
             </div>
 
             {/* Actions Menu */}

@@ -9,6 +9,7 @@ import type { LooseSlide } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { useTemplate } from "@/components/TemplateContext";
 import { Typography } from "../ui/Typography";
+import { SlideEyebrow } from "./ui/SlideEyebrow";
 import { CardBase } from "../ui/CardBase";
 
 const MotionCard = motion.create(CardBase);
@@ -72,7 +73,7 @@ function getBorderColor(severity: string) {
     }
 }
 
-export function ProblemSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
+export function ProblemSlide({ slide, deckMeta, disableAnimation = false }: { slide: LooseSlide, deckMeta?: Record<string, string>, disableAnimation?: boolean }) {
     const { template } = useTemplate();
     const isKickoff = template === "kickoff";
     const data = (slide.data ?? {}) as unknown as ProblemData;
@@ -173,7 +174,7 @@ export function ProblemSlide({ slide, disableAnimation = false }: { slide: Loose
     return (
         <motion.div className="w-full h-full" variants={staggerContainer(disableAnimation)} initial="hidden" animate="visible">
             <LayoutSplitPrimarySecondary
-                eyebrow="Problem Space"
+                eyebrow={<SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="text-accent-info mb-2 opacity-60" />}
                 title={slide.title}
                 leftNode={leftNode}
                 rightNode={rightNode}

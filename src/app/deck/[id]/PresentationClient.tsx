@@ -93,6 +93,7 @@ function SlideGridOverlay({
                                     <div
                                         className="absolute top-0 left-0 pointer-events-none"
                                         data-template={deckMeta.template || "status"}
+                                        data-theme={deckMeta.theme}
                                         style={{
                                             width: DESIGN_W,
                                             height: DESIGN_H,
@@ -346,20 +347,13 @@ export function PresentationClient({ deck, deckId }: PresentationClientProps) {
         );
     }
 
-    // Toggle data-theme on <html> for CSS cascade
-    useEffect(() => {
-        if (deck.meta.theme) {
-            document.documentElement.setAttribute("data-theme", deck.meta.theme);
-        } else {
-            document.documentElement.removeAttribute("data-theme");
-        }
-        return () => { document.documentElement.removeAttribute("data-theme"); };
-    }, [deck.meta.theme]);
+    // Removed the documentElement.setAttribute("data-theme") hook 
+    // to strictly scope the theme attributes to the specific slide layouts.
 
     return (
         <TemplateProvider template={deck.meta.template || "status"}>
             {/* Full-viewport slide stage */}
-            <div className="fixed inset-0 overflow-hidden bg-[var(--surface-primary)]">
+            <div className="fixed inset-0 overflow-hidden bg-[var(--surface-primary)]" data-theme={deck.meta.theme}>
                 <AnimatePresence custom={direction} mode="popLayout">
                     <motion.div
                         key={currentIndex}

@@ -16,6 +16,7 @@ const KPIItemSchema = z.object({
 // ─── Slide data schemas ───────────────────────────────────────────────────────
 
 const HeroDataSchema = z.object({
+    eyebrow: z.string().optional(),
     subtitle: z.string().optional(),
     headline: z.string().optional(),
     rag: RAGSchema.optional(),
@@ -32,10 +33,12 @@ const HeroDataSchema = z.object({
 });
 
 const KpisDataSchema = z.object({
+    eyebrow: z.string().optional(),
     items: z.array(KPIItemSchema),
 });
 
 const PipelineDataSchema = z.object({
+    eyebrow: z.string().optional(),
     steps: z.array(
         z.object({
             label: z.string(),
@@ -48,6 +51,7 @@ const PipelineDataSchema = z.object({
 });
 
 const GridDataSchema = z.object({
+    eyebrow: z.string().optional(),
     cards: z.array(
         z.object({
             title: z.string(),
@@ -58,6 +62,7 @@ const GridDataSchema = z.object({
 });
 
 const TimelineDataSchema = z.object({
+    eyebrow: z.string().optional(),
     milestones: z.array(
         z.object({
             label: z.string(),
@@ -74,6 +79,7 @@ const TimelineDataSchema = z.object({
 });
 
 const BlockersDataSchema = z.object({
+    eyebrow: z.string().optional(),
     summary: z.object({
         actions: z.number().optional(),
         approvals: z.number().optional(),
@@ -92,12 +98,14 @@ const BlockersDataSchema = z.object({
 });
 
 const CalloutDataSchema = z.object({
+    eyebrow: z.string().optional(),
     text: z.string(),
     kind: z.enum(["decision", "risk", "quote", "highlight"]).optional(),
     attribution: z.string().optional(),
 });
 
 const AgendaDataSchema = z.object({
+    eyebrow: z.string().optional(),
     items: z.array(
         z.object({
             topic: z.string(),
@@ -108,6 +116,7 @@ const AgendaDataSchema = z.object({
 });
 
 const DecisionLogDataSchema = z.object({
+    eyebrow: z.string().optional(),
     items: z.array(
         z.object({
             decision: z.string(),
@@ -123,6 +132,7 @@ const DecisionLogDataSchema = z.object({
 // ─── V2 Strategy Slide Data schemas ──────────────────────────────────────────
 
 const V2ContextDataSchema = z.object({
+    eyebrow: z.string().optional(),
     items: z.array(
         z.object({
             title: z.string(),
@@ -134,6 +144,7 @@ const V2ContextDataSchema = z.object({
 });
 
 const V2ProblemDataSchema = z.object({
+    eyebrow: z.string().optional(),
     primary: z.object({
         title: z.string(),
         body: z.string(),
@@ -151,6 +162,7 @@ const V2ProblemDataSchema = z.object({
 });
 
 const V2EvidenceDataSchema = z.object({
+    eyebrow: z.string().optional(),
     points: z.array(
         z.object({
             metric: z.string(),
@@ -163,6 +175,7 @@ const V2EvidenceDataSchema = z.object({
 });
 
 const V2FrameworkDataSchema = z.object({
+    eyebrow: z.string().optional(),
     lanes: z.array(
         z.object({
             title: z.string(),
@@ -243,6 +256,7 @@ export const MetaSchema = z.object({
     theme: z.string().optional(),
     rag: RAGSchema.optional(),
     headline: z.string().optional(),
+    eyebrow: z.string().optional(),
 });
 
 export type Meta = z.infer<typeof MetaSchema>;

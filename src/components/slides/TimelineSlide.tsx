@@ -8,6 +8,7 @@ import type { LooseSlide } from "@/lib/schema";
 import { useTemplate } from "@/components/TemplateContext";
 import { cn } from "@/lib/utils";
 import { Typography } from "../ui/Typography";
+import { SlideEyebrow } from "./ui/SlideEyebrow";
 
 interface Milestone {
     label: string;
@@ -20,7 +21,7 @@ interface TimelineData {
     milestones: Milestone[];
 }
 
-export function TimelineSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
+export function TimelineSlide({ slide, deckMeta, disableAnimation = false }: { slide: LooseSlide, deckMeta?: Record<string, string>, disableAnimation?: boolean }) {
     const { template } = useTemplate();
     const data = (slide.data ?? { milestones: [] }) as unknown as TimelineData;
     const milestones = data.milestones ?? [];
@@ -73,9 +74,7 @@ export function TimelineSlide({ slide, disableAnimation = false }: { slide: Loos
                 {/* Slide Eyebrow and Title */}
                 <div className="shrink-0 text-center pt-10 pb-6 w-full relative z-10">
                     <motion.div variants={slideUpItem(disableAnimation)}>
-                        <Typography variant="eyebrow" className="text-accent-info mb-2">
-                            Timeline
-                        </Typography>
+                        <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="text-accent-info mb-2" />
                     </motion.div>
                     <motion.div variants={slideUpItem(disableAnimation)}>
                         <Typography as="h2" variant="h1">

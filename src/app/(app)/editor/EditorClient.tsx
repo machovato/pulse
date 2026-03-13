@@ -243,7 +243,7 @@ export function EditorClient({ existingJson, editId }: { existingJson?: string; 
 
     const isValid = validationState === "valid";
 
-    // Extract theme for live preview
+    // Only extract theme to show in the UI, do not apply to document
     const activeTheme = (() => {
         try {
             return JSON.parse(json)?.meta?.theme;
@@ -251,16 +251,6 @@ export function EditorClient({ existingJson, editId }: { existingJson?: string; 
             return null;
         }
     })();
-
-    // Toggle data-theme on <html> for CSS cascade
-    useEffect(() => {
-        if (activeTheme) {
-            document.documentElement.setAttribute("data-theme", activeTheme);
-        } else {
-            document.documentElement.removeAttribute("data-theme");
-        }
-        return () => { document.documentElement.removeAttribute("data-theme"); };
-    }, [activeTheme]);
 
     return (
         <div className="flex flex-col" style={{ height: "calc(100vh - 96px)", backgroundColor: "var(--surface-primary)" }}>

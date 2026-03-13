@@ -9,6 +9,7 @@ import type { LooseSlide } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { useTemplate } from "@/components/TemplateContext";
 import { Typography } from "../ui/Typography";
+import { SlideEyebrow } from "./ui/SlideEyebrow";
 import { CardBase } from "../ui/CardBase";
 
 const MotionCard = motion.create(CardBase);
@@ -63,7 +64,7 @@ const STATUS_CONFIG = {
     },
 } as const;
 
-export function PipelineSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
+export function PipelineSlide({ slide, deckMeta, disableAnimation = false }: { slide: LooseSlide, deckMeta?: Record<string, string>, disableAnimation?: boolean }) {
     const { template } = useTemplate();
     const data = (slide.data ?? { steps: [] }) as unknown as PipelineData;
     const steps = data.steps ?? [];
@@ -77,10 +78,8 @@ export function PipelineSlide({ slide, disableAnimation = false }: { slide: Loos
             animate="visible"
         >
             <LayoutWhite center={false}>
-                <motion.div variants={slideUpItem(disableAnimation)} className="relative z-10">
-                    <Typography variant="eyebrow" className="text-accent-info pt-10 pb-0 text-center w-full">
-                        Pipeline
-                    </Typography>
+                <motion.div variants={slideUpItem(disableAnimation)} className="relative z-10 w-full flex justify-center pt-10 pb-0">
+                    <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="text-accent-info" />
                 </motion.div>
 
                 <motion.div variants={slideUpItem(disableAnimation)}>
@@ -129,16 +128,19 @@ export function PipelineSlide({ slide, disableAnimation = false }: { slide: Loos
                                             {/* Node Circle */}
                                             <motion.div
                                                 className={cn(
-                                                    "w-20 h-20 rounded-full flex items-center justify-center border-[4px] bg-surface-page relative z-10 transition-all shadow-sm",
-                                                    isCurrent ? "border-accent-info shadow-[0_0_20px_rgba(20,151,227,0.25)] scale-110" :
-                                                        isDone ? "border-accent-success" : "border-border-default"
+                                                    "w-20 h-20 rounded-full flex items-center justify-center border-[3px] relative z-10 transition-all shadow-sm overflow-hidden",
+                                                    isCurrent ? "border-accent-info shadow-[0_0_20px_rgba(20,151,227,0.25)] scale-110 text-accent-info" :
+                                                        isDone ? "border-accent-success text-accent-success" : "border-text-muted text-text-muted"
                                                 )}
                                                 variants={slideUpItem(disableAnimation)}
                                             >
+                                                {/* Glow Background Layer */}
+                                                <div className="absolute inset-0 w-full h-full opacity-[0.15] bg-current pointer-events-none" />
+
                                                 {isDone ? (
-                                                    <LucideIcons.Check className="w-8 h-8 text-accent-success" strokeWidth={3} />
+                                                    <LucideIcons.Check className="w-8 h-8 relative z-10 text-current" strokeWidth={3} />
                                                 ) : (
-                                                    <IconComponent className={cn("w-8 h-8", isCurrent ? "text-accent-info" : "text-border-muted")} strokeWidth={isCurrent ? 2.5 : 2} />
+                                                    <IconComponent className={cn("w-8 h-8 relative z-10 text-current")} strokeWidth={isCurrent ? 2.5 : 2} />
                                                 )}
                                             </motion.div>
 

@@ -9,6 +9,7 @@ import type { LooseSlide } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { useTemplate } from "@/components/TemplateContext";
 import { Typography } from "../ui/Typography";
+import { SlideEyebrow } from "./ui/SlideEyebrow";
 import { CardBase } from "../ui/CardBase";
 
 const MotionCard = motion.create(CardBase);
@@ -47,7 +48,7 @@ const ACCENT_CLASSES: Record<AccentType, { text: string; bg: string }> = {
     danger: { text: "text-accent-danger", bg: "bg-accent-danger/10" }
 };
 
-export function GridSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
+export function GridSlide({ slide, deckMeta, disableAnimation = false }: { slide: LooseSlide, deckMeta?: Record<string, string>, disableAnimation?: boolean }) {
     const { template } = useTemplate();
     const data = (slide.data ?? { cards: [] }) as unknown as GridData;
     const cards = data.cards ?? [];
@@ -60,9 +61,9 @@ export function GridSlide({ slide, disableAnimation = false }: { slide: LooseSli
             className={cn("flex flex-col gap-4 relative h-full w-full justify-center", !isKickoff && "dark-surface")}
             variants={slideUpItem(disableAnimation)}
         >
-            <Typography variant="eyebrow" className="text-accent-info opacity-60 mb-2">
-                {(slide.data as Record<string, string>)?.eyebrow || "DELIVERABLES"}
-            </Typography>
+            <div className="flex">
+                <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="text-accent-info opacity-60 mb-2" />
+            </div>
             <Typography variant="h1" className="leading-tight mt-0 mb-0 pt-0">
                 {slide.title}
             </Typography>
@@ -106,20 +107,23 @@ export function GridSlide({ slide, disableAnimation = false }: { slide: LooseSli
                     >
                         <div
                             className={cn(
-                                "flex items-center justify-center mb-5 shrink-0 rounded-full",
-                                classes.bg
+                                "flex items-center justify-center mb-5 shrink-0 rounded-full relative",
+                                isKickoff ? classes.bg : classes.text
                             )}
                             style={{
                                 width: "clamp(48px, 12cqi, 64px)",
                                 height: "clamp(48px, 12cqi, 64px)",
                             }}
                         >
-                            {getIcon(card.icon, cn("w-7 h-7", classes.text))}
+                            {!isKickoff && (
+                                <div className="absolute inset-0 w-full h-full opacity-[0.15] bg-current rounded-full pointer-events-none" />
+                            )}
+                            {getIcon(card.icon, cn("w-7 h-7 relative z-10", isKickoff ? "" : classes.text))}
                         </div>
-                        <Typography variant="h2" className="mb-3 leading-tight drop-shadow-sm font-bold">
+                        <Typography variant="h2" className="mb-3 leading-tight drop-shadow-sm font-bold text-text-primary">
                             {card.title}
                         </Typography>
-                        <Typography variant="body" className="leading-relaxed opacity-90 max-w-[280px]">
+                        <Typography variant="body" className="leading-relaxed text-text-secondary max-w-[280px]">
                             {card.body}
                         </Typography>
                     </MotionCard>

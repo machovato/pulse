@@ -4,7 +4,7 @@ import { LayoutWhite } from "./LayoutWhite";
 import { Typography } from "../../ui/Typography";
 
 interface LayoutSplitPrimarySecondaryProps {
-    eyebrow: string;
+    eyebrow: string | React.ReactNode;
     title: React.ReactNode;
     leftNode: React.ReactNode;
     rightNode: React.ReactNode;
@@ -29,9 +29,13 @@ export function LayoutSplitPrimarySecondary({
             {backgroundNode}
             <div className="w-full flex-1 flex flex-col justify-start py-12 px-slide relative z-10">
                 <motion.div className="mb-8 shrink-0" variants={slideUpItem(disableAnimation)}>
-                    <Typography variant="eyebrow" className="text-accent-info mb-2 opacity-60">
-                        {eyebrow}
-                    </Typography>
+                    {typeof eyebrow === 'string' ? (
+                        <Typography variant="eyebrow" className="text-accent-info mb-2 opacity-60">
+                            {eyebrow}
+                        </Typography>
+                    ) : (
+                        eyebrow
+                    )}
                     <Typography as="h2" variant="h1" className="leading-tight mt-0 pt-0">
                         {title}
                     </Typography>

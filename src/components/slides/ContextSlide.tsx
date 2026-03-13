@@ -8,6 +8,7 @@ import { LayoutWhite } from "./layouts/LayoutWhite";
 import type { LooseSlide } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { Typography } from "../ui/Typography";
+import { SlideEyebrow } from "./ui/SlideEyebrow";
 import { useTemplate } from "@/components/TemplateContext";
 
 import { SlideBackgroundIcon } from "./SlideBackgroundIcon";
@@ -32,7 +33,7 @@ function getLucideIcon(name?: string, className?: string) {
     return <IconComponent className={className || "w-5 h-5"} />;
 }
 
-export function ContextSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
+export function ContextSlide({ slide, deckMeta, disableAnimation = false }: { slide: LooseSlide, deckMeta?: Record<string, string>, disableAnimation?: boolean }) {
     const { template } = useTemplate();
     const data = (slide.data ?? { items: [] }) as unknown as ContextData;
     const items = data.items ?? [];
@@ -46,9 +47,7 @@ export function ContextSlide({ slide, disableAnimation = false }: { slide: Loose
                 <div className="w-full flex-1 flex flex-col justify-start py-12 px-slide relative z-10">
                     <div className="w-full mb-8 shrink-0">
                         <motion.div variants={slideUpItem(disableAnimation)}>
-                            <Typography variant="eyebrow" className="text-accent-info opacity-60 mb-2">
-                                {slide.title === "How We Measure Success" ? "SUCCESS CRITERIA" : "Context"}
-                            </Typography>
+                            <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="text-accent-info opacity-60 mb-2" />
                             <Typography as="h2" variant="h1" className="leading-tight mt-0 pt-0">
                                 {slide.title}
                             </Typography>

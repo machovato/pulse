@@ -8,6 +8,7 @@ import type { LooseSlide } from "@/lib/schema";
 import { useTemplate } from "@/components/TemplateContext";
 import { cn } from "@/lib/utils";
 import { Typography } from "../ui/Typography";
+import { SlideEyebrow } from "./ui/SlideEyebrow";
 import { CardBase } from "../ui/CardBase";
 
 const MotionCard = motion.create(CardBase);
@@ -43,7 +44,7 @@ const QUOTE_MARK_COLOR: Record<string, string> = {
     quote: "var(--accent-info)",
 };
 
-export function CalloutSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
+export function CalloutSlide({ slide, deckMeta, disableAnimation = false }: { slide: LooseSlide, deckMeta?: Record<string, string>, disableAnimation?: boolean }) {
     const { template } = useTemplate();
     const data = (slide.data ?? {}) as unknown as CalloutData;
     const kind = data.kind ?? "highlight";
@@ -60,9 +61,7 @@ export function CalloutSlide({ slide, disableAnimation = false }: { slide: Loose
                 "--text-muted": "rgba(255, 255, 255, 0.6)"
             } as React.CSSProperties}
         >
-            <Typography variant="eyebrow" className="text-accent-info opacity-60">
-                {LEFT_EYEBROW[kind]}
-            </Typography>
+            <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="text-accent-info opacity-60" />
             <Typography as="h2" variant="subtitle" className="leading-tight mt-0 pt-0">
                 {slide.title}
             </Typography>

@@ -43,21 +43,21 @@ export function SlideRenderer({ slide, density, deckMeta, schemaVersion = 1, dis
 
     // Default V2 / Generic mapping
     switch (slide.type) {
-        case "hero": return <HeroSlide slide={slide} disableAnimation={disableAnimation} />;
-        case "kpis": return <KpisSlide slide={slide} disableAnimation={disableAnimation} />;
-        case "pipeline": return <PipelineSlide slide={slide} disableAnimation={disableAnimation} />;
-        case "grid": return <GridSlide slide={slide} disableAnimation={disableAnimation} />;
-        case "context": return <ContextSlide slide={slide} disableAnimation={disableAnimation} />;
-        case "problem": return <ProblemSlide slide={slide} disableAnimation={disableAnimation} />;
-        case "evidence": return <EvidenceSlide slide={slide} disableAnimation={disableAnimation} />;
-        case "framework": return <FrameworkSlide slide={slide} disableAnimation={disableAnimation} />;
+        case "hero": return <HeroSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
+        case "kpis": return <KpisSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
+        case "pipeline": return <PipelineSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
+        case "grid": return <GridSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
+        case "context": return <ContextSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
+        case "problem": return <ProblemSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
+        case "evidence": return <EvidenceSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
+        case "framework": return <FrameworkSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
         case "timeline":
         case "roadmap":
-            return <TimelineSlide slide={slide} disableAnimation={disableAnimation} />;
+            return <TimelineSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
         case "blockers": return <BlockersSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
-        case "callout": return <CalloutSlide slide={slide} disableAnimation={disableAnimation} />;
-        case "agenda": return <AgendaSlide slide={slide} disableAnimation={disableAnimation} />;
-        case "decision_log": return <DecisionLogSlide slide={slide} disableAnimation={disableAnimation} />;
+        case "callout": return <CalloutSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
+        case "agenda": return <AgendaSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
+        case "decision_log": return <DecisionLogSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
         default: return <UnknownSlide slide={slide} />;
     }
 }

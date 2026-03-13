@@ -7,6 +7,7 @@ import { useTemplate } from "@/components/TemplateContext";
 import { cn } from "@/lib/utils";
 import type { LooseSlide } from "@/lib/schema";
 import { Typography } from "../ui/Typography";
+import { SlideEyebrow } from "./ui/SlideEyebrow";
 
 interface AgendaItem {
     topic: string;
@@ -18,7 +19,7 @@ interface AgendaData {
     items: AgendaItem[];
 }
 
-export function AgendaSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
+export function AgendaSlide({ slide, deckMeta, disableAnimation = false }: { slide: LooseSlide, deckMeta?: Record<string, string>, disableAnimation?: boolean }) {
     const { template } = useTemplate();
     const isKickoff = template === "kickoff";
     const data = (slide.data ?? { items: [] }) as unknown as AgendaData;
@@ -29,9 +30,7 @@ export function AgendaSlide({ slide, disableAnimation = false }: { slide: LooseS
             className={cn("flex flex-col gap-4", !isKickoff && "dark-surface")}
             variants={slideUpItem(disableAnimation)}
         >
-            <Typography variant="eyebrow" className="text-text-on-emphasis mb-1">
-                Agenda
-            </Typography>
+            <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="text-text-on-emphasis mb-1" />
             <Typography as="h2" variant="h1" className="leading-tight mt-0 mb-0 pt-0">
                 {slide.title}
             </Typography>

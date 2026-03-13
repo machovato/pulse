@@ -100,11 +100,15 @@ export default async function HomePage() {
     const decks = rawDecks.map(deck => {
         let slideCount = 0;
         let ragOverride = deck.rag;
+        let theme = null;
         try {
             const parsed = JSON.parse(deck.content_json);
             slideCount = Array.isArray(parsed.slides) ? parsed.slides.length : 0;
             if (parsed.meta?.rag) {
                 ragOverride = parsed.meta.rag;
+            }
+            if (parsed.meta?.theme) {
+                theme = parsed.meta.theme;
             }
         } catch (e) {
             // ignore JSON parse errors
@@ -119,7 +123,8 @@ export default async function HomePage() {
             pinned: deck.pinned,
             archived: deck.archived,
             created_at: deck.created_at,
-            slideCount
+            slideCount,
+            theme
         };
     });
 
@@ -129,7 +134,7 @@ export default async function HomePage() {
     const editorHref = `/editor?prefill=${encodeURIComponent(BLANK_SCAFFOLD)}`;
 
     return (
-        <div className="max-w-4xl mx-auto w-full px-6 py-10 flex flex-col gap-12">
+        <div className="max-w-5xl mx-auto w-full px-6 py-10 flex flex-col gap-12">
 
             {/* ── Hero header ── */}
             <div className="flex items-start justify-between gap-6">

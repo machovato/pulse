@@ -14,7 +14,7 @@
    
    ============================================================ */
 
-[data-theme="obsidian"] {
+[data-theme="obsidian"][data-theme="obsidian"] {
 
   /* ==========================================================
      SOURCE PALETTE
@@ -58,11 +58,11 @@
      ========================================================== */
   
   --text-primary:           var(--palette-white);
-  --text-secondary:         var(--palette-slate-300);
-  --text-tertiary:          var(--palette-slate-500);
+  --text-secondary:         rgba(255, 255, 255, 0.75);
+  --text-tertiary:          var(--palette-slate-400);
   --text-on-dark:           var(--palette-white);
-  --text-on-dark-muted:     var(--palette-slate-300);
-  --text-muted:             var(--text-tertiary);
+  --text-on-dark-muted:     rgba(255, 255, 255, 0.75);
+  --text-muted:             rgba(255, 255, 255, 0.45);
   --text-on-emphasis:       var(--text-primary);
   --text-on-hero:           var(--text-primary);
 
@@ -85,11 +85,11 @@
      SEMANTIC TOKENS — BORDERS & DIVIDERS
      ========================================================== */
   
-  --border-default:         var(--palette-slate-700);
+  --border-default:         rgba(255, 255, 255, 0.25);
   --border-subtle:          rgba(255, 255, 255, 0.06);
   --border-on-dark:         rgba(255, 255, 255, 0.12);
-  --border-strong:          var(--palette-slate-500);
-  --border-muted:           var(--palette-slate-700);
+  --border-strong:          rgba(255, 255, 255, 0.4);
+  --border-muted:           rgba(255, 255, 255, 0.3);
 
 
   /* ==========================================================
@@ -148,13 +148,25 @@
    a "dark" page.
    ========================================================== */
 
-[data-theme="obsidian"] .slide-hero {
+[data-theme="obsidian"][data-theme="obsidian"] .slide-hero {
   --surface-primary:    var(--palette-obsidian);
   --surface-secondary:  rgba(255, 255, 255, 0.04);
 }
 
-/* Cards on dark backgrounds need subtle elevation */
-[data-theme="obsidian"] [data-surface="card"] {
+[data-theme="obsidian"][data-theme="obsidian"] [data-surface="card"] {
   --surface-secondary:  var(--palette-slate-800);
   --border-default:     var(--palette-slate-700);
+}
+
+[data-theme="obsidian"][data-theme="obsidian"] .dtn-eyebrow {
+  /* Saturated violet pill — matches ACTION REQUIRED badge pattern */
+  background-color: rgba(124, 58, 237, 0.9); /* --palette-violet at ~90% */
+  color: #FFFFFF;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  display: inline-flex;
+  width: fit-content;
+  align-self: flex-start;
+  font-weight: 800;
+  letter-spacing: 0.15em;
 }

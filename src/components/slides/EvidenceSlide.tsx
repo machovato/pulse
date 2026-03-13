@@ -7,6 +7,7 @@ import { staggerContainer, slideUpItem } from "@/lib/motion";
 import { LayoutWhite } from "./layouts/LayoutWhite";
 import type { LooseSlide } from "@/lib/schema";
 import { Typography } from "../ui/Typography";
+import { SlideEyebrow } from "./ui/SlideEyebrow";
 import { CardBase } from "../ui/CardBase";
 
 const MotionCard = motion.create(CardBase);
@@ -73,7 +74,7 @@ function renderMetric(metricStr: string, isQualitative: boolean) {
     );
 }
 
-export function EvidenceSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
+export function EvidenceSlide({ slide, deckMeta, disableAnimation = false }: { slide: LooseSlide, deckMeta?: Record<string, string>, disableAnimation?: boolean }) {
     const data = (slide.data ?? { points: [] }) as unknown as EvidenceData;
     const points = data.points ?? [];
 
@@ -82,9 +83,7 @@ export function EvidenceSlide({ slide, disableAnimation = false }: { slide: Loos
             <LayoutWhite center={false} backgroundNode={<SlideBackgroundIcon title={slide.title} position="bottom-right" />}>
                 <div className="w-full flex-1 flex flex-col justify-start py-12 relative z-10">
                     <motion.div className="mb-12 shrink-0" variants={slideUpItem(disableAnimation)}>
-                        <Typography variant="eyebrow" className="text-accent-info opacity-60 mb-2">
-                            Evidence
-                        </Typography>
+                        <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="text-accent-info opacity-60 mb-2" />
                         <Typography as="h2" variant="h1" className="leading-tight mt-0 pt-0">
                             {slide.title}
                         </Typography>

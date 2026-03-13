@@ -6,6 +6,7 @@ import { staggerContainer, slideUpItem } from "@/lib/motion";
 import { LayoutWhite } from "./layouts/LayoutWhite";
 import type { LooseSlide } from "@/lib/schema";
 import { Typography } from "../ui/Typography";
+import { SlideEyebrow } from "./ui/SlideEyebrow";
 import { CardBase } from "../ui/CardBase";
 
 const MotionCard = motion.create(CardBase);
@@ -39,7 +40,7 @@ function getIcon(name?: string) {
     return Icon ? <Icon className="w-6 h-6 text-accent-info" /> : null;
 }
 
-export function KpisSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
+export function KpisSlide({ slide, deckMeta, disableAnimation = false }: { slide: LooseSlide, deckMeta?: Record<string, string>, disableAnimation?: boolean }) {
     const data = (slide.data ?? { items: [] }) as unknown as KpisData;
     const items = data.items ?? [];
     const cols = items.length <= 2 ? 1 : items.length === 3 ? 3 : items.length === 4 ? 2 : 3;
@@ -56,9 +57,7 @@ export function KpisSlide({ slide, disableAnimation = false }: { slide: LooseSli
                 {/* Slide title & eyebrow */}
                 <div className="w-full text-center mt-6 mb-4 flex flex-col items-center shrink-0 relative z-10">
                     <motion.div variants={slideUpItem(disableAnimation)}>
-                        <Typography variant="eyebrow" className="mb-2 text-accent-info">
-                            Project Status
-                        </Typography>
+                        <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="mb-2 text-accent-info" />
                     </motion.div>
                     <motion.div variants={slideUpItem(disableAnimation)}>
                         <Typography as="h1" variant="h1" className="mt-0">

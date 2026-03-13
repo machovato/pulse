@@ -7,6 +7,7 @@ import type { LooseSlide } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { useTemplate } from "@/components/TemplateContext";
 import { Typography } from "../ui/Typography";
+import { SlideEyebrow } from "./ui/SlideEyebrow";
 import { CardBase } from "../ui/CardBase";
 
 const MotionCard = motion.create(CardBase);
@@ -33,7 +34,7 @@ const STATUS_CONFIG: Record<string, { bg: string; text: string; border: string; 
     done: { bg: "var(--text-muted)", text: "#ffffff", border: "var(--text-muted)", label: "Done" },
 };
 
-export function DecisionLogSlide({ slide, disableAnimation = false }: { slide: LooseSlide, disableAnimation?: boolean }) {
+export function DecisionLogSlide({ slide, deckMeta, disableAnimation = false }: { slide: LooseSlide, deckMeta?: Record<string, string>, disableAnimation?: boolean }) {
     const { template } = useTemplate();
     const isKickoff = template === "kickoff";
     const data = (slide.data ?? { decisions: [] }) as unknown as DecisionLogData;
@@ -44,9 +45,7 @@ export function DecisionLogSlide({ slide, disableAnimation = false }: { slide: L
             className={cn("flex flex-col gap-4", !isKickoff && "dark-surface")}
             variants={slideUpItem(disableAnimation)}
         >
-            <Typography variant="eyebrow" className="text-text-on-emphasis opacity-60">
-                Decision Log
-            </Typography>
+            <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="text-text-on-emphasis opacity-60" />
             <Typography as="h2" variant="h1" className="leading-tight mt-0 pt-0 mb-0">
                 {slide.title}
             </Typography>

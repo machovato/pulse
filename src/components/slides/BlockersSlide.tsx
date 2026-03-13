@@ -8,6 +8,7 @@ import type { LooseSlide } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { useTemplate } from "@/components/TemplateContext";
 import { Typography } from "../ui/Typography";
+import { SlideEyebrow } from "./ui/SlideEyebrow";
 import { CardBase } from "../ui/CardBase";
 
 const MotionCard = motion.create(CardBase);
@@ -58,7 +59,7 @@ export function BlockersSlide({ slide, deckMeta, disableAnimation = false }: { s
     const fyis = items.filter((i) => i.severity === "fyi").length;
 
     const allFyi = items.length > 0 && items.every((i) => i.severity === "fyi");
-    const panelTitle = allFyi ? "Updates & Notes" : slide.title || "Blockers & Asks";
+    const panelTitle = slide.title || (allFyi ? "Updates & Notes" : "Blockers & Asks");
     const leftBg = allFyi ? "navy" : "blue";
 
     const allClear = items.length === 0;
@@ -70,9 +71,7 @@ export function BlockersSlide({ slide, deckMeta, disableAnimation = false }: { s
         >
             <div className="flex flex-col gap-6 relative z-10 w-full pr-8">
                 <div className="flex flex-col gap-2">
-                    <Typography variant="eyebrow" className="text-accent-info mb-1">
-                        BLOCKERS
-                    </Typography>
+                    <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="text-accent-info mb-1" />
                     <Typography
                         as="h2"
                         variant="h1"
