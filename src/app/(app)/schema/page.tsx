@@ -5,8 +5,8 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 import { SchemaPageClient } from "./SchemaPageClient";
 
 export const metadata: Metadata = {
-    title: "Schema Reference — DTN Project Pulse",
-    description: "Live JSON schema documentation for DTN Project Pulse",
+    title: "Schema Reference — Project Pulse",
+    description: "Live JSON schema documentation for Project Pulse",
 };
 
 // This executes server-side at build/request time
@@ -16,7 +16,7 @@ function buildSchemaData() {
     // Per-template copyable examples
     const templateExamples: Record<string, object> = {
         status: {
-            schemaVersion: 1,
+            schemaVersion: 2,
             meta: {
                 title: "Q1 Sprint Status",
                 subtitle: "Engineering Team",
@@ -34,7 +34,7 @@ function buildSchemaData() {
             ],
         },
         allHands: {
-            schemaVersion: 1,
+            schemaVersion: 2,
             meta: { title: "CX All Hands", date: "2026-03-04", audience: "team", template: "allHands", rag: "green" },
             slides: [
                 { type: "hero", title: "CX All Hands — March 2026", data: { headline: "Strong quarter, eyes on H1 targets." } },
@@ -43,7 +43,7 @@ function buildSchemaData() {
             ],
         },
         requirements: {
-            schemaVersion: 1,
+            schemaVersion: 2,
             meta: { title: "API Requirements Review", date: "2026-03-04", audience: "mixed", template: "requirements" },
             slides: [
                 { type: "hero", title: "API Requirements Review", data: { subtitle: "v3 Data Export API" } },
@@ -52,7 +52,7 @@ function buildSchemaData() {
             ],
         },
         custom: {
-            schemaVersion: 1,
+            schemaVersion: 2,
             meta: { title: "Custom Deck", date: "2026-03-04", audience: "mixed", template: "custom" },
             slides: [
                 { type: "callout", title: "Opening Statement", data: { text: "Any slide type can appear in a custom deck.", kind: "highlight" } },

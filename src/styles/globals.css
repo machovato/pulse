@@ -5,131 +5,177 @@
 @tailwind utilities;
 
 /* ─────────────────────────────────────────────────────────────────────────── */
-/*  DTN OFFICIAL COLOR PALETTE                                                 */
-/*  Source: DTN Brand Guidelines (uploaded palette image, March 2026)          */
-/*  Do not introduce hex values outside this palette.                          */
+/*  NEUTRAL BASE THEME                                                         */
 /* ─────────────────────────────────────────────────────────────────────────── */
 :root {
 
-  /* PRIMARY ─── The two core brand colors */
-  --dtn-blue: #1B8FE0;
-  /* DTN Primary Blue */
-  --dtn-green: #4CB944;
-  /* DTN Primary Green */
+  /* ==========================================================
+     SOURCE PALETTE
+     ========================================================== */
+  
+  --palette-white:        #FFFFFF;
+  --palette-bg:           #F8F9FA;
+  --palette-charcoal:     #212529;
+  --palette-gray-700:     #495057;
+  --palette-gray-600:     #6C757D;
+  --palette-gray-400:     #ADB5BD;
+  --palette-gray-200:     #DEE2E6;
+  --palette-gray-100:     #E9ECEF;
+  --palette-blue:         #007BFF;
+  --palette-blue-light:   #E7F1FF;
+  --palette-green:        #28A745;
+  --palette-amber:        #FFC107;
+  --palette-red:          #DC3545;
+  --palette-purple:       #6F42C1;
 
-  /* SECONDARY ─── Supporting brand colors */
-  --dtn-navy: #003057;
-  /* DTN Navy (darkest secondary — headings, anchors) */
-  --dtn-blue-mid: #2255A4;
-  /* DTN Mid Blue (interactive secondary, links) */
-  --dtn-green-dark: #005741;
-  /* DTN Dark Green (success alt, environment) */
-  --dtn-teal: #007074;
-  /* DTN Teal (data viz, info state) */
-  --dtn-red: #C8192B;
-  /* DTN Red (error, off-track, escalation) */
-  --dtn-orange: #F5A400;
-  /* DTN Orange (alert, at-risk — warm) */
 
-  /* ACCENT ─── Emphasis, highlights, interactive states */
-  --dtn-cyan: #00B5CC;
-  /* DTN Cyan (interactive focus, accent highlight) */
-  --dtn-lime: #8DC63F;
-  /* DTN Lime (positive accent, badge callout) */
-  --dtn-yellow: #FFCD00;
-  /* DTN Yellow (warning, at-risk — cool) */
+  /* ==========================================================
+     SEMANTIC TOKENS — SURFACES
+     ========================================================== */
+  
+  --surface-primary:        var(--palette-bg);
+  --surface-secondary:      var(--palette-white);
+  --surface-dark:           var(--palette-charcoal);
+  --surface-subtle:         var(--palette-gray-100);
+  --surface-glass:          rgba(33, 37, 41, 0.05);
 
-  /* NEUTRAL ─── Text hierarchy, borders, surfaces */
-  --dtn-neutral-dark: #6D6E71;
-  /* Text/body, icons on white */
-  --dtn-neutral-mid: #BCBEC0;
-  /* Muted text, placeholder, disabled */
-  --dtn-neutral-light: #E6E7E8;
-  /* Borders, dividers, card strokes */
-  --dtn-neutral-bg: #F5F7FA;
-  /* App background surface */
 
-  /* ─── SEMANTIC ROLE TOKENS ──────────────────────────────────────────────── */
-  /*  Map raw palette → semantic intent. Use these in components.             */
+  /* ==========================================================
+     SEMANTIC TOKENS — TEXT
+     ========================================================== */
+  
+  --text-primary:           var(--palette-charcoal);
+  --text-secondary:         var(--palette-gray-600);
+  --text-tertiary:          var(--palette-gray-400);
+  --text-on-dark:           var(--palette-white);
+  --text-on-dark-muted:     rgba(255, 255, 255, 0.7);
 
-  /* Brand */
-  --color-brand: var(--dtn-blue);
-  --color-brand-alt: var(--dtn-green);
 
-  /* Status / State indicators  (use secondary palette) */
-  --color-success: var(--dtn-green);
-  /* On Track, done */
-  --color-success-bg: #EDFAEB;
-  /* Green tint (derived) */
-  --color-success-border: #B4DFB0;
-  /* Green stroke (derived) */
-  --color-success-text: var(--dtn-green-dark);
-  /* Dark green for text */
-  --color-warning: var(--dtn-yellow);
-  /* At Risk */
-  --color-warning-bg: #FFF8DC;
-  /* Yellow tint (derived) */
-  --color-warning-border: var(--dtn-yellow);
-  /* Yellow stroke */
-  --color-warning-text: #8A6A00;
-  /* Dark gold for text (derived) */
-  --color-error: var(--dtn-red);
-  /* Off Track, blocked */
-  --color-error-bg: #FDEAEC;
-  /* Red tint (derived) */
-  --color-error-border: #F0A0A8;
-  /* Red stroke (derived) */
-  --color-error-text: #8B0F1A;
-  /* Dark red for text (derived) */
-  --color-info: var(--dtn-teal);
-  /* Informational */
-  --color-info-bg: #E0F4F5;
-  /* Teal tint (derived) */
+  /* ==========================================================
+     SEMANTIC TOKENS — ACCENTS
+     ========================================================== */
+  
+  --accent-primary:         var(--palette-blue);
+  --accent-primary-bg:      var(--palette-blue-light);
+  --accent-success:         var(--palette-green);
+  --accent-warning:         var(--palette-amber);
+  --accent-danger:          var(--palette-red);
+  --accent-vault:           var(--palette-purple);
 
-  /* Interactive */
-  --color-interactive: var(--dtn-blue);
-  --color-interactive-2: var(--dtn-blue-mid);
-  --color-focus: var(--dtn-cyan);
-  /* Focus ring / active accent */
 
-  /* Emphasis */
-  --color-accent: var(--dtn-cyan);
-  --color-accent-alt: var(--dtn-lime);
+  /* ==========================================================
+     SEMANTIC TOKENS — BORDERS & DIVIDERS
+     ========================================================== */
+  
+  --border-default:         var(--palette-gray-200);
+  --border-subtle:          rgba(0, 0, 0, 0.06);
+  --border-on-dark:         rgba(255, 255, 255, 0.12);
 
-  /* Text hierarchy */
-  --color-text-heading: var(--dtn-navy);
-  --color-text-body: var(--dtn-neutral-dark);
-  --color-text-muted: var(--dtn-neutral-mid);
 
-  /* Borders & surfaces */
-  --color-border: var(--dtn-neutral-light);
-  --color-surface: var(--dtn-neutral-bg);
-  --color-surface-card: #FFFFFF;
+  /* ==========================================================
+     SEMANTIC TOKENS — SHADOWS
+     ========================================================== */
+  
+  --shadow-card:            0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-elevated:        0 4px 12px rgba(0, 0, 0, 0.10), 0 2px 4px rgba(0, 0, 0, 0.06);
 
-  /* ─── LEGACY ALIASES (for existing var() usages — do not add new usages) ── */
-  --dtn-neutral: var(--dtn-navy);
-  /* was #1A2B3C → navy now */
-  --dtn-muted: var(--dtn-neutral-dark);
-  /* was #5A6B7A → neutral-dark */
-  --dtn-bg: var(--dtn-neutral-bg);
-  --card-border: var(--dtn-neutral-light);
-  --card-shadow: 0 1px 4px rgba(0, 48, 87, 0.06), 0 2px 8px rgba(0, 48, 87, 0.04);
-  --radius: 0.5rem;
 
-  /* ─── GRADIENT UTILITIES ─────────────────────────────────────────────────── */
-  /*  All gradients built exclusively from official palette values             */
-  --dtn-gradient-blue: linear-gradient(135deg, #1B8FE0 0%, #1672B8 60%, #003057 100%);
-  --dtn-gradient-navy: linear-gradient(160deg, #2255A4 0%, #003057 100%);
-  --dtn-gradient-timeline: linear-gradient(90deg, #1B8FE0 0%, #4CB944 100%);
+  /* ==========================================================
+     SEMANTIC TOKENS — TYPOGRAPHY
+     ========================================================== */
+  
+  --font-heading:           'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body:              'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:              'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
 
-  /* ─── TYPOGRAPHY SCALE ───────────────────────────────────────────────────── */
-  --type-display: clamp(40px, 5vw, 68px);
-  --type-headline: clamp(28px, 3.5vw, 48px);
-  --type-subheadline: clamp(20px, 2vw, 28px);
-  --type-metric-unit: clamp(14px, 1.3vw, 18px);
-  --type-eyebrow: 11px;
 
-  --font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+  /* ==========================================================
+     SEMANTIC TOKENS — RAG STATUS
+     ========================================================== */
+  
+  --rag-green:              var(--accent-success);
+  --rag-yellow:             var(--accent-warning);
+  --rag-red:                var(--accent-danger);
+
+
+  /* ==========================================================
+     SEMANTIC TOKENS — BLOCKER SEVERITY
+     ========================================================== */
+  
+  --severity-action:        var(--accent-danger);
+  --severity-approval:      var(--accent-warning);
+  --severity-fyi:           var(--accent-primary);
+
+
+  /* ==========================================================
+     TEMPLATE PERSONALITY ACCENTS
+     Neutral theme: all identical. Branded themes differentiate.
+     ========================================================== */
+  
+  --accent-template-status:   var(--accent-primary);
+  --accent-template-strategy: var(--accent-primary);
+  --accent-template-kickoff:  var(--accent-primary);
+
+  /* ==========================================================
+     DEFAULT TEMPLATE VARIABLES (Fallbacks for un-overridden templates)
+     ========================================================== */
+  --surface-hero:           var(--surface-dark);
+  --surface-split:          var(--surface-dark);
+  --surface-split-alt:      var(--surface-dark);
+  --surface-page:           var(--surface-primary);
+  --surface-muted:          var(--surface-subtle);
+
+  --text-on-hero:           var(--text-on-dark);
+  --text-on-emphasis:       var(--text-on-dark);
+  --text-muted:             var(--text-tertiary);
+
+  --border-strong:          var(--text-primary);
+  --border-muted:           var(--border-default);
+
+  --border-width-card:      1px;
+  --border-width-accent:    3px;
+  --border-width-timeline:  3px;
+  --border-width-divider:   1px;
+  --border-radius-card:     12px;
+  --border-radius-badge:    4px;
+
+  --type-display:           clamp(40px, 5vw, 68px);
+  --type-slide-title:       clamp(32px, 4vw, 56px);
+  --type-slide-subtitle:    clamp(14px, 1.6vw, 18px);
+  --type-headline:          clamp(20px, 2.5vw, 32px);
+  --type-card-title:        clamp(16px, 1.8vw, 22px);
+  --type-card-body:         clamp(13px, 1.4vw, 16px);
+  --type-metric-large:      clamp(48px, 6vw, 84px);
+  --type-metric-medium:     clamp(18px, 2vw, 24px);
+  --type-metric-unit:       clamp(12px, 1.2vw, 16px);
+  --type-badge:             clamp(10px, 1vw, 12px);
+  --type-caption:           clamp(11px, 1vw, 13px);
+
+  --font-weight-title:      700;
+  --font-weight-card-title: 500;
+
+  --spacing-card-padding:   clamp(16px, 2cqi, 24px);
+  --spacing-card-gap:       clamp(12px, 1.5vw, 20px);
+  --spacing-section-gap:    clamp(24px, 3vw, 40px);
+  --spacing-slide-padding:  clamp(32px, 4vw, 60px);
+
+  --timeline-marker-size:   1.25rem;
+  --timeline-card-style:    none;
+  --kpi-card-style:         minimal;
+  --hero-content-position:  bottom;
+
+  --badge-critical-bg:      var(--rag-red);
+  --badge-critical-text:    var(--palette-white);
+  --badge-high-bg:          var(--rag-yellow);
+  --badge-high-text:        var(--palette-charcoal);
+  --badge-moderate-bg:      var(--palette-gray-200);
+  --badge-moderate-text:    var(--palette-charcoal);
+  --badge-action-bg:        var(--rag-red);
+  --badge-action-text:      var(--palette-white);
+  --badge-approval-bg:      var(--rag-yellow);
+  --badge-approval-text:    var(--palette-charcoal);
+  --badge-fyi-bg:           var(--palette-gray-200);
+  --badge-fyi-text:         var(--palette-charcoal);
 }
 
 /* ─── Base resets ───────────────────────────────────────────────────────── */
@@ -144,62 +190,64 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: var(--font-family);
+  font-family: var(--font-body);
   font-size: 14px;
-  color: var(--color-text-body);
-  background: var(--color-surface);
+  color: var(--text-primary);
+  background: var(--surface-primary);
   -webkit-font-smoothing: antialiased;
 }
 
 /* ─── Typography utilities ──────────────────────────────────────────────── */
 .eyebrow {
-  font-size: var(--type-eyebrow);
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--dtn-blue);
+  color: var(--accent-primary);
 }
 
-/* ─── Surface Overrides ─────────────────────────────────────────────────── */
+/* ==========================================================
+   DARK SURFACE OVERRIDES
+   ========================================================== */
+
+[data-surface="dark"],
+.slide-hero,
 .dark-surface {
-  color: #ffffff;
-  /* Forces CSS inheritance downwards for Typography base elements */
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.9);
-  --text-muted: rgba(255, 255, 255, 0.6);
-  --color-text-body: rgba(255, 255, 255, 0.9);
-  --color-text-muted: rgba(255, 255, 255, 0.6);
-  --color-text-heading: #ffffff;
+  --text-primary:       var(--text-on-dark);
+  --text-secondary:     var(--text-on-dark-muted);
+  --border-default:     var(--border-on-dark);
+  --surface-primary:    var(--surface-dark);
+  --surface-secondary:  rgba(255, 255, 255, 0.06);
+  --surface-subtle:     rgba(255, 255, 255, 0.03);
+  
+  color: var(--text-primary);
 }
 
 /* ─── Card base ─────────────────────────────────────────────────────────── */
 .card {
-  background: var(--color-surface-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  box-shadow: var(--card-shadow);
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-card);
 }
 
-/* ─── RAG pills — status indicators using official palette ─────────────── */
-/*  Green  → Primary Green + Dark Green text                                */
-/*  Yellow → Accent Yellow + dark gold text                                 */
-/*  Red    → Secondary Red + dark red text                                  */
+/* ─── RAG pills — status indicators using default palettes ─────────────── */
 .rag-green {
-  background: var(--color-success-bg);
-  color: var(--color-success-text);
-  border: 1px solid var(--color-success-border);
+  background: var(--rag-green);
+  color: var(--palette-white);
+  border: 1px solid transparent;
 }
 
 .rag-yellow {
-  background: var(--color-warning-bg);
-  color: var(--color-warning-text);
-  border: 1px solid var(--color-warning-border);
+  background: var(--rag-yellow);
+  color: var(--palette-charcoal);
+  border: 1px solid transparent;
 }
 
 .rag-red {
-  background: var(--color-error-bg);
-  color: var(--color-error-text);
-  border: 1px solid var(--color-error-border);
+  background: var(--rag-red);
+  color: var(--palette-white);
+  border: 1px solid transparent;
 }
 
 .rag-pill {
@@ -227,14 +275,14 @@ body {
   }
 
   body::after {
-    content: 'DTN \B7 Proprietary and Confidential';
+    content: 'Project Pulse \B7 Generated Content';
     display: block;
     text-align: center;
     font-size: 10px;
-    color: var(--dtn-neutral-dark);
+    color: var(--text-secondary);
     padding: 8px;
-    border-top: 1px solid var(--dtn-neutral-light);
-    font-family: 'Inter', sans-serif;
+    border-top: 1px solid var(--border-default);
+    font-family: var(--font-body);
   }
 
   .slide-page {
@@ -292,35 +340,34 @@ body {
 
 /* ─── TEMPLATE TOKENS: Status (Default) ─────────────────────────────────── */
 [data-template="status"],
-[data-template="default"],
-:root {
+[data-template="default"] {
   /* Surfaces */
-  --surface-hero: linear-gradient(135deg, #1497E3 0%, #4AAFE8 50%, #7DC5EF 100%);
-  --surface-primary: #1497E3;
-  --surface-secondary: #FFFFFF;
-  --surface-muted: #F5F7FA;
-  --surface-page: #FFFFFF;
-  --surface-split: var(--surface-hero);
-  --surface-split-alt: var(--surface-hero);
+  --surface-hero: var(--palette-charcoal);
+  --surface-primary: var(--palette-charcoal);
+  --surface-secondary: var(--palette-white);
+  --surface-muted: var(--palette-bg);
+  --surface-page: var(--palette-white);
+  --surface-split: var(--palette-charcoal);
+  --surface-split-alt: var(--palette-charcoal);
 
   /* Text */
-  --text-on-hero: #FFFFFF;
-  --text-primary: #003E6A;
-  --text-secondary: #888B8D;
-  --text-muted: #B0B2B4;
-  --text-on-emphasis: #FFFFFF;
+  --text-on-hero: var(--palette-white);
+  --text-primary: var(--palette-charcoal);
+  --text-secondary: var(--palette-gray-600);
+  --text-muted: var(--palette-gray-500);
+  --text-on-emphasis: var(--palette-white);
 
   /* Accents */
-  --accent-success: #68C949;
-  --accent-warning: #FF9E1B;
-  --accent-danger: #CD001A;
-  --accent-info: #1497E3;
-  --accent-progress: #1497E3;
+  --accent-success: var(--palette-green);
+  --accent-warning: var(--palette-amber);
+  --accent-danger: var(--palette-red);
+  --accent-info: var(--palette-blue);
+  --accent-progress: var(--palette-blue);
 
   /* Borders */
-  --border-default: #E0E1E3;
-  --border-strong: #1497E3;
-  --border-muted: #B0B2B4;
+  --border-default: var(--palette-gray-200);
+  --border-strong: var(--palette-blue);
+  --border-muted: var(--palette-gray-300);
   --border-width-card: 1px;
   --border-width-accent: 3px;
   --border-width-timeline: 3px;
@@ -330,6 +377,7 @@ body {
 
   /* Typography */
   --font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+  --type-display: clamp(40px, 5vw, 68px);
   --type-slide-title: clamp(32px, 4vw, 56px);
   --type-slide-subtitle: clamp(14px, 1.6vw, 18px);
   --type-headline: clamp(20px, 2.5vw, 32px);
@@ -373,19 +421,19 @@ body {
 
 /* ─── TEMPLATE TOKENS: Strategy ─────────────────────────────────────────── */
 [data-template="strategy"] {
-  --surface-hero: linear-gradient(135deg, #003057 0%, #1B4F7A 50%, #2255A4 100%);
-  --surface-primary: var(--dtn-navy);
-  --surface-secondary: #FFFFFF;
-  --surface-muted: var(--dtn-neutral-bg);
-  --surface-page: #FFFFFF;
-  --surface-split: var(--surface-hero);
-  --surface-split-alt: var(--dtn-gradient-navy);
+  --surface-hero: var(--palette-charcoal);
+  --surface-primary: var(--palette-charcoal);
+  --surface-secondary: var(--palette-white);
+  --surface-muted: var(--palette-bg);
+  --surface-page: var(--palette-white);
+  --surface-split: var(--palette-charcoal);
+  --surface-split-alt: var(--palette-gray-800);
 
-  --text-on-hero: #FFFFFF;
-  --text-primary: var(--dtn-navy);
-  --text-secondary: var(--dtn-neutral-dark);
-  --text-muted: var(--dtn-neutral-mid);
-  --text-on-emphasis: #FFFFFF;
+  --text-on-hero: var(--palette-white);
+  --text-primary: var(--palette-charcoal);
+  --text-secondary: var(--palette-gray-600);
+  --text-muted: var(--palette-gray-500);
+  --text-on-emphasis: var(--palette-white);
 
   .text-slide-subtitle {
     font-size: var(--type-slide-subtitle);
@@ -419,32 +467,32 @@ body {
     font-size: var(--type-headline);
   }
 
-  --border-default: var(--dtn-neutral-light);
-  --border-strong: var(--dtn-navy);
-  --border-muted: var(--dtn-neutral-mid);
+  --border-default: var(--palette-gray-200);
+  --border-strong: var(--palette-charcoal);
+  --border-muted: var(--palette-gray-300);
 
-  --accent-success: var(--dtn-green);
-  --accent-warning: var(--dtn-orange);
-  --accent-danger: var(--dtn-red);
-  --accent-info: var(--dtn-blue);
-  --accent-progress: var(--dtn-blue);
+  --accent-success: var(--palette-green);
+  --accent-warning: var(--palette-amber);
+  --accent-danger: var(--palette-red);
+  --accent-info: var(--palette-blue);
+  --accent-progress: var(--palette-blue);
 
-  --border-default: var(--dtn-neutral-light);
-  --border-strong: var(--dtn-navy);
-  --border-muted: var(--dtn-neutral-mid);
+  --border-default: var(--palette-gray-200);
+  --border-strong: var(--palette-charcoal);
+  --border-muted: var(--palette-gray-300);
 
-  --badge-critical-bg: var(--dtn-red);
-  --badge-critical-text: #FFFFFF;
-  --badge-high-bg: var(--dtn-orange);
-  --badge-high-text: var(--dtn-navy);
-  --badge-moderate-bg: var(--dtn-neutral-mid);
-  --badge-moderate-text: var(--dtn-navy);
-  --badge-action-bg: #FDEAEC;
-  --badge-action-text: #8B0F1A;
-  --badge-approval-bg: #FFF8DC;
-  --badge-approval-text: #8A6A00;
-  --badge-fyi-bg: var(--dtn-neutral-light);
-  --badge-fyi-text: var(--dtn-neutral-dark);
+  --badge-critical-bg: var(--palette-red);
+  --badge-critical-text: var(--palette-white);
+  --badge-high-bg: var(--palette-amber);
+  --badge-high-text: var(--palette-charcoal);
+  --badge-moderate-bg: var(--palette-gray-300);
+  --badge-moderate-text: var(--palette-charcoal);
+  --badge-action-bg: rgba(220, 53, 69, 0.1);
+  --badge-action-text: var(--palette-red);
+  --badge-approval-bg: rgba(255, 193, 7, 0.1);
+  --badge-approval-text: var(--palette-amber);
+  --badge-fyi-bg: var(--palette-gray-200);
+  --badge-fyi-text: var(--palette-gray-700);
 
   /* typography — proposed strategy scale */
   --type-slide-title: 3rem;
@@ -482,45 +530,45 @@ body {
 }
 
 /* ─── KICKOFF THEME OVERRIDES ───────────────────────────────────────────── */
-/* Industrial Safety Orange & Midnight Indigo (Black) */
+/* Neutral Base version for Kickoff */
 [data-template="kickoff"] {
-  --surface-page: #FFFFFF;
-  --surface-primary: #FFFFFF;
-  --surface-secondary: #F8FAFC;
-  --surface-muted: #F1F5F9;
-  --surface-card: #FFFFFF;
-  --surface-emphasis: #0A1128;
-  --surface-split: #F8FAFC;
-  --surface-split-alt: #F8FAFC;
-  --surface-hero: #0A1128;
+  --surface-page: var(--palette-white);
+  --surface-primary: var(--palette-white);
+  --surface-secondary: var(--palette-bg);
+  --surface-muted: var(--palette-gray-100);
+  --surface-card: var(--palette-white);
+  --surface-emphasis: var(--palette-charcoal);
+  --surface-split: var(--palette-bg);
+  --surface-split-alt: var(--palette-bg);
+  --surface-hero: var(--palette-charcoal);
 
-  --text-primary: #0A1128;
-  --text-secondary: #475569;
-  --text-muted: #94A3B8;
-  --text-on-emphasis: #FFFFFF;
+  --text-primary: var(--palette-charcoal);
+  --text-secondary: var(--palette-gray-600);
+  --text-muted: var(--palette-gray-400);
+  --text-on-emphasis: var(--palette-white);
 
-  --border-default: #E2E8F0;
-  --border-strong: #EA580C;
-  --border-muted: #F1F5F9;
+  --border-default: var(--palette-gray-200);
+  --border-strong: var(--palette-blue);
+  --border-muted: var(--palette-gray-100);
 
-  --accent-success: #10B981;
-  --accent-warning: #F59E0B;
-  --accent-danger: #EF4444;
-  --accent-info: #EA580C;
-  --accent-progress: #EA580C;
+  --accent-success: var(--palette-green);
+  --accent-warning: var(--palette-amber);
+  --accent-danger: var(--palette-red);
+  --accent-info: var(--palette-blue);
+  --accent-progress: var(--palette-blue);
 
-  --badge-critical-bg: #EF4444;
-  --badge-critical-text: #FFFFFF;
-  --badge-high-bg: #F59E0B;
-  --badge-high-text: #FFFFFF;
-  --badge-moderate-bg: #F1F5F9;
-  --badge-moderate-text: #0A1128;
-  --badge-action-bg: #EF4444;
-  --badge-action-text: #FFFFFF;
-  --badge-approval-bg: #F59E0B;
-  --badge-approval-text: #FFFFFF;
-  --badge-fyi-bg: #F1F5F9;
-  --badge-fyi-text: #0A1128;
+  --badge-critical-bg: var(--palette-red);
+  --badge-critical-text: var(--palette-white);
+  --badge-high-bg: var(--palette-amber);
+  --badge-high-text: var(--palette-white);
+  --badge-moderate-bg: var(--palette-gray-200);
+  --badge-moderate-text: var(--palette-charcoal);
+  --badge-action-bg: rgba(220, 53, 69, 0.1);
+  --badge-action-text: var(--palette-red);
+  --badge-approval-bg: rgba(255, 193, 7, 0.1);
+  --badge-approval-text: var(--palette-amber);
+  --badge-fyi-bg: var(--palette-gray-200);
+  --badge-fyi-text: var(--palette-charcoal);
 
   /* typography */
   --type-slide-title: 3rem;

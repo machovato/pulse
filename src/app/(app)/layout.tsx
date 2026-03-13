@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "DTN Project Pulse",
+    title: "Project Pulse",
 };
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -13,10 +13,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 bg-[var(--dtn-navy)] rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                        <div className="w-8 h-8 bg-[var(--text-primary)] rounded-lg flex items-center justify-center text-white font-bold text-sm">
                             P
                         </div>
-                        <span className="font-bold text-[var(--dtn-navy)] text-base">Project Pulse</span>
+                        <span className="font-bold text-[var(--text-primary)] text-base">Project Pulse</span>
                     </Link>
 
                     {/* Nav links */}
@@ -34,10 +34,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </main>
 
             {/* Footer */}
-            <footer className="bg-[var(--dtn-blue)] no-print" style={{ minHeight: "40px" }}>
+            <footer className="bg-[var(--accent-primary)] no-print" style={{ minHeight: "40px" }}>
                 <div className="max-w-7xl mx-auto px-6 h-10 flex items-center justify-end">
                     <span className="text-white text-xs font-medium opacity-80">
-                        {process.env.NEXT_PUBLIC_APP_VERSION} • DTN · Proprietary and Confidential
+                        {process.env.NEXT_PUBLIC_APP_VERSION} • Open Source Edition
                     </span>
                 </div>
             </footer>
@@ -49,7 +49,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
     return (
         <Link
             href={href}
-            className="relative px-4 py-2 text-sm font-medium text-[var(--dtn-muted)] hover:text-[var(--dtn-navy)] transition-colors rounded-md hover:bg-gray-50 group"
+            className="relative px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors rounded-md hover:bg-gray-50 group"
         >
             {children}
         </Link>

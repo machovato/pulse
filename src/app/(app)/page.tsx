@@ -16,8 +16,8 @@ import { DeckList } from "./DeckList";
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-    title: "DTN Project Pulse — Presentation Engine",
-    description: "Create and present project updates with the DTN meeting presentation engine.",
+    title: "Project Pulse — Presentation Engine",
+    description: "Create and present project updates with the meeting presentation engine.",
 };
 
 const TEMPLATE_LABELS: Record<string, string> = {
@@ -57,7 +57,7 @@ const SHORTCUTS = [
 
 const BLANK_SCAFFOLD = JSON.stringify(
     {
-        schemaVersion: 1,
+        schemaVersion: 2,
         meta: {
             title: "Untitled Deck",
             date: new Date().toISOString().split("T")[0],
@@ -134,14 +134,14 @@ export default async function HomePage() {
             {/* ── Hero header ── */}
             <div className="flex items-start justify-between gap-6">
                 <div>
-                    <p className="eyebrow mb-1">DTN Project Pulse</p>
+                    <p className="eyebrow mb-1">Project Pulse</p>
                     <h1
-                        className="font-bold text-[var(--color-text-heading)]"
+                        className="font-bold text-[var(--text-primary)]"
                         style={{ fontSize: "clamp(26px, 3vw, 36px)" }}
                     >
                         Presentation Engine
                     </h1>
-                    <p className="text-[var(--color-text-muted)] mt-1.5 text-sm max-w-sm">
+                    <p className="text-[var(--text-secondary)] mt-1.5 text-sm max-w-sm">
                         JSON-driven meeting decks. Every publish is an immutable record.
                     </p>
                 </div>
@@ -150,7 +150,7 @@ export default async function HomePage() {
                 <Link
                     href={editorHref}
                     id="new-deck-btn"
-                    className="inline-flex items-center gap-2 bg-[var(--dtn-blue)] text-white text-sm font-semibold px-5 py-3 rounded-xl hover:bg-[var(--dtn-blue-mid)] transition-colors shadow-sm shrink-0 group"
+                    className="inline-flex items-center gap-2 bg-[var(--accent-primary)] text-white text-sm font-semibold px-5 py-3 rounded-xl hover:bg-[var(--accent-primary-bg)] transition-colors shadow-sm shrink-0 group"
                 >
                     <PlusCircle className="w-4 h-4" />
                     New Deck
@@ -161,10 +161,10 @@ export default async function HomePage() {
             {/* ── Deck list ── */}
             <section>
                 <div className="flex items-baseline gap-3 mb-4">
-                    <h2 className="text-lg font-bold text-[var(--color-text-heading)]">
+                    <h2 className="text-lg font-bold text-[var(--text-primary)]">
                         Published Decks
                     </h2>
-                    <span className="text-xs text-[var(--color-text-muted)] font-medium">
+                    <span className="text-xs text-[var(--text-secondary)] font-medium">
                         {activeDecks.length} record{activeDecks.length !== 1 ? "s" : ""}
                     </span>
                 </div>
@@ -178,13 +178,13 @@ export default async function HomePage() {
 
             {/* ── Bottom Navigation Cards ── */}
             <section className="grid grid-cols-1 sm:grid-cols-1 gap-4">
-                <Link href="/archive" className="card p-4 flex items-center gap-4 hover:border-[var(--dtn-blue)] hover:shadow-md transition-all group">
+                <Link href="/archive" className="card p-4 flex items-center gap-4 hover:border-[var(--accent-primary)] hover:shadow-md transition-all group">
                     <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center shrink-0">
                         <Archive className="w-5 h-5 text-slate-500" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-sm text-[var(--color-text-heading)] group-hover:text-[var(--dtn-blue)] transition-colors">Archive</h3>
-                        <p className="text-xs text-[var(--color-text-muted)] mt-0.5">View past presentations</p>
+                        <h3 className="font-bold text-sm text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors">Archive</h3>
+                        <p className="text-xs text-[var(--text-secondary)] mt-0.5">View past presentations</p>
                     </div>
                 </Link>
             </section>
@@ -193,13 +193,13 @@ export default async function HomePage() {
             <section className="flex gap-3 flex-wrap">
                 <Link
                     href="/schema"
-                    className="inline-flex items-center gap-1.5 text-xs text-[var(--color-text-muted)] hover:text-[var(--dtn-blue)] border border-[var(--color-border)] rounded-lg px-3 py-2 transition-colors"
+                    className="inline-flex items-center gap-1.5 text-xs text-[var(--text-secondary)] hover:text-[var(--accent-primary)] border border-[var(--border-default)] rounded-lg px-3 py-2 transition-colors"
                 >
                     JSON Schema Reference
                 </Link>
                 <Link
                     href="/editor"
-                    className="inline-flex items-center gap-1.5 text-xs text-[var(--color-text-muted)] hover:text-[var(--dtn-blue)] border border-[var(--color-border)] rounded-lg px-3 py-2 transition-colors"
+                    className="inline-flex items-center gap-1.5 text-xs text-[var(--text-secondary)] hover:text-[var(--accent-primary)] border border-[var(--border-default)] rounded-lg px-3 py-2 transition-colors"
                 >
                     Editor
                 </Link>
@@ -208,11 +208,11 @@ export default async function HomePage() {
             {/* ── Keyboard shortcuts ── */}
             <section>
                 <div className="flex items-center gap-2 mb-4">
-                    <Keyboard className="w-4 h-4 text-[var(--dtn-blue)]" />
-                    <h2 className="text-sm font-bold text-[var(--color-text-heading)] uppercase tracking-wider">
+                    <Keyboard className="w-4 h-4 text-[var(--accent-primary)]" />
+                    <h2 className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-wider">
                         Keyboard Shortcuts
                     </h2>
-                    <span className="text-xs text-[var(--color-text-muted)]">— presentation mode</span>
+                    <span className="text-xs text-[var(--text-secondary)]">— presentation mode</span>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -221,10 +221,10 @@ export default async function HomePage() {
                             key={key}
                             className="card p-3 flex flex-col gap-1.5"
                         >
-                            <kbd className="inline-block bg-gray-50 border border-[var(--color-border)] text-[var(--dtn-blue)] text-[11px] font-mono font-bold px-2 py-0.5 rounded w-fit">
+                            <kbd className="inline-block bg-gray-50 border border-[var(--border-default)] text-[var(--accent-primary)] text-[11px] font-mono font-bold px-2 py-0.5 rounded w-fit">
                                 {key}
                             </kbd>
-                            <span className="text-xs text-[var(--color-text-muted)] leading-snug">{action}</span>
+                            <span className="text-xs text-[var(--text-secondary)] leading-snug">{action}</span>
                         </div>
                     ))}
                 </div>
@@ -238,17 +238,17 @@ function EmptyState({ editorHref }: { editorHref: string }) {
     return (
         <div className="card p-12 flex flex-col items-center text-center gap-4">
             <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center">
-                <FileText className="w-8 h-8 text-[var(--dtn-blue)]" />
+                <FileText className="w-8 h-8 text-[var(--accent-primary)]" />
             </div>
             <div>
-                <p className="text-lg font-bold text-[var(--color-text-heading)] mb-1">No decks yet</p>
-                <p className="text-sm text-[var(--color-text-muted)]">
+                <p className="text-lg font-bold text-[var(--text-primary)] mb-1">No decks yet</p>
+                <p className="text-sm text-[var(--text-secondary)]">
                     Create your first presentation deck to get started.
                 </p>
             </div>
             <Link
                 href={editorHref}
-                className="inline-flex items-center gap-2 bg-[var(--dtn-blue)] text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-[var(--dtn-blue-mid)] transition-colors"
+                className="inline-flex items-center gap-2 bg-[var(--accent-primary)] text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-[var(--accent-primary-bg)] transition-colors"
             >
                 <PlusCircle className="w-4 h-4" />
                 New Deck

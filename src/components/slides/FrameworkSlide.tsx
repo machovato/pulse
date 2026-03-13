@@ -43,8 +43,8 @@ export function FrameworkSlide({ slide, disableAnimation = false }: { slide: Loo
         return (
             <motion.div
                 className={cn(
-                    "w-full h-full flex flex-col pt-8 px-8 pb-10 rounded-card bg-surface-primary border-card border-l-accent justify-start shadow-xl border-l-[#CD001A]",
-                    !isKickoff && "dark-surface"
+                    "w-full h-full flex flex-col pt-8 px-8 pb-10 rounded-card bg-[var(--surface-primary)] border-card justify-start shadow-xl",
+                    isKickoff ? "border-l-[var(--accent-template-kickoff)]" : "border-l-[var(--text-primary)] dark-surface"
                 )}
                 style={{
                     borderWidth: "var(--border-width-card)",

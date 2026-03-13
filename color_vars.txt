@@ -1,0 +1,37 @@
+src/app/(app)/DeckList.tsx:103:            <div className="flex items-center gap-1 border-b border-[var(--color-border)] mb-2 overflow-x-auto pb-px">
+src/app/(app)/DeckList.tsx:108:                        className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id ? 'border-[var(--dtn-blue)] text-[var(--dtn-blue)]' : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text-heading)] hover:border-gray-300'}`}
+src/app/(app)/DeckList.tsx:119:                        <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-1 flex items-center gap-1.5"><Pin className="w-3.5 h-3.5" /> Pinned</p>
+src/app/(app)/DeckList.tsx:128:                        <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-1">Recent</p>
+src/app/(app)/DeckList.tsx:148:                             <p className="text-[var(--color-text-muted)] text-sm font-medium">
+src/app/(app)/DeckList.tsx:273:                                className="text-sm font-bold text-[var(--color-text-heading)] border border-[var(--dtn-blue)] rounded px-2 py-0.5 outline-none focus:ring-2 focus:ring-[var(--dtn-blue)]/20 shadow-sm"
+src/app/(app)/DeckList.tsx:280:                            <Link href={`/deck/${deck.id}`} className="text-[15px] font-bold text-[var(--color-text-heading)] truncate hover:text-[var(--dtn-blue)] transition-colors">
+src/app/(app)/DeckList.tsx:293:                    <span className="text-xs text-[var(--color-text-muted)] pointer-events-none">
+src/app/(app)/DeckList.tsx:297:                    <span className="inline-flex items-center gap-1 text-[11px] text-[var(--color-text-muted)] pointer-events-none">
+src/app/(app)/DeckList.tsx:311:                <span className="text-[11px] font-medium text-[var(--color-text-muted)] bg-slate-50 border border-slate-200 px-2 py-1 rounded-md">
+src/app/(app)/page.tsx:139:                        className="font-bold text-[var(--color-text-heading)]"
+src/app/(app)/page.tsx:144:                    <p className="text-[var(--color-text-muted)] mt-1.5 text-sm max-w-sm">
+src/app/(app)/page.tsx:164:                    <h2 className="text-lg font-bold text-[var(--color-text-heading)]">
+src/app/(app)/page.tsx:167:                    <span className="text-xs text-[var(--color-text-muted)] font-medium">
+src/app/(app)/page.tsx:186:                        <h3 className="font-bold text-sm text-[var(--color-text-heading)] group-hover:text-[var(--dtn-blue)] transition-colors">Archive</h3>
+src/app/(app)/page.tsx:187:                        <p className="text-xs text-[var(--color-text-muted)] mt-0.5">View past presentations</p>
+src/app/(app)/page.tsx:196:                    className="inline-flex items-center gap-1.5 text-xs text-[var(--color-text-muted)] hover:text-[var(--dtn-blue)] border border-[var(--color-border)] rounded-lg px-3 py-2 transition-colors"
+src/app/(app)/page.tsx:202:                    className="inline-flex items-center gap-1.5 text-xs text-[var(--color-text-muted)] hover:text-[var(--dtn-blue)] border border-[var(--color-border)] rounded-lg px-3 py-2 transition-colors"
+src/app/(app)/page.tsx:212:                    <h2 className="text-sm font-bold text-[var(--color-text-heading)] uppercase tracking-wider">
+src/app/(app)/page.tsx:215:                    <span className="text-xs text-[var(--color-text-muted)]">— presentation mode</span>
+src/app/(app)/page.tsx:224:                            <kbd className="inline-block bg-gray-50 border border-[var(--color-border)] text-[var(--dtn-blue)] text-[11px] font-mono font-bold px-2 py-0.5 rounded w-fit">
+src/app/(app)/page.tsx:227:                            <span className="text-xs text-[var(--color-text-muted)] leading-snug">{action}</span>
+src/app/(app)/page.tsx:244:                <p className="text-lg font-bold text-[var(--color-text-heading)] mb-1">No decks yet</p>
+src/app/(app)/page.tsx:245:                <p className="text-sm text-[var(--color-text-muted)]">
+src/styles/globals.css:149:  color: var(--color-text-body);
+src/styles/globals.css:150:  background: var(--color-surface);
+src/styles/globals.css:177:  background: var(--color-surface-card);
+src/styles/globals.css:178:  border: 1px solid var(--color-border);
+src/styles/globals.css:188:  background: var(--color-success-bg);
+src/styles/globals.css:189:  color: var(--color-success-text);
+src/styles/globals.css:190:  border: 1px solid var(--color-success-border);
+src/styles/globals.css:194:  background: var(--color-warning-bg);
+src/styles/globals.css:195:  color: var(--color-warning-text);
+src/styles/globals.css:196:  border: 1px solid var(--color-warning-border);
+src/styles/globals.css:200:  background: var(--color-error-bg);
+src/styles/globals.css:201:  color: var(--color-error-text);
+src/styles/globals.css:202:  border: 1px solid var(--color-error-border);

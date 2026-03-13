@@ -33,32 +33,32 @@ function LoginForm() {
     };
 
     return (
-        <div className="min-h-screen bg-[var(--dtn-bg)] flex items-center justify-center px-4">
+        <div className="min-h-screen bg-[var(--surface-primary)] flex items-center justify-center px-4">
             <div className="w-full max-w-sm">
                 {/* Logo */}
                 <div className="flex items-center justify-center gap-2.5 mb-8">
-                    <div className="w-10 h-10 bg-[var(--dtn-navy)] rounded-xl flex items-center justify-center text-white font-bold text-lg">
+                    <div className="w-10 h-10 bg-[var(--text-primary)] rounded-xl flex items-center justify-center text-white font-bold text-lg">
                         P
                     </div>
-                    <span className="font-bold text-[var(--dtn-navy)] text-xl">Project Pulse</span>
+                    <span className="font-bold text-[var(--text-primary)] text-xl">Project Pulse</span>
                 </div>
 
                 <div className="card p-8">
                     <div className="flex justify-center mb-6">
                         <div className="p-3 bg-blue-50 rounded-full">
-                            <Lock className="w-6 h-6 text-[var(--dtn-blue)]" />
+                            <Lock className="w-6 h-6 text-[var(--accent-primary)]" />
                         </div>
                     </div>
-                    <h1 className="text-xl font-bold text-[var(--dtn-navy)] text-center mb-1">
+                    <h1 className="text-xl font-bold text-[var(--text-primary)] text-center mb-1">
                         Editor Access
                     </h1>
-                    <p className="text-sm text-[var(--dtn-muted)] text-center mb-6">
+                    <p className="text-sm text-[var(--text-secondary)] text-center mb-6">
                         Enter your admin secret to continue.
                     </p>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-[var(--dtn-neutral)] mb-1.5">
+                            <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">
                                 Admin Secret
                             </label>
                             <div className="relative">
@@ -67,13 +67,13 @@ function LoginForm() {
                                     value={secret}
                                     onChange={(e) => setSecret(e.target.value)}
                                     placeholder="Enter your secret…"
-                                    className="w-full border border-[var(--card-border)] rounded-lg px-3 py-2.5 pr-10 text-sm text-[var(--dtn-neutral)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--dtn-blue)] focus:border-transparent"
+                                    className="w-full border border-[var(--border-default)] rounded-lg px-3 py-2.5 pr-10 text-sm text-[var(--text-primary)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent"
                                     autoFocus
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShow((s) => !s)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--dtn-muted)]"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]"
                                 >
                                     {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                 </button>
@@ -81,7 +81,7 @@ function LoginForm() {
                         </div>
 
                         {error && (
-                            <p className="text-xs text-[var(--dtn-red)] bg-rose-50 border border-rose-100 rounded-lg p-2.5">
+                            <p className="text-xs text-[var(--accent-danger)] bg-rose-50 border border-rose-100 rounded-lg p-2.5">
                                 {error}
                             </p>
                         )}
@@ -89,14 +89,14 @@ function LoginForm() {
                         <button
                             type="submit"
                             disabled={!secret || loading}
-                            className="w-full bg-[var(--dtn-blue)] text-white font-semibold py-2.5 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                            className="w-full bg-[var(--accent-primary)] text-white font-semibold py-2.5 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                         >
                             {loading ? "Checking…" : "Continue"}
                         </button>
                     </form>
                 </div>
 
-                <p className="text-center text-xs text-[var(--dtn-muted)] mt-4">
+                <p className="text-center text-xs text-[var(--text-secondary)] mt-4">
                     /deck/[id] links are always publicly accessible.
                 </p>
             </div>
@@ -106,7 +106,7 @@ function LoginForm() {
 
 export default function LoginPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen bg-[var(--dtn-bg)]" />}>
+        <Suspense fallback={<div className="min-h-screen bg-[var(--surface-primary)]" />}>
             <LoginForm />
         </Suspense>
     );

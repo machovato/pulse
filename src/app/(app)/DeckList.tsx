@@ -3,14 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
-import { Play, Calendar, Trash2, Edit2, Loader2, Pin, Target, Activity, Rocket, FileText, Archive, Star } from "lucide-react";
+import { Play, Calendar, Trash2, Edit2, Loader2, Pin, Target, Activity, Rocket, FileText, Archive, Star, Code, Type } from "lucide-react";
 import { deleteDeck, renameDeck, togglePinDeck, archiveDeck } from "@/app/actions";
 
 const TEMPLATE_STYLES: Record<string, { bg: string, text: string, icon: React.FC<any> }> = {
-    strategy: { bg: "bg-[#003E6A]/15", text: "text-[#003E6A]", icon: Target },
-    status: { bg: "bg-[#1497E3]/15", text: "text-[#1497E3]", icon: Activity },
-    kickoff: { bg: "bg-[#C4652A]/15", text: "text-[#C4652A]", icon: Rocket },
-    default: { bg: "bg-slate-500/15", text: "text-slate-500", icon: FileText },
+    strategy: { bg: "bg-[var(--accent-template-strategy)]/15", text: "text-[var(--accent-template-strategy)]", icon: Target },
+    status: { bg: "bg-[var(--accent-template-status)]/15", text: "text-[var(--accent-template-status)]", icon: Activity },
+    kickoff: { bg: "bg-[var(--accent-template-kickoff)]/15", text: "text-[var(--accent-template-kickoff)]", icon: Rocket },
+    default: { bg: "bg-[var(--surface-subtle)]/15", text: "text-[var(--text-secondary)]", icon: FileText },
 };
 
 const TEMPLATE_LABELS: Record<string, string> = {
@@ -100,12 +100,12 @@ export function DeckList({ decks }: { decks: DeckRow[] }) {
     return (
         <div className="flex flex-col gap-6">
             {/* Tabs */}
-            <div className="flex items-center gap-1 border-b border-[var(--color-border)] mb-2 overflow-x-auto pb-px">
+            <div className="flex items-center gap-1 border-b border-[var(--border-default)] mb-2 overflow-x-auto pb-px">
                 {tabs.map(tab => (
                     <button
                         key={tab.id}
                         onClick={() => { setActiveTab(tab.id); setIsExpanded(false); }}
-                        className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id ? 'border-[var(--dtn-blue)] text-[var(--dtn-blue)]' : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text-heading)] hover:border-gray-300'}`}
+                        className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id ? 'border-[var(--accent-primary)] text-[var(--accent-primary)]' : 'border-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-gray-300'}`}
                     >
                         {tab.label === "Starred" && <Star className="w-3.5 h-3.5 inline-block mr-1.5 -mt-0.5" />}
                         {tab.label}
@@ -116,7 +116,7 @@ export function DeckList({ decks }: { decks: DeckRow[] }) {
             <div className="flex flex-col gap-8">
                 {pinnedDecks.length > 0 && (
                     <div className="flex flex-col gap-2">
-                        <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-1 flex items-center gap-1.5"><Pin className="w-3.5 h-3.5" /> Pinned</p>
+                        <p className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider mb-1 flex items-center gap-1.5"><Pin className="w-3.5 h-3.5" /> Pinned</p>
                         {pinnedDecks.map((deck) => (
                             <DeckRowItem key={deck.id} deck={deck} />
                         ))}
@@ -125,7 +125,7 @@ export function DeckList({ decks }: { decks: DeckRow[] }) {
 
                 <div className="flex flex-col gap-2">
                     {pinnedDecks.length > 0 && unpinnedDecks.length > 0 && (
-                        <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-1">Recent</p>
+                        <p className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider mb-1">Recent</p>
                     )}
                     {displayedUnpinned.map((deck) => (
                         <DeckRowItem key={deck.id} deck={deck} />
@@ -134,7 +134,7 @@ export function DeckList({ decks }: { decks: DeckRow[] }) {
                     {hasMoreUnpinned && (
                         <button
                             onClick={() => setIsExpanded(!isExpanded)}
-                            className="mt-2 text-sm font-semibold text-[var(--dtn-blue)] hover:text-blue-700 transition-colors w-full py-2 hover:bg-blue-50/50 rounded-lg"
+                            className="mt-2 text-sm font-semibold text-[var(--accent-primary)] hover:text-blue-700 transition-colors w-full py-2 hover:bg-blue-50/50 rounded-lg"
                         >
                             {isExpanded ? "Show less" : `View ${unpinnedDecks.length - 10} more`}
                         </button>
@@ -145,7 +145,7 @@ export function DeckList({ decks }: { decks: DeckRow[] }) {
                              <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center">
                                  <FileText className="w-5 h-5 text-gray-400" />
                              </div>
-                             <p className="text-[var(--color-text-muted)] text-sm font-medium">
+                             <p className="text-[var(--text-secondary)] text-sm font-medium">
                                  No {activeTab !== "all" && activeTab !== "starred" ? activeTab : activeTab === "starred" ? "starred" : ""} decks found.
                              </p>
                          </div>
@@ -270,14 +270,14 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
                                 onKeyDown={handleKeyDown}
                                 onBlur={handleSave}
                                 disabled={isSaving}
-                                className="text-sm font-bold text-[var(--color-text-heading)] border border-[var(--dtn-blue)] rounded px-2 py-0.5 outline-none focus:ring-2 focus:ring-[var(--dtn-blue)]/20 shadow-sm"
+                                className="text-sm font-bold text-[var(--text-primary)] border border-[var(--accent-primary)] rounded px-2 py-0.5 outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/20 shadow-sm"
                                 onClick={(e) => e.stopPropagation()}
                             />
                             {isSaving && <Loader2 className="w-3 h-3 animate-spin text-gray-400" />}
                         </div>
                     ) : (
                         <div className="flex items-center gap-2">
-                            <Link href={`/deck/${deck.id}`} className="text-[15px] font-bold text-[var(--color-text-heading)] truncate hover:text-[var(--dtn-blue)] transition-colors">
+                            <Link href={`/deck/${deck.id}`} className="text-[15px] font-bold text-[var(--text-primary)] truncate hover:text-[var(--accent-primary)] transition-colors">
                                 {deck.title}
                             </Link>
                             {deck.totalVersions > 1 && (
@@ -290,11 +290,11 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
                 </div>
 
                 <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-[var(--color-text-muted)] pointer-events-none">
+                    <span className="text-xs text-[var(--text-secondary)] pointer-events-none">
                         {subtitle}
                     </span>
                     <span className="text-gray-300 text-xs pointer-events-none">•</span>
-                    <span className="inline-flex items-center gap-1 text-[11px] text-[var(--color-text-muted)] pointer-events-none">
+                    <span className="inline-flex items-center gap-1 text-[11px] text-[var(--text-secondary)] pointer-events-none">
                         <Calendar className="w-3 h-3" />
                         {formatDate(deck.date.toISOString())}
                     </span>
@@ -308,7 +308,7 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
                         {RAG_LABELS[deck.rag.toLowerCase()] || deck.rag}
                     </span>
                 )}
-                <span className="text-[11px] font-medium text-[var(--color-text-muted)] bg-slate-50 border border-slate-200 px-2 py-1 rounded-md">
+                <span className="text-[11px] font-medium text-[var(--text-secondary)] bg-slate-50 border border-slate-200 px-2 py-1 rounded-md">
                     {deck.slideCount} slide{deck.slideCount !== 1 ? 's' : ''}
                 </span>
             </div>
@@ -318,7 +318,7 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
                 <button
                     onClick={handlePin}
                     disabled={isPinning}
-                    className={`p-2 rounded-md transition-colors ${deck.pinned ? 'text-[var(--dtn-blue)] bg-blue-50' : 'text-gray-400 hover:text-[var(--dtn-blue)] hover:bg-blue-50'}`}
+                    className={`p-2 rounded-md transition-colors ${deck.pinned ? 'text-[var(--accent-primary)] bg-blue-50' : 'text-gray-400 hover:text-[var(--accent-primary)] hover:bg-blue-50'}`}
                     title={deck.pinned ? "Unpin Deck" : "Pin Deck"}
                 >
                     {isPinning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Pin className={`w-4 h-4 ${deck.pinned ? 'fill-current transform rotate-45' : ''}`} />}
@@ -329,11 +329,19 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
                         e.stopPropagation();
                         setIsEditing(true);
                     }}
-                    className="p-2 text-gray-400 hover:text-[var(--dtn-blue)] hover:bg-blue-50 rounded-md transition-colors"
+                    className="p-2 text-gray-400 hover:text-[var(--accent-primary)] hover:bg-blue-50 rounded-md transition-colors"
                     title="Rename Deck"
                 >
-                    <Edit2 className="w-4 h-4" />
+                    <Type className="w-4 h-4" />
                 </button>
+                <Link
+                    href={`/editor?editId=${deck.id}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="p-2 text-gray-400 hover:text-[var(--accent-primary)] hover:bg-blue-50 rounded-md transition-colors"
+                    title="Edit JSON Source"
+                >
+                    <Code className="w-4 h-4" />
+                </Link>
                 <button
                     onClick={handleArchive}
                     disabled={isArchiving}

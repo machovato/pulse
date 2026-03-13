@@ -175,7 +175,7 @@ export function SlideFormEditor({
                 <button
                     onClick={handleSave}
                     disabled={isSaving}
-                    className="px-4 py-2 text-sm font-semibold text-white bg-[var(--dtn-blue)] hover:bg-blue-600 rounded-lg shadow-sm transition-all flex items-center gap-2"
+                    className="px-4 py-2 text-sm font-semibold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-bg)] rounded-lg shadow-sm transition-all flex items-center gap-2"
                 >
                     {isSaving && <Loader2 className="w-4 h-4 animate-spin" />}
                     {isSaving ? "Saving..." : "Save Changes"}

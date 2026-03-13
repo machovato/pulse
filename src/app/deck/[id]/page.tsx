@@ -11,7 +11,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props) {
     const record = await prisma.update.findUnique({ where: { id: params.id } });
-    return { title: record ? `${record.title} — DTN Project Pulse` : "Deck Not Found" };
+    return { title: record ? `${record.title} — Project Pulse` : "Deck Not Found" };
 }
 
 export default async function DeckPage({ params }: Props) {
@@ -25,10 +25,10 @@ export default async function DeckPage({ params }: Props) {
     );
     if (!parsed.success) {
         return (
-            <div className="flex items-center justify-center h-screen bg-[var(--dtn-bg)]">
+            <div className="flex items-center justify-center h-screen bg-[var(--surface-primary)]">
                 <div className="card p-10 max-w-md text-center">
-                    <p className="text-lg font-bold text-[var(--dtn-navy)] mb-2">Deck data error</p>
-                    <p className="text-sm text-[var(--dtn-muted)]">
+                    <p className="text-lg font-bold text-[var(--text-primary)] mb-2">Deck data error</p>
+                    <p className="text-sm text-[var(--text-secondary)]">
                         Could not parse stored JSON for this deck. It may be from an incompatible schema version.
                     </p>
                 </div>

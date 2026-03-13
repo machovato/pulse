@@ -1,0 +1,160 @@
+/* ============================================================
+   PULSE THEME — "Obsidian"
+   ============================================================
+   
+   Personality: Dark cockpit. Authoritative. High-stakes.
+   Default for: Strategy decks
+   
+   FOR ANTIGRAVITY:
+   - Save as public/themes/obsidian.css
+   - Loaded when meta.theme = "obsidian"
+   - Overrides neutral defaults via [data-theme="obsidian"]
+   - The pulse-strategy skill should set meta.theme: "obsidian"
+     in its output JSON
+   
+   ============================================================ */
+
+[data-theme="obsidian"] {
+
+  /* ==========================================================
+     SOURCE PALETTE
+     ========================================================== */
+  
+  --palette-obsidian:     #0F172A;  /* Deep navy-black — primary surface */
+  --palette-slate-800:    #1E293B;  /* Slightly lighter — card surfaces */
+  --palette-slate-700:    #334155;  /* Mid slate — borders, secondary elements */
+  --palette-slate-500:    #64748B;  /* Muted — tertiary text, metadata */
+  --palette-slate-300:    #CBD5E1;  /* Light slate — secondary text on dark */
+  --palette-white:        #FFFFFF;  /* Pure white — primary text, headings */
+  --palette-violet:       #7C3AED;  /* Deep violet — primary accent */
+  --palette-violet-light: #A78BFA;  /* Light violet — hover, secondary accent */
+  --palette-violet-bg:    rgba(124, 58, 237, 0.12);  /* Violet tint — badges, highlights */
+  --palette-cyan:         #06B6D4;  /* Cyber cyan — active/current indicators */
+  --palette-cyan-bg:      rgba(6, 182, 212, 0.12);  /* Cyan tint — active badges */
+  --palette-green:        #22C55E;  /* Vivid green — success on dark */
+  --palette-amber:        #F59E0B;  /* Warm amber — warning on dark */
+  --palette-red:          #EF4444;  /* Bright red — danger on dark */
+
+
+  /* ==========================================================
+     SEMANTIC TOKENS — SURFACES
+     ========================================================== */
+  
+  --surface-primary:        var(--palette-obsidian);
+  --surface-secondary:      var(--palette-slate-800);
+  --surface-dark:           var(--palette-obsidian);
+  --surface-muted:          rgba(255, 255, 255, 0.04);
+  --surface-subtle:         rgba(255, 255, 255, 0.03);
+  --surface-glass:          rgba(255, 255, 255, 0.05);
+  
+  --surface-page:           var(--surface-primary);
+  --surface-split:          var(--surface-primary);
+  --surface-split-alt:      var(--surface-secondary);
+  --surface-hero:           var(--surface-primary);
+
+
+  /* ==========================================================
+     SEMANTIC TOKENS — TEXT
+     ========================================================== */
+  
+  --text-primary:           var(--palette-white);
+  --text-secondary:         var(--palette-slate-300);
+  --text-tertiary:          var(--palette-slate-500);
+  --text-on-dark:           var(--palette-white);
+  --text-on-dark-muted:     var(--palette-slate-300);
+  --text-muted:             var(--text-tertiary);
+  --text-on-emphasis:       var(--text-primary);
+  --text-on-hero:           var(--text-primary);
+
+
+  /* ==========================================================
+     SEMANTIC TOKENS — ACCENTS
+     ========================================================== */
+  
+  --accent-primary:         var(--palette-violet);
+  --accent-primary-bg:      var(--palette-violet-bg);
+  --accent-success:         var(--palette-green);
+  --accent-warning:         var(--palette-amber);
+  --accent-danger:          var(--palette-red);
+  --accent-vault:           var(--palette-violet-light);
+  --accent-info:            var(--palette-violet);
+  --accent-progress:        var(--palette-cyan);
+
+
+  /* ==========================================================
+     SEMANTIC TOKENS — BORDERS & DIVIDERS
+     ========================================================== */
+  
+  --border-default:         var(--palette-slate-700);
+  --border-subtle:          rgba(255, 255, 255, 0.06);
+  --border-on-dark:         rgba(255, 255, 255, 0.12);
+  --border-strong:          var(--palette-slate-500);
+  --border-muted:           var(--palette-slate-700);
+
+
+  /* ==========================================================
+     SEMANTIC TOKENS — SHADOWS
+     ========================================================== */
+  
+  --shadow-card:            0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-elevated:        0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+
+
+  /* ==========================================================
+     SEMANTIC TOKENS — TYPOGRAPHY
+     ========================================================== */
+  
+  --font-heading:           'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body:              'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:              'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+
+  /* ==========================================================
+     SEMANTIC TOKENS — RAG STATUS
+     Brighter values for dark background legibility
+     ========================================================== */
+  
+  --rag-green:              var(--palette-green);
+  --rag-yellow:             var(--palette-amber);
+  --rag-red:                var(--palette-red);
+
+
+  /* ==========================================================
+     SEMANTIC TOKENS — BLOCKER SEVERITY
+     ========================================================== */
+  
+  --severity-action:        var(--palette-red);
+  --severity-approval:      var(--palette-amber);
+  --severity-fyi:           var(--palette-cyan);
+
+
+  /* ==========================================================
+     TEMPLATE PERSONALITY ACCENTS
+     ========================================================== */
+  
+  --accent-template-status:   var(--palette-cyan);
+  --accent-template-strategy: var(--palette-violet);
+  --accent-template-kickoff:  var(--palette-amber);
+}
+
+
+/* ==========================================================
+   OBSIDIAN-SPECIFIC OVERRIDES
+   
+   In the obsidian theme, ALL surfaces are dark by default.
+   The dark surface overrides from the neutral theme are
+   effectively the base state. We only need to handle the
+   few places where the renderer expects a "light" card on
+   a "dark" page.
+   ========================================================== */
+
+[data-theme="obsidian"] .slide-hero {
+  --surface-primary:    var(--palette-obsidian);
+  --surface-secondary:  rgba(255, 255, 255, 0.04);
+}
+
+/* Cards on dark backgrounds need subtle elevation */
+[data-theme="obsidian"] [data-surface="card"] {
+  --surface-secondary:  var(--palette-slate-800);
+  --border-default:     var(--palette-slate-700);
+}

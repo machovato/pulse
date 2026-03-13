@@ -86,9 +86,9 @@ export function structuralRepair(raw: unknown): { fixed: unknown; changes: strin
     let obj = raw as AnyObj;
 
     // Ensure schemaVersion
-    if ((obj.schemaVersion as number) !== 1) {
-        changes.push("Set schemaVersion to 1");
-        obj = { ...obj, schemaVersion: 1 };
+    if ((obj.schemaVersion as number) !== 2) {
+        changes.push("Set schemaVersion to 2");
+        obj = { ...obj, schemaVersion: 2 };
     }
 
     // Repair meta

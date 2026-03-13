@@ -56,8 +56,8 @@ export function SchemaPageClient({ fullSchema, templateExamples, slideTypes, tem
             {/* Header */}
             <div className="mb-8">
                 <p className="eyebrow mb-1">Contract</p>
-                <h1 className="text-3xl font-bold text-[var(--dtn-navy)] mb-2">JSON Schema Reference</h1>
-                <p className="text-[var(--dtn-muted)] text-sm max-w-2xl">
+                <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-2">JSON Schema Reference</h1>
+                <p className="text-[var(--text-secondary)] text-sm max-w-2xl">
                     This page is the live contract between the AI content generator and the presentation engine.
                     It is generated directly from the Zod validation schema — always in sync.
                 </p>
@@ -66,7 +66,7 @@ export function SchemaPageClient({ fullSchema, templateExamples, slideTypes, tem
             <div className="grid grid-cols-1 xl:grid-cols-[1fr_420px] gap-8">
                 {/* Left: Slide type reference */}
                 <div>
-                    <h2 className="text-xl font-bold text-[var(--dtn-navy)] mb-4">Slide Types</h2>
+                    <h2 className="text-xl font-bold text-[var(--text-primary)] mb-4">Slide Types</h2>
                     <div className="space-y-2">
                         {slideTypes.map((type) => (
                             <div key={type} className="card overflow-hidden">
@@ -75,17 +75,17 @@ export function SchemaPageClient({ fullSchema, templateExamples, slideTypes, tem
                                     className="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition-colors"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <code className="text-sm font-mono font-semibold bg-blue-50 text-[var(--dtn-blue)] px-2 py-0.5 rounded">
+                                        <code className="text-sm font-mono font-semibold bg-blue-50 text-[var(--accent-primary)] px-2 py-0.5 rounded">
                                             {type}
                                         </code>
-                                        <span className="text-sm text-[var(--dtn-muted)]">
+                                        <span className="text-sm text-[var(--text-secondary)]">
                                             {SLIDE_DESCRIPTIONS[type]}
                                         </span>
                                     </div>
                                     {expandedSlides[type] ? (
-                                        <ChevronUp className="w-4 h-4 text-[var(--dtn-muted)] shrink-0" />
+                                        <ChevronUp className="w-4 h-4 text-[var(--text-secondary)] shrink-0" />
                                     ) : (
-                                        <ChevronDown className="w-4 h-4 text-[var(--dtn-muted)] shrink-0" />
+                                        <ChevronDown className="w-4 h-4 text-[var(--text-secondary)] shrink-0" />
                                     )}
                                 </button>
                                 <AnimatePresence>
@@ -106,23 +106,23 @@ export function SchemaPageClient({ fullSchema, templateExamples, slideTypes, tem
                     </div>
 
                     {/* Template registry */}
-                    <h2 className="text-xl font-bold text-[var(--dtn-navy)] mt-8 mb-4">Template Registry</h2>
+                    <h2 className="text-xl font-bold text-[var(--text-primary)] mt-8 mb-4">Template Registry</h2>
                     <div className="space-y-3">
                         {Object.entries(templates).map(([id, cfg]) => (
                             <div key={id} className="card px-5 py-4">
                                 <div className="flex items-start justify-between">
                                     <div>
-                                        <code className="text-sm font-mono font-semibold bg-navy-50 text-[var(--dtn-navy)] px-2 py-0.5 rounded bg-gray-100">
+                                        <code className="text-sm font-mono font-semibold bg-navy-50 text-[var(--text-primary)] px-2 py-0.5 rounded bg-gray-100">
                                             {id}
                                         </code>
-                                        <p className="text-sm text-[var(--dtn-muted)] mt-1">{cfg.description}</p>
+                                        <p className="text-sm text-[var(--text-secondary)] mt-1">{cfg.description}</p>
                                     </div>
                                 </div>
                                 <div className="flex flex-wrap gap-1.5 mt-3">
                                     {cfg.allowed === "*"
                                         ? <span className="text-xs bg-purple-50 text-purple-600 border border-purple-100 rounded px-2 py-0.5 font-medium">all types allowed</span>
                                         : cfg.allowed.map((t) => (
-                                            <span key={t} className="text-xs bg-blue-50 text-[var(--dtn-blue)] border border-blue-100 rounded px-2 py-0.5 font-mono">{t}</span>
+                                            <span key={t} className="text-xs bg-blue-50 text-[var(--accent-primary)] border border-blue-100 rounded px-2 py-0.5 font-mono">{t}</span>
                                         ))
                                     }
                                 </div>
@@ -133,7 +133,7 @@ export function SchemaPageClient({ fullSchema, templateExamples, slideTypes, tem
 
                 {/* Right: copyable examples */}
                 <div className="sticky top-20 h-fit">
-                    <h2 className="text-xl font-bold text-[var(--dtn-navy)] mb-4">Copyable Examples</h2>
+                    <h2 className="text-xl font-bold text-[var(--text-primary)] mb-4">Copyable Examples</h2>
                     {/* Tabs */}
                     <div className="flex gap-1 mb-0 bg-gray-100 p-1 rounded-xl">
                         {tabs.map((tab) => (
@@ -143,8 +143,8 @@ export function SchemaPageClient({ fullSchema, templateExamples, slideTypes, tem
                                 className={cn(
                                     "flex-1 text-xs font-semibold py-1.5 px-2 rounded-lg transition-all",
                                     activeTab === tab.id
-                                        ? "bg-white text-[var(--dtn-navy)] shadow-sm"
-                                        : "text-[var(--dtn-muted)] hover:text-[var(--dtn-navy)]"
+                                        ? "bg-white text-[var(--text-primary)] shadow-sm"
+                                        : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                                 )}
                             >
                                 {tab.label}
@@ -209,7 +209,7 @@ function SlideDataDocs({ type }: { type: string }) {
 
     return (
         <div className="px-5 py-4 bg-gray-50">
-            {docs[type] ?? <p className="text-xs text-[var(--dtn-muted)] italic">No documentation available.</p>}
+            {docs[type] ?? <p className="text-xs text-[var(--text-secondary)] italic">No documentation available.</p>}
         </div>
     );
 }
@@ -219,17 +219,17 @@ function FieldTable({ fields }: { fields: { k: string; t: string; d: string }[] 
         <table className="w-full text-xs">
             <thead>
                 <tr className="text-left">
-                    <th className="pb-1.5 pr-4 font-semibold text-[var(--dtn-muted)] uppercase text-[10px] tracking-wider">Field</th>
-                    <th className="pb-1.5 pr-4 font-semibold text-[var(--dtn-muted)] uppercase text-[10px] tracking-wider">Type</th>
-                    <th className="pb-1.5 font-semibold text-[var(--dtn-muted)] uppercase text-[10px] tracking-wider">Description</th>
+                    <th className="pb-1.5 pr-4 font-semibold text-[var(--text-secondary)] uppercase text-[10px] tracking-wider">Field</th>
+                    <th className="pb-1.5 pr-4 font-semibold text-[var(--text-secondary)] uppercase text-[10px] tracking-wider">Type</th>
+                    <th className="pb-1.5 font-semibold text-[var(--text-secondary)] uppercase text-[10px] tracking-wider">Description</th>
                 </tr>
             </thead>
             <tbody>
                 {fields.map(({ k, t, d }) => (
                     <tr key={k} className="border-t border-gray-100">
-                        <td className="py-1.5 pr-4 font-mono text-[var(--dtn-blue)] font-medium">{k}</td>
+                        <td className="py-1.5 pr-4 font-mono text-[var(--accent-primary)] font-medium">{k}</td>
                         <td className="py-1.5 pr-4 font-mono text-rose-600">{t}</td>
-                        <td className="py-1.5 text-[var(--dtn-muted)]">{d}</td>
+                        <td className="py-1.5 text-[var(--text-secondary)]">{d}</td>
                     </tr>
                 ))}
             </tbody>

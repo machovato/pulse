@@ -194,7 +194,7 @@ function DotProgress({
     isHero: boolean;
 }) {
     const dotBase = isHero ? "bg-white/30" : "bg-[#003057]/20";
-    const dotActive = isHero ? "bg-white" : "bg-[var(--dtn-blue)]";
+    const dotActive = isHero ? "bg-white" : "bg-[var(--accent-primary)]";
 
     return (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-1.5">
@@ -346,10 +346,20 @@ export function PresentationClient({ deck, deckId }: PresentationClientProps) {
         );
     }
 
+    // Toggle data-theme on <html> for CSS cascade
+    useEffect(() => {
+        if (deck.meta.theme) {
+            document.documentElement.setAttribute("data-theme", deck.meta.theme);
+        } else {
+            document.documentElement.removeAttribute("data-theme");
+        }
+        return () => { document.documentElement.removeAttribute("data-theme"); };
+    }, [deck.meta.theme]);
+
     return (
         <TemplateProvider template={deck.meta.template || "status"}>
             {/* Full-viewport slide stage */}
-            <div className="fixed inset-0 overflow-hidden bg-white">
+            <div className="fixed inset-0 overflow-hidden bg-[var(--surface-primary)]">
                 <AnimatePresence custom={direction} mode="popLayout">
                     <motion.div
                         key={currentIndex}

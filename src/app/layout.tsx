@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
-    title: "DTN Project Pulse",
-    description: "Meeting presentation engine powered by DTN",
+    title: "Project Pulse",
+    description: "Meeting presentation engine",
     robots: {
         index: false,
         follow: false,
@@ -17,7 +17,11 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body className="min-h-screen flex flex-col bg-[var(--dtn-bg)]">
+            <head>
+                <link rel="stylesheet" href="/themes/dtn.css" />
+                <link rel="stylesheet" href="/themes/obsidian.css" />
+            </head>
+            <body className="min-h-screen flex flex-col bg-[var(--surface-primary)]">
                 {children}
             </body>
         </html>

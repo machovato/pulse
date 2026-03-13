@@ -4,7 +4,7 @@ import { EditorClient } from "./EditorClient";
 import prisma from "@/lib/db";
 
 export const metadata: Metadata = {
-    title: "Editor — DTN Project Pulse",
+    title: "Editor — Project Pulse",
     description: "Create and publish presentation decks",
 };
 
@@ -21,7 +21,7 @@ export default async function EditorPage({ searchParams }: Props) {
 
     return (
         <Suspense fallback={<div className="flex-1 flex items-center justify-center bg-gray-900 text-gray-400 text-sm">Loading editor…</div>}>
-            <EditorClient existingJson={editJson} />
+            <EditorClient existingJson={editJson} editId={searchParams.editId} />
         </Suspense>
     );
 }

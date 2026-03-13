@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -20,7 +20,7 @@ import {
 import { LooseDeckSchema, DeckSchema } from "@/lib/schema";
 import { getTemplateWarnings, suggestOrder } from "@/lib/templates";
 import { structuralRepair, contentRepair } from "@/lib/repair";
-import { publishDeck } from "@/app/actions";
+import { publishDeck, updateExistingDeck } from "@/app/actions";
 import { cn } from "@/lib/utils";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react").then(m => m.default), {
@@ -34,7 +34,7 @@ const MonacoEditor = dynamic(() => import("@monaco-editor/react").then(m => m.de
 
 const DEFAULT_JSON = JSON.stringify(
     {
-        schemaVersion: 1,
+        schemaVersion: 2,
         meta: {
             title: "My Presentation",
             subtitle: "Subtitle goes here",
@@ -85,7 +85,7 @@ interface ZodError {
     message: string;
 }
 
-export function EditorClient({ existingJson }: { existingJson?: string }) {
+export function EditorClient({ existingJson, editId }: { existingJson?: string; editId?: string }) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const prefill = searchParams.get("prefill");
@@ -103,6 +103,18 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
     const [publishError, setPublishError] = useState<string | null>(null);
     const [repairOpen, setRepairOpen] = useState(false);
     const [copied, setCopied] = useState(false);
+    const [themeOpen, setThemeOpen] = useState(false);
+    const [availableThemes, setAvailableThemes] = useState<string[]>([]);
+
+    // Fetch themes on mount
+    useEffect(() => {
+        fetch("/api/themes")
+            .then(res => res.json())
+            .then(data => {
+                if (data.themes) setAvailableThemes(data.themes);
+            })
+            .catch(console.error);
+    }, []);
 
     const validate = useCallback((value: string) => {
         setRepairChanges([]);
@@ -183,8 +195,14 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
         setPublishError(null);
         try {
             const raw = JSON.parse(json);
-            const result = await publishDeck(raw);
+            
+            // If we have an editId, overwrite the existing deck instead of creating a new version
+            const result = editId 
+                ? await updateExistingDeck(editId, raw)
+                : await publishDeck(raw);
+
             if (result.success && result.id) {
+                // Remove visual bounce, just silently succeed or briefly show success
                 router.push(`/deck/${result.id}`);
             } else {
                 setPublishError(result.error ?? "Unknown error");
@@ -196,6 +214,27 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
         }
     };
 
+    const handleThemeChange = (themeName: string | null) => {
+        setThemeOpen(false);
+        try {
+            const raw = JSON.parse(json);
+            if (!raw.meta) raw.meta = {};
+            
+            if (themeName) {
+                raw.meta.theme = themeName;
+            } else {
+                delete raw.meta.theme;
+            }
+            
+            const newJson = JSON.stringify(raw, null, 2);
+            setJson(newJson);
+            validate(newJson);
+        } catch {
+            // If json is invalid, ignore theme change
+            setZodErrors([{ path: "JSON", message: "Cannot change theme with invalid JSON" }]);
+        }
+    };
+
     const handleCopy = () => {
         navigator.clipboard.writeText(json);
         setCopied(true);
@@ -204,8 +243,27 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
 
     const isValid = validationState === "valid";
 
+    // Extract theme for live preview
+    const activeTheme = (() => {
+        try {
+            return JSON.parse(json)?.meta?.theme;
+        } catch {
+            return null;
+        }
+    })();
+
+    // Toggle data-theme on <html> for CSS cascade
+    useEffect(() => {
+        if (activeTheme) {
+            document.documentElement.setAttribute("data-theme", activeTheme);
+        } else {
+            document.documentElement.removeAttribute("data-theme");
+        }
+        return () => { document.documentElement.removeAttribute("data-theme"); };
+    }, [activeTheme]);
+
     return (
-        <div className="flex flex-col" style={{ height: "calc(100vh - 96px)" }}>
+        <div className="flex flex-col" style={{ height: "calc(100vh - 96px)", backgroundColor: "var(--surface-primary)" }}>
             {/* Toolbar */}
             <div className="bg-white border-b border-[var(--card-border)] px-6 py-3 flex items-center justify-between gap-4 no-print">
                 <div className="flex items-center gap-2">
@@ -225,16 +283,60 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
                     {/* Copy */}
                     <button
                         onClick={handleCopy}
-                        className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--dtn-muted)] hover:text-[var(--dtn-navy)] border border-[var(--card-border)] bg-white px-3 py-1.5 rounded-lg transition-colors"
+                        className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-default)] bg-white px-3 py-1.5 rounded-lg transition-colors"
                     >
                         {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                         {copied ? "Copied" : "Copy"}
                     </button>
 
+                    {/* Theme dropdown */}
+                    <div className="relative">
+                        <button
+                            onClick={() => setThemeOpen((o) => !o)}
+                            className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-default)] bg-white px-3 py-1.5 rounded-lg transition-colors"
+                        >
+                            Theme: <span className="font-semibold text-[var(--text-primary)]">{activeTheme || "Default"}</span>
+                            <ChevronDown className="w-3 h-3" />
+                        </button>
+                        <AnimatePresence>
+                            {themeOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -4, scale: 0.97 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: -4, scale: 0.97 }}
+                                    transition={{ duration: 0.15 }}
+                                    className="absolute right-0 top-full mt-1 z-50 bg-white border border-[var(--card-border)] rounded-xl shadow-lg overflow-hidden min-w-[160px]"
+                                >
+                                    <button
+                                        onClick={() => handleThemeChange(null)}
+                                        className={cn(
+                                            "w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-sm",
+                                            !activeTheme ? "font-bold text-[var(--accent-primary)] bg-[var(--accent-primary-bg)]/20" : "text-[var(--text-primary)]"
+                                        )}
+                                    >
+                                        Default Neutral
+                                    </button>
+                                    {availableThemes.map(t => (
+                                        <button
+                                            key={t}
+                                            onClick={() => handleThemeChange(t)}
+                                            className={cn(
+                                                "w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-sm capitalize",
+                                                activeTheme === t ? "font-bold text-[var(--accent-primary)] bg-[var(--accent-primary-bg)]/20" : "text-[var(--text-primary)]"
+                                            )}
+                                        >
+                                            {t} Theme
+                                        </button>
+                                    ))}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+
                     {/* Suggest Order */}
                     <button
                         onClick={handleSuggestOrder}
-                        className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--dtn-muted)] hover:text-[var(--dtn-navy)] border border-[var(--card-border)] bg-white px-3 py-1.5 rounded-lg transition-colors"
+                        className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-default)] bg-white px-3 py-1.5 rounded-lg transition-colors"
                     >
                         <SortAsc className="w-3 h-3" />
                         Suggested Order
@@ -243,8 +345,11 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
                     {/* Repair dropdown */}
                     <div className="relative">
                         <button
-                            onClick={() => setRepairOpen((o) => !o)}
-                            className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--dtn-muted)] hover:text-[var(--dtn-navy)] border border-[var(--card-border)] bg-white px-3 py-1.5 rounded-lg transition-colors"
+                            onClick={() => {
+                                setRepairOpen((o) => !o);
+                                setThemeOpen(false);
+                            }}
+                            className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-default)] bg-white px-3 py-1.5 rounded-lg transition-colors"
                         >
                             <Wrench className="w-3 h-3" />
                             Repair Format
@@ -261,17 +366,17 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
                                 >
                                     <button
                                         onClick={() => handleRepair("structural")}
-                                        className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors border-b border-[var(--card-border)]"
+                                        className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors border-b border-[var(--border-default)]"
                                     >
-                                        <p className="text-sm font-semibold text-[var(--dtn-navy)]">Structural Repair</p>
-                                        <p className="text-xs text-[var(--dtn-muted)] mt-0.5">Fix schema shape only · preserves all text</p>
+                                        <p className="text-sm font-semibold text-[var(--text-primary)]">Structural Repair</p>
+                                        <p className="text-xs text-[var(--text-secondary)] mt-0.5">Fix schema shape only · preserves all text</p>
                                     </button>
                                     <button
                                         onClick={() => handleRepair("content")}
                                         className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors"
                                     >
-                                        <p className="text-sm font-semibold text-[var(--dtn-navy)]">Content Repair</p>
-                                        <p className="text-xs text-[var(--dtn-muted)] mt-0.5">Also normalizes text · may rewrite values</p>
+                                        <p className="text-sm font-semibold text-[var(--text-primary)]">Content Repair</p>
+                                        <p className="text-xs text-[var(--text-secondary)] mt-0.5">Also normalizes text · may rewrite values</p>
                                     </button>
                                 </motion.div>
                             )}
@@ -285,7 +390,7 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
                         className={cn(
                             "inline-flex items-center gap-2 text-sm font-semibold px-4 py-1.5 rounded-lg transition-all",
                             isValid && !isPublishing
-                                ? "bg-[var(--dtn-blue)] text-white hover:bg-blue-600 shadow-sm hover:shadow-md"
+                                ? "bg-[var(--accent-primary)] text-white hover:bg-[var(--accent-primary-bg)] shadow-sm hover:shadow-md"
                                 : "bg-gray-100 text-gray-400 cursor-not-allowed"
                         )}
                     >
@@ -294,7 +399,7 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
                         ) : (
                             <Upload className="w-4 h-4" />
                         )}
-                        {isPublishing ? "Publishing…" : "Publish"}
+                        {isPublishing ? (editId ? "Saving…" : "Publishing…") : (editId ? "Save Changes" : "Publish")}
                     </button>
                 </div>
             </div>
@@ -323,16 +428,16 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
                 </div>
 
                 {/* Validation sidebar */}
-                <div className="w-80 border-l border-[var(--card-border)] bg-white flex flex-col overflow-hidden">
-                    <div className="px-4 py-3 border-b border-[var(--card-border)]">
-                        <p className="text-xs font-semibold text-[var(--dtn-muted)] uppercase tracking-wider">
+                <div className="w-80 border-l border-[var(--border-default)] bg-white flex flex-col overflow-hidden">
+                    <div className="px-4 py-3 border-b border-[var(--border-default)]">
+                        <p className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
                             Validation
                         </p>
                     </div>
                     <div className="flex-1 overflow-y-auto p-4 space-y-3">
                         {/* Publish error */}
                         {publishError && (
-                            <div className="text-xs bg-rose-50 text-[var(--dtn-red)] border border-rose-100 rounded-lg p-3">
+                            <div className="text-xs bg-rose-50 text-[var(--accent-danger)] border border-rose-100 rounded-lg p-3">
                                 <p className="font-semibold mb-0.5">Publish failed</p>
                                 <p>{publishError}</p>
                             </div>
@@ -341,7 +446,7 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
                         {/* Repair changes */}
                         {repairChanges.length > 0 && (
                             <div className="text-xs bg-emerald-50 border border-emerald-200 rounded-lg p-3">
-                                <p className="font-semibold text-[var(--dtn-green)] mb-1.5">Repair applied</p>
+                                <p className="font-semibold text-[var(--accent-success)] mb-1.5">Repair applied</p>
                                 {repairChanges.map((c, i) => (
                                     <div key={i} className="flex items-start gap-1.5 text-emerald-700 mt-1">
                                         <Check className="w-3 h-3 mt-0.5 shrink-0" />
@@ -362,8 +467,8 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
                                         transition={{ delay: i * 0.03 }}
                                         className="text-xs bg-rose-50 border border-rose-100 rounded-lg p-3"
                                     >
-                                        <p className="font-semibold text-[var(--dtn-red)] font-mono">{err.path}</p>
-                                        <p className="text-rose-600 mt-0.5">{err.message}</p>
+                                        <p className="font-semibold text-[var(--accent-danger)] font-mono">{err.path}</p>
+                                        <p className="text-[var(--accent-danger)] mt-0.5">{err.message}</p>
                                     </motion.div>
                                 ))}
                             </div>
@@ -382,7 +487,7 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
 
                         {/* Valid state */}
                         {validationState === "valid" && zodErrors.length === 0 && repairChanges.length === 0 && (
-                            <div className="text-xs bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-[var(--dtn-green)] flex items-center gap-2">
+                            <div className="text-xs bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-[var(--accent-success)] flex items-center gap-2">
                                 <CheckCircle2 className="w-4 h-4 shrink-0" />
                                 JSON is valid and ready to publish.
                             </div>
@@ -390,7 +495,7 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
 
                         {/* Idle state */}
                         {validationState === "idle" && (
-                            <p className="text-xs text-[var(--dtn-muted)] text-center py-4">
+                            <p className="text-xs text-[var(--text-secondary)] text-center py-4">
                                 Start typing to validate
                             </p>
                         )}
@@ -404,21 +509,21 @@ export function EditorClient({ existingJson }: { existingJson?: string }) {
 function ValidationPill({ state, errorCount }: { state: ValidationState; errorCount: number }) {
     if (state === "idle") {
         return (
-            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--dtn-muted)] bg-gray-50 border border-gray-200 rounded-full px-2.5 py-1">
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] bg-gray-50 border border-gray-200 rounded-full px-2.5 py-1">
                 Waiting for input
             </span>
         );
     }
     if (state === "valid") {
         return (
-            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--dtn-green)] bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-1">
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--accent-success)] bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-1">
                 <CheckCircle2 className="w-3 h-3" />
                 Valid JSON
             </span>
         );
     }
     return (
-        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--dtn-red)] bg-rose-50 border border-rose-100 rounded-full px-2.5 py-1">
+        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--accent-danger)] bg-rose-50 border border-rose-100 rounded-full px-2.5 py-1">
             <XCircle className="w-3 h-3" />
             {errorCount} error{errorCount !== 1 ? "s" : ""}
         </span>

@@ -66,15 +66,27 @@ const TimelineDataSchema = z.object({
             detail: z.string().optional(),
         })
     ),
+    progress: z.object({
+        completed: z.number(),
+        total: z.number(),
+        percent: z.number(),
+    }).optional(),
 });
 
 const BlockersDataSchema = z.object({
+    summary: z.object({
+        actions: z.number().optional(),
+        approvals: z.number().optional(),
+        fyis: z.number().optional(),
+    }).optional(),
     items: z.array(
         z.object({
             text: z.string(),
             severity: z.enum(["action", "approval", "fyi"]),
             owner: z.string().optional(),
             due: z.string().optional(),
+            priority: z.enum(["high", "standard"]).optional(),
+            badges: z.array(z.string()).optional(),
         })
     ),
 });
@@ -228,6 +240,7 @@ export const MetaSchema = z.object({
     date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be YYYY-MM-DD"),
     audience: z.enum(["exec", "team", "customer", "mixed"]),
     template: z.enum(["status", "allHands", "requirements", "strategy", "custom", "kickoff"]),
+    theme: z.string().optional(),
     rag: RAGSchema.optional(),
     headline: z.string().optional(),
 });
@@ -251,7 +264,7 @@ export const V2DeckSchema = z.object({
 export const DeckSchema = z.preprocess(
     (val: any) => {
         if (typeof val === "object" && val !== null && !("schemaVersion" in val)) {
-            return { ...val, schemaVersion: 1 };
+            return { ...val, schemaVersion: 2 };
         }
         return val;
     },
