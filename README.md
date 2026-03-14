@@ -16,6 +16,8 @@ Pulse is a local deck renderer, not a slide editor in the PowerPoint sense. It t
 
 **Tech stack:** Next.js 14 · React 18 · SQLite (Prisma) · Tailwind CSS · Framer Motion · Zod
 
+![Pulse Demo](docs/Pulse-Generator.gif)
+
 ---
 
 ## Table of Contents
