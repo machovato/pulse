@@ -14,14 +14,15 @@ Your vault data becomes a navigable, animated slide deck in the browser — with
 
 Pulse is a local deck renderer, not a slide editor in the PowerPoint sense. It turns structured JSON into presentation-ready decks. Everything runs on your machine — no cloud, no accounts, no API keys.
 
-**Tech stack:** Next.js 14 · React 18 · SQLite (Prisma) · Tailwind CSS · Framer Motion · Zod
-
 ![Pulse Demo](docs/Pulse-Generator.gif)
+
+**Tech stack:** Next.js 14 · React 18 · SQLite (Prisma) · Tailwind CSS · Framer Motion · Zod
 
 ---
 
 ## Table of Contents
 
+- [Who This Is For](#who-this-is-for)
 - [What You Get](#what-you-get)
 - [Quick Start for Dex Users](#quick-start-for-dex-users-60-seconds)
 - [Full Getting Started](#full-getting-started)
@@ -39,6 +40,31 @@ Pulse is a local deck renderer, not a slide editor in the PowerPoint sense. It t
 
 ---
 
+## Who This Is For
+
+Pulse is built for people who already run an AI-powered personal operating system — a vault of markdown files managed through [Claude Code](https://claude.ai/download) or [Cursor](https://cursor.com), with project folders, sprint plans, and task tracking that feeds their daily workflow.
+
+If you're using [Dex](https://github.com/davekilleen/Dex), [Claude Chief of Staff](https://github.com/mimurchison/claude-chief-of-staff), or a similar system, Pulse is the piece you're missing: the presentation layer that turns your project data into shareable decks without leaving your terminal.
+
+**To generate your own decks, you need:**
+
+- A vault or project folder with markdown files (your project data)
+- Claude Code or Cursor (to run the skills that read your files and generate JSON)
+- Pulse running locally (to render the JSON as slide decks)
+
+Pulse is an add-on to an existing AI workflow, not a standalone app. Without a vault and Claude Code, you can explore the demo decks but you can't generate your own.
+
+### New to all of this?
+
+If you stumbled on this repo and the concept resonates — the idea of AI reading your project files and generating a polished presentation — but you don't have a vault set up yet, start here:
+
+1. **[Dex](https://github.com/davekilleen/Dex)** — the most popular AI Chief of Staff. It sets up a full personal OS with task tracking, meeting prep, career evidence, and MCP servers. Free, open source, works on Mac and Windows. Pulse was designed to work alongside it.
+2. **[Claude Code](https://claude.ai/download)** — the AI terminal that runs inside your project folders. This is what executes Pulse skills.
+
+Get Dex running first. Once you have projects in your vault and Claude Code on your machine, come back here. Pulse will be waiting.
+
+---
+
 ## What You Get
 
 Pulse ships ready to explore. On first launch, you'll see four **Atlas** demo decks — a single fictional project moving through its full lifecycle:
@@ -50,7 +76,7 @@ Pulse ships ready to explore. On first launch, you'll see four **Atlas** demo de
 | Sprint 2 Status | `/pulse-status` | Blue (light) | Week 5 — migration on track, review sessions slipping |
 | Daily Standup | `/pulse-standup` | Blue (light) | Day 8 — clearing the review backlog before it compounds |
 
-Click through all four. You'll see how the same project data tells a different story depending on who's in the room.
+Click through all four. You'll see how the same project data tells a different story depending on who's in the room. You don't need a vault to explore the demos — just install Pulse and browse.
 
 Under the hood:
 
@@ -90,7 +116,7 @@ If MCP connected successfully, the deck appears in Pulse without pasting. If not
 
 ## Full Getting Started
 
-This section assumes you can follow terminal commands but doesn't assume you've set up a local web app before. Every step tells you what's happening and what success looks like.
+This section walks through every step for someone who has a vault and Claude Code but hasn't set up a local web app before. If you don't have those yet, see [Who This Is For](#who-this-is-for) for where to start.
 
 ### Prerequisites
 
@@ -133,7 +159,7 @@ Setup automatically handles:
 - **Data seeding** — loads four Atlas demo decks
 - **MCP integration** (optional) — prompts for your vault path to copy skills, install the Python MCP SDK, and register the MCP server
 
-**If you don't have a vault yet**, press Enter to skip. You can re-run `npm run setup` later to add skills and MCP at any time.
+**If you don't have a vault yet**, press Enter to skip. You can explore the demo decks and re-run `npm run setup` later when you're ready to connect your vault.
 
 **What success looks like:** Green checkmarks. The last line says `Setup complete! Run 'npm run dev' to start.`
 
@@ -278,7 +304,7 @@ Three built-in themes. Each one sets a different tone without you touching a CSS
 
 Themes are set in the deck JSON (`meta.theme`) or from the editor dropdown. If no theme is specified, Blue applies automatically.
 
-**Making your own:** Drop a CSS file in `public/themes/` following the token structure in `blue.css`. Every slide component reads from semantic CSS custom properties — override the tokens and the whole deck follows.
+**Making your own:** Drop a CSS file in `public/themes/` following the token structure in `blue.css`. Every slide component reads from semantic CSS custom properties — override the tokens and the whole deck follows. See `docs/THEME-PLAYBOOK.md` for the full guide.
 
 ---
 
@@ -414,7 +440,7 @@ Pulse is open source and MIT licensed. Here's where to start depending on your s
 
 **If you're a strong prompter / workflow designer** → start with **skills**. Build a skill for a meeting type we haven't covered. Follow the existing pattern: vault-agnostic, citation-required, no invention. See the `skills/` folder for examples.
 
-**If you want the easiest first contribution** → start with **themes**. Add a CSS file to `public/themes/` following the token structure. Blue, Obsidian, and Ember are your references.
+**If you want the easiest first contribution** → start with **themes**. Add a CSS file to `public/themes/` following the token structure. Blue, Obsidian, and Ember are your references. See `docs/THEME-PLAYBOOK.md` for the step-by-step guide.
 
 **If you're comfortable in React/TypeScript** → start with **renderers**. New slide types, animation refinements, accessibility improvements. See `SCHEMA.md` for the full slide type inventory.
 
