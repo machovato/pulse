@@ -69,7 +69,7 @@ MCP makes delivery seamless, but it's optional. Without it, Pulse still works: g
 You already have Node, Git, Python, Claude Code, and MCP servers running. You've been through this dance before. Here's the fast track:
 
 ```bash
-git clone https://github.com/yourusername/pulse.git
+git clone https://github.com/machovato/pulse.git
 cd pulse
 npm install
 npm run setup    # point it at your vault when prompted
@@ -110,7 +110,7 @@ Python is only required for MCP delivery (recommended, but optional). Everything
 ### Step 1 — Clone and install
 
 ```bash
-git clone https://github.com/yourusername/pulse.git
+git clone https://github.com/machovato/pulse.git
 cd pulse
 npm install
 ```
