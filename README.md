@@ -436,6 +436,6 @@ If you're building or using one of these, Pulse turns your project data into sha
 
 Built by Tony Melendez. Inspired by [Dave Killeen's Dex](https://github.com/davekilleen/Dex) and the AI Chief of Staff community.
 
-Designed in Claude Chat. Built with Claude Code, Google Antigravity (Gemini), and Anthropic Sonnet. Powered by Next.js, Framer Motion, Prisma, and Zod.
+Designed in Claude Chat. Built with Claude Code and Gemini. Powered by Next.js, Framer Motion, Prisma, and Zod.
 
 Released under the MIT License. See `LICENSE` for details.

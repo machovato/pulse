@@ -124,7 +124,7 @@ module.exports = {
                     "100%": { opacity: "1", transform: "translateY(0)" },
                 },
                 pulseCta: {
-                    // Use official DTN Blue for the pulse glow
+                    // Use primary blue for the pulse glow
                     "0%, 100%": { boxShadow: "0 0 0 0 rgba(27, 143, 224, 0.4)" },
                     "50%": { boxShadow: "0 0 0 8px rgba(27, 143, 224, 0)" },
                 },

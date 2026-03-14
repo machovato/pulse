@@ -6,8 +6,6 @@ import { DeckSchema } from "@/lib/schema";
 function isLocalhost(req: NextRequest) {
     const ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || req.ip || "127.0.0.1";
     const host = req.headers.get("host") || "unknown";
-    
-    console.log(`[MCP Origin Check] IP: ${ip}, Host: ${host}`);
 
     return (
         ip === "127.0.0.1" || 
