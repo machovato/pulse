@@ -1,70 +1,126 @@
----
-description: How to add a new presentation template to Pulse
----
 # Pulse Theme Playbook
-This document outlines the exact, repeatable sequence required to add a new presentation template (theme) to Pulse. Following this playbook ensures the new template is recognized by the schema, renders with the correct CSS tokens, and is completely free of legacy hardcoded styles.
 
-## Step 1: Register the Template in the Schema
-Before Pulse can read a new template, it must be whitelisted in the data validation layer.
-1. Open `src/lib/schema.ts`
-2. Locate `MetaSchema`
-3. Add your new template string to the `template` enum.
-   ```typescript
-   export const MetaSchema = z.object({
-       // ...
-       template: z.enum(["status", "allHands", "requirements", "strategy", "kickoff", "yourNewTheme"]),
-   });
-   ```
+How to add a new presentation theme to Pulse.
 
-## Step 2: Define Color Tokens in CSS
-Pulse uses CSS Custom Properties applied dynamically based on the active template.
-1. Open `src/styles/globals.css`
-2. Find the theming blocks (e.g., `.theme-strategy`, `.theme-status`)
-3. Create a new block: `.theme-[yourNewThemeName]`
-4. Define the core color tokens. Ensure you define `danger` and `warning` specifically to match your theme's aesthetic instead of relying on defaults.
-5. In addition to primary tokens, map specific component variants like `--surface-split` (used in 40/60 split slides):
-   ```css
-   .theme-yourNewThemeName {
-       --surface-primary: #YOUR_HEX;
-       --surface-split: #YOUR_HEX;
-       --accent-info: #YOUR_HEX;
-       /* ... map all variables ... */
-   }
-   ```
+---
 
-## Step 3: Configure Dark Surface Typography Protocol
-If your theme includes dark surfaces (e.g., slate, navy, dark teal), you need to ensure text automatically inverts to white without needing manual Tailwind classes.
-1. Inside `src/styles/globals.css`, locate the `/* Dark Surface Text Inversion */` section.
-2. Add your theme's constraint:
-   ```css
-   .theme-yourNewThemeName .dark-surface {
-       --text-primary: #FFFFFF;
-       --text-secondary: rgba(255, 255, 255, 0.7);
-       --text-muted: rgba(255, 255, 255, 0.5);
-       /* Override specific shades as needed */
-   }
-   ```
+## What a Theme Is
 
-## Step 4: The Hardcoded "Search & Destroy" Audit
-A new theme will immediately break visually if existing components use tightly coupled Tailwind hex codes. Do not skip this step!
-1. Run a global regex search in your editor or via standard IDE tools for:
-   - `text-[#`
-   - `bg-[#`
-   - `border-[#`
-2. Replace every single hardcoded hex value with its mapped semantic Tailwind variable (e.g., `text-accent-info`, `bg-surface-primary`).
+A theme is a single CSS file in `public/themes/` that defines color tokens for slide layouts. Pulse loads the file dynamically based on the `meta.theme` value in the deck JSON. Every slide component reads from semantic CSS custom properties — override the tokens, the whole deck follows.
 
-## Step 5: Test via Mock Data
-End-to-end testing requires a real slide payload rendered in the new theme.
-1. Duplicate an existing robust deck (e.g., `src/app/data/strategy-deck.ts`) into a new file: `src/app/data/[yourNewTheme]-deck.ts`.
-2. Update the exported `id` string (e.g., "new-theme-demo").
-3. Change `meta.template` to `"yourNewTheme"`.
-4. Open the home page `src/app/(app)/page.tsx` and wire up a new "Play [Theme]" button routing to `/deck/[new-theme-id]`.
-5. Launch the dev server, hit the new play button, and verify every single slide type (Hero, Blockers, Context, Grid, Timeline, etc.) honors your new CSS tokens precisely.
+The three shipped themes are your reference:
 
-## Checklist for Adding a Theme
-- [ ] Registered theme name in `src/lib/schema.ts`
-- [ ] Added `.theme-name` variables to `src/styles/globals.css`
-- [ ] Configured `.dark-surface` inversion rules in CSS
-- [ ] Audited the entire `src/components/slides/` directory for hardcoded hexes
-- [ ] Generated `[theme]-deck.ts` mock data
-- [ ] Placed test button on the homepage
+- `blue.css` — light, professional (default)
+- `obsidian.css` — dark, high-contrast
+- `ember.css` — warm, collaborative
+
+---
+
+## Step 1: Create the CSS File
+
+Copy an existing theme as your starting point:
+
+```bash
+cp public/themes/blue.css public/themes/yourtheme.css
+```
+
+Open it and replace the color values. The file uses `[data-theme="blue"]` as its root selector — change that to your theme name:
+
+```css
+[data-theme="yourtheme"] {
+    --surface-primary: #YOUR_HEX;
+    --surface-secondary: #YOUR_HEX;
+    --accent-cool: #YOUR_HEX;
+    /* ... */
+}
+```
+
+Themes target layouts using `[data-theme][data-layout]` compound selectors:
+
+```css
+[data-theme="yourtheme"][data-layout="split"] {
+    --surface-left: #YOUR_HEX;
+    /* ... */
+}
+
+[data-theme="yourtheme"][data-layout="white"] {
+    /* ... */
+}
+```
+
+Look at `obsidian.css` for a dark theme example and `ember.css` for a warm/light theme example. Every token used by slide components is defined in these files.
+
+---
+
+## Step 2: Register the Theme (Optional)
+
+Pulse loads any CSS file from `public/themes/` dynamically — your theme will work in the editor dropdown without any code changes.
+
+However, if you want a template to **default** to your theme, register it in the template registry:
+
+**File:** `src/config/templateRegistry.ts`
+
+Add or update the `defaultTheme` for the template that should use your theme:
+
+```typescript
+{
+    id: "yourtemplate",
+    allowedSlideTypes: [...],
+    defaultEyebrow: "Your Template",
+    defaultTheme: "yourtheme"
+}
+```
+
+---
+
+## Step 3: Test It
+
+1. Start Pulse: `npm run dev`
+2. Open any existing deck in the editor
+3. Change `meta.theme` to `"yourtheme"`
+4. Click through every slide type and verify:
+   - Text is readable on all surfaces
+   - Eyebrows have sufficient contrast on both light and dark panels
+   - Split layout left panels use the right background
+   - Cards, badges, and icons pick up your accent colors
+   - The hero slide KPI pills are legible
+
+Pay special attention to split layouts — the left panel and right panel need different surface colors, and eyebrow/title text must contrast correctly against both.
+
+---
+
+## Token Reference
+
+These are the key CSS custom properties your theme should define. See any shipped theme file for the complete list.
+
+**Surfaces:**
+- `--surface-primary` — main background
+- `--surface-secondary` — card backgrounds
+- `--surface-left` — split layout left panel (used in `[data-layout="split"]`)
+
+**Text:**
+- `--text-primary` — headings and body
+- `--text-secondary` — supporting text
+- `--text-muted` — captions, sources
+
+**Accents:**
+- `--accent-cool` — primary brand color (buttons, links, highlights)
+- `--accent-warm` — secondary accent
+- `--accent-success`, `--accent-warning`, `--accent-danger` — status indicators
+
+**Borders & Effects:**
+- `--border-card` — card outlines
+- `--border-subtle` — dividers
+
+---
+
+## Checklist
+
+- [ ] Created `public/themes/yourtheme.css`
+- [ ] Defined all surface, text, accent, and border tokens
+- [ ] Added `[data-theme="yourtheme"]` as root selector
+- [ ] Added layout-specific overrides (`[data-layout="split"]`, `[data-layout="white"]`, etc.)
+- [ ] Tested every slide type for readability and contrast
+- [ ] Eyebrows readable on both light and dark panels
+- [ ] Split layout left/right panels visually distinct
+- [ ] (Optional) Registered default theme in `templateRegistry.ts`
