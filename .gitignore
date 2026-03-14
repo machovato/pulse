@@ -9,9 +9,8 @@ node_modules/
 .env.*.local
 
 # Database
-# Ignored by default but we want to sync dev.db across laptops
-# prisma/*.db
-# prisma/*.db-journal
+prisma/*.db
+prisma/*.db-journal
 
 # Build
 dist/
@@ -25,5 +24,3 @@ Thumbs.db
 .vscode/
 *.swp
 
-# Gemini Temp Artifacts
-*-DTN-*.*

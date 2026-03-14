@@ -24,9 +24,9 @@ interface KpisData {
 }
 
 // Trend config for borders and icons:
-// up   = DTN Accent Lime #8DC63F  — positive performance indicator
-// down = DTN Red         #C8192B  — negative, attention needed
-// flat = DTN Neutral Mid #BCBEC0  — no significant change
+// up   = Accent Lime #8DC63F  — positive performance indicator
+// down = Red         #C8192B  — negative, attention needed
+// flat = Neutral Mid #BCBEC0  — no significant change
 const TREND_CONFIG: Record<string, { iconClass: string; icon: any; accent: "success" | "danger" | "neutral" }> = {
     up: { iconClass: "text-accent-success", icon: LucideIcons.TrendingUp, accent: "success" },
     down: { iconClass: "text-accent-danger", icon: LucideIcons.TrendingDown, accent: "danger" },

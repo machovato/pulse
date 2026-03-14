@@ -12,14 +12,18 @@ const TemplateContext = createContext<TemplateContextType>({ template: "status" 
 
 export function TemplateProvider({
     template,
+    theme,
     children
 }: {
     template: TemplateType;
-    children: ReactNode
+    theme?: string;
+    children: ReactNode;
 }) {
+    const activeTheme = theme && theme !== "default" ? theme : "blue";
+
     return (
         <TemplateContext.Provider value={{ template }}>
-            <div data-template={template} className="h-full w-full">
+            <div data-template={template} data-theme={activeTheme} className="h-full w-full">
                 {children}
             </div>
         </TemplateContext.Provider>

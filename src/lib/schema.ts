@@ -189,11 +189,25 @@ const V2FrameworkDataSchema = z.object({
 
 // ─── Base slide fields ────────────────────────────────────────────────────────
 
-const BaseSlideSchema = z.object({
+const _BaseSlideShape = z.object({
     id: z.string().optional(),
     title: z.string(),
     notes: z.string().optional(),
+    _missing: z.boolean().optional(),
+    _reason: z.string().optional(),
+    _hint: z.string().optional(),
 });
+
+// Used for extending the basic types
+const BaseSlideSchema = _BaseSlideShape;
+
+// The refinement logic we will wrap around the final Slide union
+const missingSlideRefinement = (slide: z.infer<typeof _BaseSlideShape>) => {
+    if (slide._missing) {
+        return !!slide._reason && !!slide._hint;
+    }
+    return !slide._reason && !slide._hint;
+};
 
 // ─── Discriminated union ──────────────────────────────────────────────────────
 
@@ -231,7 +245,20 @@ export const V2SlideSchema = z.discriminatedUnion("type", [
     BaseSlideSchema.extend({ type: z.literal("roadmap"), data: TimelineDataSchema }),
 ]);
 
-export const SlideSchema = z.union([V1SlideSchema, V2SlideSchema]);
+// ─── Missing slide schema (bypasses strict data validation) ──────────────────
+
+const MissingSlideSchema = z.object({
+    id: z.string().optional(),
+    type: z.string(),
+    title: z.string(),
+    notes: z.string().optional(),
+    data: z.record(z.unknown()).optional(),
+    _missing: z.literal(true),
+    _reason: z.string(),
+    _hint: z.string(),
+});
+
+export const SlideSchema = z.union([MissingSlideSchema, V1SlideSchema, V2SlideSchema]);
 export type Slide = z.infer<typeof SlideSchema>;
 export type SlideType = z.infer<typeof V1SlideSchema>["type"] | z.infer<typeof V2SlideSchema>["type"];
 
@@ -242,6 +269,9 @@ export const LooseSlideSchema = z.object({
     title: z.string(),
     notes: z.string().optional(),
     data: z.record(z.unknown()).optional(),
+    _missing: z.boolean().optional(),
+    _reason: z.string().optional(),
+    _hint: z.string().optional(),
 });
 export type LooseSlide = z.infer<typeof LooseSlideSchema>;
 
@@ -249,10 +279,11 @@ export type LooseSlide = z.infer<typeof LooseSlideSchema>;
 
 export const MetaSchema = z.object({
     title: z.string(),
+    project: z.string().optional(),
     subtitle: z.string().optional(),
     date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be YYYY-MM-DD"),
     audience: z.enum(["exec", "team", "customer", "mixed"]),
-    template: z.enum(["status", "allHands", "requirements", "strategy", "custom", "kickoff"]),
+    template: z.enum(["status", "standup", "allHands", "requirements", "strategy", "custom", "kickoff"]),
     theme: z.string().optional(),
     rag: RAGSchema.optional(),
     headline: z.string().optional(),
@@ -266,13 +297,13 @@ export type Meta = z.infer<typeof MetaSchema>;
 export const V1DeckSchema = z.object({
     schemaVersion: z.literal(1).optional().default(1),
     meta: MetaSchema,
-    slides: z.array(V1SlideSchema),
+    slides: z.array(z.union([MissingSlideSchema, V1SlideSchema])),
 });
 
 export const V2DeckSchema = z.object({
     schemaVersion: z.literal(2),
     meta: MetaSchema,
-    slides: z.array(V2SlideSchema),
+    slides: z.array(z.union([MissingSlideSchema, V2SlideSchema])),
 });
 
 export const DeckSchema = z.preprocess(

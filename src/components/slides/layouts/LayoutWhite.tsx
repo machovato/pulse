@@ -17,7 +17,7 @@ interface LayoutWhiteProps {
 
 export function LayoutWhite({ children, center = true, backgroundNode }: LayoutWhiteProps) {
     return (
-        <div className="relative w-full h-full min-h-[100vh] flex flex-col bg-surface-page text-text-secondary overflow-hidden">
+        <div data-layout="white" className="relative w-full h-full min-h-[100vh] flex flex-col bg-surface-page text-text-secondary overflow-hidden">
             {backgroundNode}
             
             {/* Background texture — barely perceptible */}

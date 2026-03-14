@@ -2,7 +2,7 @@
  * Layout 1 — Full-Bleed Brand
  * Applied to: hero
  *
- * Full-viewport DTN Blue gradient. Concentric circle motif upper-right at low opacity.
+ * Full-viewport blue gradient. Concentric circle motif upper-right at low opacity.
  * Children rendered over the gradient.
  */
 import { ConcentricCircles } from "../ConcentricCircles";
@@ -14,6 +14,7 @@ interface LayoutBrandProps {
 export function LayoutBrand({ children }: LayoutBrandProps) {
     return (
         <div
+            data-layout="hero"
             className="relative w-full h-full overflow-hidden"
             style={{ background: "var(--surface-hero)" }}
         >

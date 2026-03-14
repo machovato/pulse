@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+/* ============================================================
+   PULSE BLUE THEME
+   Classic blue branded theme — navy split panels, blue gradients,
+   green success accents.
+
+   ARCHITECTURE: This file targets [data-layout] hooks set by layout
+   components (LayoutBrand, LayoutSplit, LayoutWhite). It never lists
+   template names. Adding a new template requires zero changes here.
+
+   [data-theme="dtn"] is kept as a legacy alias for existing saved
+   decks. Remove it after a DB migration sets all "dtn" → "blue".
+   ============================================================ */
+
+/* ─── ROOT PALETTE & THEME TOKENS ──────────────────────────────────────────
+   :where() gives zero specificity so globals.css template rules always win.
+   ─────────────────────────────────────────────────────────────────────────── */
+:where([data-theme="blue"]),
+:where([data-theme="dtn"]) {
+  /* Source palette */
+  --blue-primary:       #1B8FE0;
+  --blue-green:         #4CB944;
+  --blue-navy:          #003057;
+  --blue-mid:           #2255A4;
+  --blue-green-dark:    #005741;
+  --blue-teal:          #007074;
+  --blue-red:           #C8192B;
+  --blue-orange:        #F5A400;
+  --blue-cyan:          #00B5CC;
+  --blue-lime:          #8DC63F;
+  --blue-yellow:        #FFCD00;
+  --blue-neutral-dark:  #6D6E71;
+  --blue-neutral-mid:   #BCBEC0;
+  --blue-neutral-light: #E6E7E8;
+  --blue-neutral-bg:    #F5F7FA;
+
+  /* ── Theme surface tokens — consumed by globals.css template blocks ── */
+  --theme-bg-hero:        linear-gradient(135deg, #1497E3 0%, #4AAFE8 50%, #7DC5EF 100%);
+  --theme-bg-split:       #1497E3;   /* primary split — status, standup, allHands */
+  --theme-bg-split-alt:   var(--blue-navy);  /* deep split — strategy */
+  --theme-bg-split-light: var(--blue-neutral-bg); /* light split — kickoff stays light in blue */
+  --theme-bg-hero-strategy: linear-gradient(135deg, #003057 0%, #1B4F7A 50%, #2255A4 100%);
+
+  /* ── Semantic role tokens ── */
+  --accent-primary:      var(--blue-primary);
+  --accent-primary-bg:   rgba(27, 143, 224, 0.08);
+  --accent-success:      var(--blue-green);
+  --accent-warning:      var(--blue-yellow);
+  --accent-danger:       var(--blue-red);
+  --accent-info:         var(--blue-primary);
+  --accent-progress:     var(--blue-primary);
+
+  --color-brand:         var(--blue-primary);
+  --color-brand-alt:     var(--blue-green);
+  --color-success:       var(--blue-green);
+  --color-success-bg:    #EDFAEB;
+  --color-success-border:#B4DFB0;
+  --color-success-text:  var(--blue-green-dark);
+  --color-warning:       var(--blue-yellow);
+  --color-warning-bg:    #FFF8DC;
+  --color-warning-border:var(--blue-yellow);
+  --color-warning-text:  #8A6A00;
+  --color-error:         var(--blue-red);
+  --color-error-bg:      #FDEAEC;
+  --color-error-border:  #F0A0A8;
+  --color-error-text:    #8B0F1A;
+  --color-info:          var(--blue-teal);
+  --color-info-bg:       #E0F4F5;
+
+  --color-text-heading:  var(--blue-navy);
+  --color-text-body:     var(--blue-neutral-dark);
+  --color-text-muted:    var(--blue-neutral-mid);
+  --color-border:        var(--blue-neutral-light);
+  --color-surface:       var(--blue-neutral-bg);
+  --color-surface-card:  #FFFFFF;
+
+  --card-border:         var(--blue-neutral-light);
+  --card-shadow:         0 1px 4px rgba(0, 48, 87, 0.06), 0 2px 8px rgba(0, 48, 87, 0.04);
+  --radius:              0.5rem;
+
+  /* Gradients */
+  --blue-gradient:          linear-gradient(135deg, #1B8FE0 0%, #1672B8 60%, #003057 100%);
+  --blue-gradient-navy:     linear-gradient(160deg, #2255A4 0%, #003057 100%);
+  --blue-gradient-timeline: linear-gradient(90deg, #1B8FE0 0%, #4CB944 100%);
+
+  /* Typography */
+  --font-family:         'Plus Jakarta Sans', Arial, sans-serif;
+  --type-display:        clamp(40px, 5vw, 68px);
+  --type-headline:       clamp(28px, 3.5vw, 48px);
+  --type-subheadline:    clamp(20px, 2vw, 28px);
+  --type-metric-unit:    clamp(14px, 1.3vw, 18px);
+  --type-eyebrow:        11px;
+
+  /* Template personality accents */
+  --accent-template-status:   #1497E3;
+  --accent-template-strategy: #003E6A;
+  --accent-template-kickoff:  #C4652A;
+}
+
+/* ─── HERO LAYOUT ───────────────────────────────────────────────────────────
+   Targets [data-layout="hero"] set by LayoutBrand.
+   ─────────────────────────────────────────────────────────────────────────── */
+:where([data-theme="blue"] [data-layout="hero"]),
+:where([data-theme="dtn"] [data-layout="hero"]) {
+  --surface-hero:    var(--theme-bg-hero);
+  --surface-primary: #1497E3;
+  --text-primary:    #003E6A;
+  --border-strong:   #1497E3;
+}
+
+/* ─── SPLIT LAYOUT ──────────────────────────────────────────────────────────
+   Targets [data-layout="split"] set by LayoutSplit.
+   The left panel background resolves --surface-split set here.
+   globals.css [data-template] rules override this via higher specificity
+   for templates that need a different split color (strategy = navy,
+   kickoff = light/neutral).
+   ─────────────────────────────────────────────────────────────────────────── */
+:where([data-theme="blue"] [data-layout="split"]),
+:where([data-theme="dtn"] [data-layout="split"]) {
+  --surface-split:     var(--theme-bg-split);
+  --surface-split-alt: var(--blue-gradient-navy);
+  --border-strong:     #1497E3;
+}
+
+/* ─── COMPONENT OVERRIDES ─────────────────────────────────────────────────── */
+:where([data-theme="blue"] [data-layout="split"]) .dark-surface .pulse-eyebrow,
+:where([data-theme="dtn"] [data-layout="split"]) .dark-surface .pulse-eyebrow {
+  color: #FFFFFF;
+}
+
+:where([data-theme="blue"] [data-layout="white"]) .pulse-slide-title,
+:where([data-theme="dtn"] [data-layout="white"]) .pulse-slide-title {
+  color: var(--blue-primary);
+}

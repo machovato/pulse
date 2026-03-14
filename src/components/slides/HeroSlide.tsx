@@ -46,6 +46,7 @@ export function HeroSlide({ slide, deckMeta, disableAnimation = false }: { slide
     const data = (slide.data ?? {}) as HeroData;
     const rag = data.rag;
     const isStrategy = template === "strategy";
+    const isKickoff = template === "kickoff";
 
     return (
         <LayoutBrand>
@@ -92,10 +93,17 @@ export function HeroSlide({ slide, deckMeta, disableAnimation = false }: { slide
                         variants={slideUpItem(disableAnimation)}
                     >
                         <span
-                            className="inline-flex items-center gap-3 bg-white/20 border-2 border-white/40 shadow-lg text-text-on-hero font-bold px-5 py-2.5 rounded-full backdrop-blur-md"
+                            className={cn("inline-flex items-center gap-3 border shadow-lg font-bold px-5 py-2.5 rounded-full backdrop-blur-md", 
+                                isKickoff 
+                                    ? "bg-white border-border-default text-text-primary shadow-sm" 
+                                    : "bg-white/20 border-white/40 text-text-on-hero")}
                         >
                             <span className={cn("rounded-full shadow-inner w-3 h-3", RAG_DOTS[rag])} />
-                            <Typography variant="body" className="font-bold">
+                            <Typography 
+                                variant="body" 
+                                className={cn("font-bold", isKickoff ? "drop-shadow-none" : "text-text-on-hero")}
+                                style={isKickoff ? { color: "var(--palette-charcoal)" } : undefined}
+                            >
                                 {RAG_LABELS[rag]}
                             </Typography>
                         </span>
@@ -112,17 +120,21 @@ export function HeroSlide({ slide, deckMeta, disableAnimation = false }: { slide
                                     "flex flex-col gap-1 transition-all min-w-[140px] backdrop-blur-md rounded-lg px-4 py-3",
                                     isStrategy
                                         ? "bg-white/15 border border-white/30 shadow-md"
-                                        : "bg-white/10 border border-white/20 shadow-sm"
+                                        : isKickoff
+                                            ? "bg-white border-border-default shadow-sm text-text-primary"
+                                            : "bg-white/10 border border-white/20 shadow-sm text-text-on-hero"
                                 )}
                                 variants={slideUpItem(disableAnimation)}
-                                whileHover={{ backgroundColor: "rgba(255,255,255,0.25)" }}
+                                whileHover={{ backgroundColor: isKickoff ? "var(--surface-muted)" : "rgba(255,255,255,0.25)" }}
                             >
                                 <div className="flex items-center gap-2 mb-1">
-                                    {getIcon(kpi.icon)}
+                                    <div className={cn("opacity-90", isKickoff ? "text-accent-info" : "text-text-on-hero")}>
+                                        {getIcon(kpi.icon)}
+                                    </div>
                                     <Typography
                                         variant="caption"
-                                        className="opacity-80 font-bold tracking-wider uppercase drop-shadow-sm"
-                                        style={{ fontSize: "clamp(11px, 1vw, 13px)" }}
+                                        className={cn("opacity-80 font-bold tracking-wider uppercase drop-shadow-sm", isKickoff ? "drop-shadow-none" : "")}
+                                        style={{ fontSize: "clamp(11px, 1vw, 13px)", color: isKickoff ? "var(--palette-gray-600)" : undefined }}
                                     >
                                         {kpi.label}
                                     </Typography>
@@ -130,14 +142,14 @@ export function HeroSlide({ slide, deckMeta, disableAnimation = false }: { slide
                                 <div className="flex items-baseline gap-2">
                                     <Typography
                                         variant="metric-medium"
-                                        className="drop-shadow-sm font-bold"
-                                        style={{ lineHeight: 1, fontSize: "clamp(18px, 2vw, 24px)" }}
+                                        className={cn("drop-shadow-sm font-bold", isKickoff ? "drop-shadow-none" : "text-text-on-hero")}
+                                        style={{ lineHeight: 1, fontSize: "clamp(18px, 2vw, 24px)", color: isKickoff ? "var(--palette-charcoal)" : undefined }}
                                     >
                                         {kpi.value}
                                     </Typography>
-                                    {kpi.trend === "up" ? <LucideIcons.TrendingUp className="text-text-on-emphasis w-4 h-4" /> :
-                                        kpi.trend === "down" ? <LucideIcons.TrendingDown className="text-text-on-emphasis w-4 h-4" /> :
-                                            kpi.trend === "flat" ? <LucideIcons.Minus className="text-text-on-emphasis opacity-50 w-4 h-4" /> : null}
+                                    {kpi.trend === "up" ? <LucideIcons.TrendingUp className={cn("w-4 h-4", isKickoff ? "text-accent-success" : "text-text-on-emphasis")} /> :
+                                        kpi.trend === "down" ? <LucideIcons.TrendingDown className={cn("w-4 h-4", isKickoff ? "text-accent-danger" : "text-text-on-emphasis")} /> :
+                                            kpi.trend === "flat" ? <LucideIcons.Minus className={cn("opacity-50 w-4 h-4", isKickoff ? "text-text-secondary" : "text-text-on-emphasis")} /> : null}
                                 </div>
                                 {/* Fraction Progress Bar */}
                                 {(() => {

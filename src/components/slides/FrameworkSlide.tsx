@@ -75,14 +75,14 @@ export function FrameworkSlide({ slide, deckMeta, disableAnimation = false }: { 
             {lanes.slice(1).map((lane, i) => (
                 <motion.div
                     key={i}
-                    className="flex-1 w-full bg-surface-page text-text-primary shadow-sm flex flex-row items-center gap-5 p-card rounded-card border-card border-l-accent border-l-accent-info"
+                    className="flex-1 w-full bg-surface-secondary text-text-primary shadow-sm flex flex-row items-center gap-5 p-card rounded-card border-card border-l-accent border-l-accent-info"
                     style={{
                         borderWidth: "var(--border-width-card)",
                         borderLeftWidth: "var(--border-width-accent)"
                     }}
                     variants={slideUpItem(disableAnimation)}
                 >
-                    <div className="mt-1 shrink-0 shadow-sm rounded-xl p-3 bg-surface-page border border-border-default">
+                    <div className="mt-1 shrink-0 shadow-sm rounded-xl p-3 bg-surface-secondary border border-border-default">
                         {getLucideIcon(lane.icon, "w-8 h-8 text-accent-info")}
                     </div>
                     <div className="flex-1 min-w-0">

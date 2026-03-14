@@ -26,10 +26,10 @@ const LEFT_EYEBROW = {
     highlight: "Highlight",
 };
 
-// decision  = DTN Mid Blue #2255A4 — authoritative, binding
-// risk       = DTN Red     #C8192B — danger signal, escalation needed
-// highlight  = DTN Lime    #8DC63F — positive emphasis, good news
-// quote      = DTN Teal    #007074 — neutral informational, voice
+// decision  = Blue    #2255A4 — authoritative, binding
+// risk       = Red     #C8192B — danger signal, escalation needed
+// highlight  = Lime    #8DC63F — positive emphasis, good news
+// quote      = Teal    #007074 — neutral informational, voice
 const RIGHT_ACCENT = {
     decision: "border-l-[12px] border-accent-info",
     risk: "border-l-[12px] border-accent-danger",

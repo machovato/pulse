@@ -30,11 +30,11 @@ export function AgendaSlide({ slide, deckMeta, disableAnimation = false }: { sli
             className={cn("flex flex-col gap-4", !isKickoff && "dark-surface")}
             variants={slideUpItem(disableAnimation)}
         >
-            <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="text-text-on-emphasis mb-1" />
-            <Typography as="h2" variant="h1" className="leading-tight mt-0 mb-0 pt-0">
+            <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className={cn("mb-1", isKickoff ? "text-text-secondary" : "text-text-on-emphasis")} />
+            <Typography as="h2" variant="h1" className={cn("leading-tight mt-0 mb-0 pt-0", isKickoff ? "text-text-primary" : "text-text-on-emphasis")}>
                 {slide.title}
             </Typography>
-            <div className="w-8 h-0.5 bg-white opacity-30 mt-2" />
+            <div className={cn("w-8 h-0.5 mt-2", isKickoff ? "bg-text-primary opacity-20" : "bg-white opacity-30")} />
             {items.length > 0 && (
                 <Typography variant="caption" className="opacity-70 mt-1">
                     {items.length} item{items.length !== 1 ? "s" : ""}

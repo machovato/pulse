@@ -1,0 +1,68 @@
+/* ============================================================
+   PULSE EMBER THEME
+   Safety Orange #EA580C + Forest Green #4CB944 + Midnight Navy #0A1128
+
+   ARCHITECTURE: Targets [data-layout] hooks. No [data-template] selectors.
+   globals.css template rules set --theme-* tokens that this file defines.
+   Adding a new template requires zero changes here.
+   ============================================================ */
+
+:where([data-theme="ember"]) {
+
+  /* ─── PALETTE ─────────────────────────────────────────────────────────── */
+  --ember-orange:       #EA580C;
+  --ember-orange-light: #FB923C;
+  --ember-orange-bg:    rgba(234, 88, 12, 0.08);
+  --ember-green:        #4CB944;
+  --ember-green-dark:   #2D7A27;
+  --ember-navy:         #0A1128;
+  --ember-navy-mid:     #1A2545;
+  --ember-navy-light:   #2E3F6F;
+
+  /* ── Theme surface tokens — consumed by globals.css template blocks ── */
+  --theme-bg-hero:        linear-gradient(135deg, var(--ember-navy) 0%, var(--ember-navy-mid) 60%, var(--ember-navy-light) 100%);
+  --theme-bg-split:       var(--surface-muted);
+  --theme-bg-split-alt:   var(--surface-primary);
+  --theme-bg-split-light: var(--surface-muted);
+
+  /* ─── SEMANTIC TOKENS ─────────────────────────────────────────────────── */
+  --accent-primary:     var(--ember-orange);
+  --accent-primary-bg:  var(--ember-orange-bg);
+  --accent-success:     var(--ember-green);
+  --accent-warning:     #F59E0B;
+  --accent-danger:      #DC2626;
+  --accent-info:        var(--ember-orange);
+  --accent-progress:    var(--ember-orange);
+
+  --border-strong:      var(--ember-orange);
+
+  /* ─── TYPOGRAPHY ────────────────────────────────────────────────────────── */
+  --font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+  --font-weight-title: 700;
+  --font-weight-card-title: 500;
+
+  /* ─── BADGES ──────────────────────────────────────────────────────────── */
+  --badge-action-bg:    rgba(234, 88, 12, 0.1);
+  --badge-action-text:  var(--ember-orange);
+  --badge-approval-bg:  rgba(245, 158, 11, 0.1);
+  --badge-approval-text:#92400E;
+  --badge-fyi-bg:       var(--palette-gray-200);
+  --badge-fyi-text:     var(--palette-gray-700);
+}
+
+/* ─── HERO LAYOUT ─────────────────────────────────────────────────────────── */
+:where([data-theme="ember"] [data-layout="hero"]) {
+  --surface-hero:    var(--theme-bg-hero);
+  --surface-primary: var(--palette-white);
+  --text-on-hero:    var(--palette-white);
+  --border-strong:   var(--ember-orange);
+}
+
+/* ─── SPLIT LAYOUT ─────────────────────────────────────────────────────────── */
+:where([data-theme="ember"] [data-layout="split"]) {
+  --surface-split:     var(--theme-bg-split);
+  --surface-split-alt: var(--ember-navy-mid);
+  --border-strong:     var(--ember-orange);
+  --accent-info:       var(--ember-orange);
+  --accent-progress:   var(--ember-orange);
+}

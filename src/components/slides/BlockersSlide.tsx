@@ -71,11 +71,11 @@ export function BlockersSlide({ slide, deckMeta, disableAnimation = false }: { s
         >
             <div className="flex flex-col gap-6 relative z-10 w-full pr-8">
                 <div className="flex flex-col gap-2">
-                    <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className="text-accent-info mb-1" />
+                    <SlideEyebrow slideData={slide.data} deckMeta={deckMeta} className={cn("mb-1", isKickoff ? "text-text-secondary" : "text-accent-info")} />
                     <Typography
                         as="h2"
                         variant="h1"
-                        className="text-text-on-emphasis leading-tight mt-0 mb-0 pt-0"
+                        className={cn("leading-tight mt-0 mb-0 pt-0", isKickoff ? "text-text-primary" : "text-text-on-emphasis")}
                     >
                         {panelTitle.split(' ').length > 2 ? panelTitle : (
                             <>
@@ -145,7 +145,7 @@ export function BlockersSlide({ slide, deckMeta, disableAnimation = false }: { s
             <p className="text-sm text-text-secondary">The team is unblocked and moving forward.</p>
         </motion.div>
     ) : (
-        <div className="flex flex-col h-full bg-surface-muted overflow-hidden">
+        <div className="flex flex-col h-full bg-surface-page overflow-hidden">
             <div className="flex-1 min-h-0 flex flex-col gap-4 w-full overflow-y-auto px-slide pt-slide pb-8 relative z-10">
                 {items.map((item, i) => {
                     const cfg = SEVERITY_CONFIG[item.severity] ?? SEVERITY_CONFIG.fyi;

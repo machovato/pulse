@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
+import "../../public/themes/blue.css";
+import "../../public/themes/obsidian.css";
+import "../../public/themes/ember.css";
 
 export const metadata: Metadata = {
     title: "Project Pulse",
@@ -17,10 +20,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <head>
-                <link rel="stylesheet" href="/themes/dtn.css?v=1.1" />
-                <link rel="stylesheet" href="/themes/obsidian.css?v=1.2" />
-            </head>
+            <head />
             <body className="min-h-screen flex flex-col bg-[var(--surface-primary)]">
                 {children}
             </body>

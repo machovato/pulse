@@ -16,6 +16,7 @@ import { ContextSlide } from "./slides/ContextSlide";
 import { ProblemSlide } from "./slides/ProblemSlide";
 import { EvidenceSlide } from "./slides/EvidenceSlide";
 import { FrameworkSlide } from "./slides/FrameworkSlide";
+import { MissingSlide } from "./slides/MissingSlide";
 
 interface SlideRendererProps {
     slide: LooseSlide;
@@ -39,6 +40,11 @@ export function SlideRenderer({ slide, density, deckMeta, schemaVersion = 1, dis
             case "framework":
                 return <GridSlide slide={slide} disableAnimation={disableAnimation} />;
         }
+    }
+
+    // MISSING v2 UI interception
+    if (slide._missing) {
+        return <MissingSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
     }
 
     // Default V2 / Generic mapping

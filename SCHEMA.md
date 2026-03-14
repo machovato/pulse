@@ -23,6 +23,7 @@ Every Pulse deck is a single JSON object with two top-level keys: `meta` and `sl
 | Field | Type | Required | Description |
 |---|---|---|---|
 | `title` | string | Yes | Deck title. Format: `"Project Name — Phase/Sprint"` |
+| `project` | string | No | Project name. Rendered in deck list subtitle. If omitted, parsed from title |
 | `subtitle` | string | No | Punchline (strategy) or mission statement (kickoff) |
 | `date` | string | Yes | ISO date: `YYYY-MM-DD` |
 | `audience` | string | Yes | `"exec"` / `"team"` / `"customer"` / `"mixed"` |

@@ -122,7 +122,7 @@ export function TimelineSlide({ slide, deckMeta, disableAnimation = false }: { s
                                         className="relative flex items-center w-full min-h-[100px]"
                                         variants={staggerContainer(disableAnimation)}
                                     >
-                                        {/* Milestone Marker - DTN Concentric Rings */}
+                                        {/* Milestone Marker - Concentric Rings */}
                                         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center justify-center">
                                             <motion.div
                                                 className={cn(

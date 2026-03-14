@@ -260,7 +260,7 @@ body {
   font-weight: 600;
 }
 
-/* ─── Print: restore DTN footer, hide all screen chrome ────────────────── */
+/* ─── Print: restore footer, hide all screen chrome ────────────────────── */
 @media print {
 
   nav,
@@ -338,8 +338,9 @@ body {
   animation: pulse-ring 2s ease-out infinite;
 }
 
-/* ─── TEMPLATE TOKENS: Status (Default) ─────────────────────────────────── */
+/* ─── TEMPLATE TOKENS: Status / Standup (Default) ───────────────────────── */
 [data-template="status"],
+[data-template="standup"],
 [data-template="default"] {
   /* Surfaces */
   --surface-hero: var(--palette-charcoal);
@@ -423,9 +424,9 @@ body {
 [data-template="strategy"] {
   --surface-hero: var(--palette-charcoal);
   --surface-primary: var(--palette-charcoal);
-  --surface-secondary: var(--palette-white);
+  --surface-secondary: var(--theme-bg-secondary, var(--palette-white));
   --surface-muted: var(--palette-bg);
-  --surface-page: var(--palette-white);
+  --surface-page: var(--theme-bg-page, var(--palette-white));
   --surface-split: var(--palette-charcoal);
   --surface-split-alt: var(--palette-gray-800);
 
@@ -548,14 +549,15 @@ body {
   --text-on-emphasis: var(--palette-white);
 
   --border-default: var(--palette-gray-200);
-  --border-strong: var(--palette-blue);
+  --border-strong: #EA580C;    /* Safety Orange — kickoff accent */
   --border-muted: var(--palette-gray-100);
 
-  --accent-success: var(--palette-green);
+  --accent-success: #4CB944;   /* Green — positive/complete */
   --accent-warning: var(--palette-amber);
   --accent-danger: var(--palette-red);
-  --accent-info: var(--palette-blue);
-  --accent-progress: var(--palette-blue);
+  --accent-info: #EA580C;      /* Orange — primary interactive */
+  --accent-progress: #EA580C;  /* Orange — progress indicators */
+  --accent-primary: #EA580C;   /* Orange — used by timeline, pipeline, etc */
 
   --badge-critical-bg: var(--palette-red);
   --badge-critical-text: var(--palette-white);
@@ -583,18 +585,82 @@ body {
 }
 
 /* Kickoff Component Overrides */
-[data-template="kickoff"] .dtn-slide-title {
+[data-template="kickoff"] .pulse-slide-title {
   color: var(--accent-info);
 }
 
-[data-template="kickoff"] .dark-surface .dtn-slide-title {
+[data-template="kickoff"] .dark-surface .pulse-slide-title {
   color: #FFFFFF;
 }
 
-[data-template="kickoff"] .dtn-eyebrow {
+[data-template="kickoff"] .pulse-eyebrow {
   color: var(--text-secondary);
 }
 
-[data-template="kickoff"] .dark-surface .dtn-eyebrow {
+[data-template="kickoff"] .dark-surface .pulse-eyebrow {
   color: #FFFFFF;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TEMPLATE → LAYOUT BRIDGE RULES
+   
+   These rules connect template personality to theme layout tokens.
+   They sit at specificity (0,2,0) which always beats theme :where() rules
+   (0,0,0), ensuring the correct surface is used even when a theme would
+   otherwise apply a different default color.
+
+   HOW TO ADD A NEW TEMPLATE:
+   1. Add it to src/config/templateRegistry.ts
+   2. Add it to the Zod enum in src/lib/schema.ts
+   3. Add a [data-template="mytemplate"] block above with personality tokens
+   4. Add its [data-layout] rules below choosing which theme token it uses:
+       - --theme-bg-split        = primary colored split (status, allHands)
+       - --theme-bg-split-alt    = deeper/alt colored split (strategy)
+       - --theme-bg-split-light  = light/neutral split (kickoff)
+   That's it. No theme files need changing.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── HERO LAYOUT: applies to all templates using LayoutBrand ── */
+[data-template="status"] [data-layout="hero"],
+[data-template="standup"] [data-layout="hero"],
+[data-template="allHands"] [data-layout="hero"],
+[data-template="requirements"] [data-layout="hero"],
+[data-template="custom"] [data-layout="hero"] {
+  --surface-hero:    var(--theme-bg-hero,    var(--palette-charcoal));
+  --surface-primary: var(--theme-bg-split,   var(--palette-charcoal));
+  --border-strong:   var(--accent-primary,   var(--palette-blue));
+}
+
+[data-template="strategy"] [data-layout="hero"] {
+  --surface-hero:    var(--theme-bg-hero-strategy, var(--theme-bg-hero, var(--palette-charcoal)));
+  --surface-primary: var(--theme-bg-split-alt, var(--palette-charcoal));
+  --border-strong:   var(--accent-primary, var(--palette-charcoal));
+}
+
+[data-template="kickoff"] [data-layout="hero"] {
+  --surface-hero:    var(--theme-bg-hero, var(--palette-charcoal));
+  --surface-primary: var(--theme-bg-split, var(--palette-charcoal));
+  --border-strong:   var(--accent-primary, #EA580C);
+}
+
+/* ─── SPLIT LAYOUT: applies to all templates using LayoutSplit ── */
+[data-template="status"] [data-layout="split"],
+[data-template="standup"] [data-layout="split"],
+[data-template="allHands"] [data-layout="split"],
+[data-template="requirements"] [data-layout="split"],
+[data-template="custom"] [data-layout="split"] {
+  --surface-split:     var(--theme-bg-split,     var(--palette-charcoal));
+  --surface-split-alt: var(--theme-bg-split-alt, var(--palette-charcoal));
+}
+
+[data-template="strategy"] [data-layout="split"] {
+  /* Strategy uses the deeper/alt split surface */
+  --surface-split:     var(--theme-bg-split-alt, var(--palette-charcoal));
+  --surface-split-alt: var(--theme-bg-split-alt, var(--palette-charcoal));
+}
+
+[data-template="kickoff"] [data-layout="split"] {
+  /* Kickoff split stays light — overrides any theme dark split */
+  --surface-split:     var(--theme-bg-split-light, var(--palette-bg));
+  --surface-split-alt: var(--theme-bg-split-light, var(--palette-bg));
+}

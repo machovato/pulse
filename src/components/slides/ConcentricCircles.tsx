@@ -16,7 +16,7 @@ interface ConcentricCirclesProps {
 }
 
 /**
- * DTN brand concentric circle motif — pure inline SVG, zero external assets.
+ * Concentric circle motif — pure inline SVG, zero external assets.
  * The SVG is centred at (0,0) so it can be positioned freely via CSS.
  */
 export function ConcentricCircles({

@@ -80,6 +80,11 @@ const DEFAULT_JSON = JSON.stringify(
 
 type ValidationState = "idle" | "valid" | "invalid";
 
+function themeLabel(t: string | undefined | null): string {
+    if (!t) return "Default";
+    return t.charAt(0).toUpperCase() + t.slice(1);
+}
+
 interface ZodError {
     path: string;
     message: string;
@@ -285,7 +290,7 @@ export function EditorClient({ existingJson, editId }: { existingJson?: string; 
                             onClick={() => setThemeOpen((o) => !o)}
                             className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-default)] bg-white px-3 py-1.5 rounded-lg transition-colors"
                         >
-                            Theme: <span className="font-semibold text-[var(--text-primary)]">{activeTheme || "Default"}</span>
+                            Theme: <span className="font-semibold text-[var(--text-primary)]">{themeLabel(activeTheme)}</span>
                             <ChevronDown className="w-3 h-3" />
                         </button>
                         <AnimatePresence>
@@ -297,15 +302,6 @@ export function EditorClient({ existingJson, editId }: { existingJson?: string; 
                                     transition={{ duration: 0.15 }}
                                     className="absolute right-0 top-full mt-1 z-50 bg-white border border-[var(--card-border)] rounded-xl shadow-lg overflow-hidden min-w-[160px]"
                                 >
-                                    <button
-                                        onClick={() => handleThemeChange(null)}
-                                        className={cn(
-                                            "w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-sm",
-                                            !activeTheme ? "font-bold text-[var(--accent-primary)] bg-[var(--accent-primary-bg)]/20" : "text-[var(--text-primary)]"
-                                        )}
-                                    >
-                                        Default Neutral
-                                    </button>
                                     {availableThemes.map(t => (
                                         <button
                                             key={t}
@@ -315,7 +311,7 @@ export function EditorClient({ existingJson, editId }: { existingJson?: string; 
                                                 activeTheme === t ? "font-bold text-[var(--accent-primary)] bg-[var(--accent-primary-bg)]/20" : "text-[var(--text-primary)]"
                                             )}
                                         >
-                                            {t} Theme
+                                            {t.charAt(0).toUpperCase() + t.slice(1)}
                                         </button>
                                     ))}
                                 </motion.div>

@@ -23,10 +23,10 @@ interface DecisionLogData {
     items: DecisionItem[];
 }
 
-// approved  = DTN Green       #4CB944 — yes, decided, positive
-// blocked    = DTN Red         #C8192B — held up, escalation needed
-// proposed   = DTN Teal        #007074 — pending decision, informational
-// done       = DTN Dark Green  #005741 — archived/complete (historical)
+// approved  = Green       #4CB944 — yes, decided, positive
+// blocked    = Red         #C8192B — held up, escalation needed
+// proposed   = Teal        #007074 — pending decision, informational
+// done       = Dark Green  #005741 — archived/complete (historical)
 const STATUS_CONFIG: Record<string, { bg: string; text: string; border: string; label: string }> = {
     proposed: { bg: "var(--surface-muted)", text: "var(--text-secondary)", border: "var(--border-muted)", label: "Proposed" },
     approved: { bg: "var(--accent-success)", text: "#ffffff", border: "var(--accent-success)", label: "Approved" },
@@ -65,7 +65,7 @@ export function DecisionLogSlide({ slide, deckMeta, disableAnimation = false }: 
                 variants={staggerContainer(disableAnimation)}
             >
                 <div className="flex flex-col w-full h-full overflow-hidden">
-                    {/* Header row - DTN Gradient Style */}
+                    {/* Header row */}
                     <motion.div className="sticky top-0 z-10 grid grid-cols-[2.5fr_1fr_1fr_1fr] gap-6 px-8 py-3.5 bg-gradient-to-r from-[var(--surface-primary)] to-[var(--surface-split)] border-b border-[var(--border-default)] shadow-md" variants={slideUpItem(disableAnimation)}>
                         {["Decision", "Owner", "Date", "Status"].map((h) => (
                             <Typography

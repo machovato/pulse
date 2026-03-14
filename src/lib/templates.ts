@@ -1,6 +1,6 @@
 import type { SlideType } from "./schema";
 
-export type TemplateId = "status" | "allHands" | "requirements" | "custom";
+export type TemplateId = "status" | "standup" | "allHands" | "requirements" | "custom";
 
 interface TemplateConfig {
     label: string;
@@ -11,10 +11,16 @@ interface TemplateConfig {
 
 export const TEMPLATES: Record<TemplateId, TemplateConfig> = {
     status: {
-        label: "Project Status",
+        label: "Status",
         description: "Weekly sprint and project status update",
         allowed: ["hero", "kpis", "pipeline", "grid", "timeline", "blockers"],
         defaultOrder: ["hero", "kpis", "pipeline", "timeline", "grid", "blockers"],
+    },
+    standup: {
+        label: "Standup",
+        description: "Scrum standup or daily sync meeting",
+        allowed: ["hero", "kpis", "pipeline", "blockers", "grid"],
+        defaultOrder: ["hero", "kpis", "blockers", "pipeline"],
     },
     allHands: {
         label: "All Hands",

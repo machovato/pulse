@@ -32,7 +32,7 @@ function coerceMeta(raw: AnyObj): AnyObj {
     }
 
     // template: enum
-    const templates = ["status", "allHands", "requirements", "custom"] as const;
+    const templates = ["status", "standup", "allHands", "requirements", "strategy", "custom", "kickoff"] as const;
     if (!templates.includes(meta.template as typeof templates[number])) {
         meta.template = "custom";
     }

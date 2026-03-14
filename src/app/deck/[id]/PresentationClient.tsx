@@ -10,6 +10,102 @@ import type { LooseDeck, LooseSlide } from "@/lib/schema";
 import { processSlides, type DensityMode } from "@/lib/paginate";
 import { TemplateProvider } from "@/components/TemplateContext";
 
+// ─── Responsive Thumbnail Wrapper ───────────────────────────────────────────────
+
+function ResponsiveThumbnail({
+    slide,
+    density,
+    deckMeta,
+    schemaVersion,
+    isCurrent,
+    onClick,
+    index
+}: {
+    slide: LooseSlide;
+    density: DensityMode;
+    deckMeta: Record<string, string>;
+    schemaVersion: number;
+    isCurrent: boolean;
+    onClick: () => void;
+    index: number;
+}) {
+    const cellRef = useRef<HTMLButtonElement>(null);
+    const [scale, setScale] = useState(0.2); // Fallback scale
+    const DESIGN_W = 1200;
+    const DESIGN_H = 675;
+
+    useEffect(() => {
+        const node = cellRef.current;
+        if (!node) return;
+        const observer = new ResizeObserver((entries) => {
+            const { width, height } = entries[0].contentRect;
+            if (width > 0 && height > 0) {
+                // Reserve 28px for the title below the thumbnail
+                const availableHeight = height - 28; 
+                // Determine max bounded dimensions that maintain a 16:9 ratio
+                const boxW = Math.min(width, availableHeight * (16 / 9));
+                setScale(Math.max(0.05, boxW / DESIGN_W));
+            }
+        });
+        observer.observe(node);
+        return () => observer.disconnect();
+    }, []);
+
+    const thumbW = DESIGN_W * scale;
+    const thumbH = DESIGN_H * scale;
+
+    return (
+        <motion.button
+            ref={cellRef}
+            onClick={onClick}
+            className="group relative flex flex-col gap-2 items-center justify-center cursor-pointer min-h-0 min-w-0 w-full h-full"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25, delay: index * 0.025 }}
+            whileHover={{ scale: 1.02 }}
+        >
+            <div
+                className={`relative overflow-hidden rounded-[10px] transition-all bg-[#0D2240] shrink-0 ${isCurrent
+                    ? slide._missing
+                        ? "ring-2 ring-dashed ring-[#1B8FE0] ring-offset-2 ring-offset-[#0D2240]"
+                        : "ring-2 ring-[#1B8FE0] ring-offset-2 ring-offset-[#0D2240]"
+                    : slide._missing
+                        ? "ring-2 ring-dashed ring-white/20 hover:ring-white/40"
+                        : "ring-1 ring-white/10 shadow-lg hover:ring-white/30"
+                    }`}
+                style={{ width: thumbW, height: thumbH }}
+            >
+                <div
+                    className="absolute top-0 left-0 pointer-events-none"
+                    data-template={deckMeta.template || "status"}
+                    data-theme={deckMeta.theme && deckMeta.theme !== "default" ? deckMeta.theme : "blue"}
+                    style={{
+                        width: DESIGN_W,
+                        height: DESIGN_H,
+                        transform: `scale(${scale})`,
+                        transformOrigin: "top left",
+                    }}
+                >
+                    <SlideRenderer slide={slide} density={density} deckMeta={deckMeta} schemaVersion={schemaVersion} disableAnimation={true} />
+                </div>
+
+                {isCurrent && (
+                    <div className="absolute inset-0 border-2 border-[#1B8FE0] rounded-[10px] pointer-events-none" />
+                )}
+            </div>
+
+            <div className="flex items-center gap-2 max-w-full justify-center px-2 shrink-0 h-[20px]">
+                <span className="text-[12px] font-bold text-white/30 tabular-nums shrink-0">
+                    {index + 1}
+                </span>
+                <span className="text-[12px] pb-[1px] text-white/60 group-hover:text-white/90 transition-colors truncate font-medium">
+                    {slide.title}
+                </span>
+            </div>
+        </motion.button>
+    );
+}
+
 // ─── Slide Grid Overlay ───────────────────────────────────────────────────────
 
 // Layout 1 applies to hero slides. Used to decide dot and overlay accent colors.
@@ -32,12 +128,17 @@ function SlideGridOverlay({
     onSelect: (i: number) => void;
     onClose: () => void;
 }) {
-    // Scale factor: thumbnails are 240x135, design space is 1200x675 → scale = 0.2
-    const THUMB_W = 240;
-    const THUMB_H = 135;
-    const DESIGN_W = 1200;
-    const DESIGN_H = 675;
-    const SCALE = THUMB_W / DESIGN_W;
+    const n = slides.length;
+    let cols = 1;
+    let rows = 1;
+    if (n <= 3) { cols = n; rows = 1; }
+    else if (n === 4) { cols = 2; rows = 2; }
+    else if (n <= 6) { cols = 3; rows = 2; }
+    else if (n <= 8) { cols = 4; rows = 2; }
+    else if (n <= 9) { cols = 3; rows = 3; }
+    else if (n <= 12) { cols = 4; rows = 3; }
+    else if (n <= 16) { cols = 4; rows = 4; }
+    else { cols = Math.ceil(Math.sqrt(n * (16/9))); rows = Math.ceil(n / cols); }
 
     return (
         <motion.div
@@ -51,7 +152,7 @@ function SlideGridOverlay({
             tabIndex={-1}
         >
             {/* Header */}
-            <div className="flex items-center justify-between px-8 py-5 border-b border-white/10">
+            <div className="flex items-center justify-between px-8 py-4 border-b border-white/10 shrink-0">
                 <div>
                     <p className="text-white font-semibold text-sm">Slide Overview</p>
                     <p className="text-white/40 text-xs mt-0.5">
@@ -68,60 +169,26 @@ function SlideGridOverlay({
             </div>
 
             {/* Thumbnail grid */}
-            <div className="flex-1 overflow-auto px-8 py-6">
-                <div className="flex flex-wrap gap-5">
-                    {slides.map((slide, i) => {
-                        const isCurrent = i === currentIndex;
-                        return (
-                            <motion.button
-                                key={slide.id ?? i}
-                                onClick={() => onSelect(i)}
-                                className="group relative flex flex-col gap-2 items-start cursor-pointer"
-                                initial={{ opacity: 0, y: 12 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.25, delay: i * 0.025 }}
-                                whileHover={{ scale: 1.03 }}
-                            >
-                                {/* Thumbnail frame */}
-                                <div
-                                    className={`relative overflow-hidden rounded-lg transition-all ${isCurrent
-                                        ? "ring-2 ring-[#1B8FE0] ring-offset-2 ring-offset-[#0D2240]"
-                                        : "ring-1 ring-white/10 hover:ring-white/30"
-                                        }`}
-                                    style={{ width: THUMB_W, height: THUMB_H }}
-                                >
-                                    <div
-                                        className="absolute top-0 left-0 pointer-events-none"
-                                        data-template={deckMeta.template || "status"}
-                                        data-theme={deckMeta.theme}
-                                        style={{
-                                            width: DESIGN_W,
-                                            height: DESIGN_H,
-                                            transform: `scale(${SCALE})`,
-                                            transformOrigin: "top left",
-                                        }}
-                                    >
-                                        <SlideRenderer slide={slide} density={density} deckMeta={deckMeta} schemaVersion={schemaVersion} disableAnimation={true} />
-                                    </div>
-
-                                    {/* Current slide highlight overlay */}
-                                    {isCurrent && (
-                                        <div className="absolute inset-0 border-2 border-[#1B8FE0] rounded-lg pointer-events-none" />
-                                    )}
-                                </div>
-
-                                {/* Slide number + title below */}
-                                <div className="flex items-center gap-1.5 max-w-[240px]">
-                                    <span className="text-[10px] font-bold text-white/30 tabular-nums w-5 shrink-0">
-                                        {i + 1}
-                                    </span>
-                                    <span className="text-[11px] text-white/60 group-hover:text-white/80 transition-colors truncate">
-                                        {slide.title}
-                                    </span>
-                                </div>
-                            </motion.button>
-                        );
-                    })}
+            <div className="flex-1 min-h-0 overflow-hidden px-8 py-6">
+                <div 
+                    className="grid w-full h-full gap-4"
+                    style={{
+                        gridTemplateColumns: `repeat(${cols}, 1fr)`,
+                        gridTemplateRows: `repeat(${rows}, 1fr)`,
+                    }}
+                >
+                    {slides.map((slide, i) => (
+                        <ResponsiveThumbnail
+                            key={slide.id ?? i}
+                            slide={slide}
+                            density={density}
+                            deckMeta={deckMeta}
+                            schemaVersion={schemaVersion}
+                            isCurrent={i === currentIndex}
+                            onClick={() => onSelect(i)}
+                            index={i}
+                        />
+                    ))}
                 </div>
             </div>
         </motion.div>
@@ -288,6 +355,8 @@ export function PresentationClient({ deck, deckId }: PresentationClientProps) {
                 if (showFormEditor) { setShowFormEditor(false); return; }
                 if (showGrid) { setShowGrid(false); return; }
                 if (showNotes) { setShowNotes(false); return; }
+                // If no overlays are open, exit to Home
+                router.push("/");
                 return;
             }
             // Don't navigate when overlays are open
@@ -315,11 +384,13 @@ export function PresentationClient({ deck, deckId }: PresentationClientProps) {
                     if (e.shiftKey) {
                         router.push(`/editor?editId=${deckId}`);
                     } else {
-                        router.push("/");
+                        setShowFormEditor((v) => !v);
                     }
                     break;
                 case "g":
                 case "G":
+                case "o":
+                case "O":
                     setShowGrid((v) => !v);
                     break;
                 case "d":
@@ -351,9 +422,9 @@ export function PresentationClient({ deck, deckId }: PresentationClientProps) {
     // to strictly scope the theme attributes to the specific slide layouts.
 
     return (
-        <TemplateProvider template={deck.meta.template || "status"}>
+        <TemplateProvider template={deck.meta.template || "status"} theme={deck.meta.theme}>
             {/* Full-viewport slide stage */}
-            <div className="fixed inset-0 overflow-hidden bg-[var(--surface-primary)]" data-theme={deck.meta.theme}>
+            <div className="fixed inset-0 overflow-hidden bg-[var(--surface-primary)]">
                 <AnimatePresence custom={direction} mode="popLayout">
                     <motion.div
                         key={currentIndex}

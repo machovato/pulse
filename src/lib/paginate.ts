@@ -111,7 +111,7 @@ export function processSlides(
             const key = ARRAY_KEYS[s.type];
             if (key && s.data) {
                 const arr = (s.data as Record<string, unknown>)[key];
-                if (Array.isArray(arr) && arr.length === 0 && s.type !== "blockers") {
+                if (Array.isArray(arr) && arr.length === 0 && s.type !== "blockers" && !s._missing) {
                     continue; // hide
                 }
             }

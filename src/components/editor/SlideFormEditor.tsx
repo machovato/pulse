@@ -46,15 +46,65 @@ export function SlideFormEditor({
     const originalSlide = deck.slides[slideIndex];
     const [localSlide, setLocalSlide] = useState<LooseSlide>({ ...originalSlide });
     const [isSaving, setIsSaving] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [saveError, setSaveError] = useState<string | null>(null);
+
+    const handleDelete = async () => {
+        if (!window.confirm("Are you sure you want to delete this slide? This action cannot be undone.")) {
+            return;
+        }
+
+        setSaveError(null);
+        setIsDeleting(true);
+
+        try {
+            // Filter out the current slide
+            const updatedDeck: LooseDeck = {
+                ...deck,
+                slides: deck.slides.filter((_, idx) => idx !== slideIndex),
+            };
+
+            const res = await updateExistingDeck(deckId, updatedDeck);
+            if (res.success) {
+                onSaveSuccess();
+            } else {
+                setSaveError(res.error || "Failed to delete slide.");
+            }
+        } catch (e) {
+            setSaveError(e instanceof Error ? e.message : "Failed to delete slide.");
+        } finally {
+            setIsDeleting(false);
+        }
+    };
 
     const handleSave = async () => {
         setSaveError(null);
         setErrors({});
 
-        // 1. Validate local slide against schema for its type
-        const result = SlideSchema.safeParse(localSlide);
+        // 1. Determine if the slide has meaningful content in its data
+        const slideToSave = { ...localSlide };
+        const data = slideToSave.data || {};
+        const hasContent = Object.values(data).some((val) => {
+            if (Array.isArray(val)) return val.length > 0;
+            if (typeof val === "string") return val.trim().length > 0;
+            if (typeof val === "object" && val !== null) return Object.keys(val).length > 0;
+            return val !== undefined && val !== null;
+        });
+
+        // 2. Toggle _missing based on content — but keep _reason/_hint as breadcrumbs
+        if (!hasContent && (slideToSave._reason || originalSlide._reason)) {
+            // Empty content + breadcrumbs exist → revert to placeholder
+            slideToSave._missing = true;
+            slideToSave._reason = slideToSave._reason || originalSlide._reason;
+            slideToSave._hint = slideToSave._hint || originalSlide._hint;
+        } else if (hasContent) {
+            // Has real content → deactivate missing flag but keep breadcrumbs
+            delete slideToSave._missing;
+        }
+
+        // 3. Validate local slide against schema for its type
+        const result = SlideSchema.safeParse(slideToSave);
         if (!result.success) {
             const newErrors: Record<string, string> = {};
             result.error.errors.forEach((err) => {
@@ -67,12 +117,12 @@ export function SlideFormEditor({
 
         setIsSaving(true);
         try {
-            // 2. Build the updated deck
+            // 4. Build the updated deck
             const updatedDeck: LooseDeck = {
                 ...deck,
                 slides: [...deck.slides],
             };
-            updatedDeck.slides[slideIndex] = localSlide;
+            updatedDeck.slides[slideIndex] = slideToSave;
 
             // 3. Save to server
             const res = await updateExistingDeck(deckId, updatedDeck);
@@ -165,21 +215,31 @@ export function SlideFormEditor({
             </div>
 
             {/* Footer */}
-            <div className="px-6 py-4 border-t border-gray-100 bg-white shrink-0 flex items-center justify-end gap-3">
+            <div className="px-6 py-4 border-t border-gray-100 bg-white shrink-0 flex items-center justify-between gap-3">
                 <button
-                    onClick={onClose}
-                    className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                    onClick={handleDelete}
+                    disabled={isDeleting || isSaving}
+                    className="px-3 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-2"
                 >
-                    Cancel
+                    {isDeleting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Delete This Slide"}
                 </button>
-                <button
-                    onClick={handleSave}
-                    disabled={isSaving}
-                    className="px-4 py-2 text-sm font-semibold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-bg)] rounded-lg shadow-sm transition-all flex items-center gap-2"
-                >
-                    {isSaving && <Loader2 className="w-4 h-4 animate-spin" />}
-                    {isSaving ? "Saving..." : "Save Changes"}
-                </button>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={onClose}
+                        disabled={isDeleting || isSaving}
+                        className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        onClick={handleSave}
+                        disabled={isSaving || isDeleting}
+                        className="px-4 py-2 text-sm font-semibold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-bg)] rounded-lg shadow-sm transition-all flex items-center gap-2"
+                    >
+                        {isSaving && <Loader2 className="w-4 h-4 animate-spin" />}
+                        {isSaving ? "Saving..." : "Save Changes"}
+                    </button>
+                </div>
             </div>
         </motion.div>
     );

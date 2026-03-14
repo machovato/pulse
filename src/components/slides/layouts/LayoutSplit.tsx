@@ -2,7 +2,7 @@
  * Layout 2 — Split Panel (40% brand left / 60% content right)
  * Applied to: callout, blockers, agenda, decision_log, grid
  *
- * Left panel: DTN Blue gradient (or Navy override for low-urgency blockers).
+ * Left panel: Blue gradient (or Navy override for low-urgency blockers).
  * Concentric circles centred on the seam (spans both panels).
  * Right panel: white (#FFFFFF), generous padding, content lives here.
  */
@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 interface LayoutSplitProps {
     leftContent: React.ReactNode;
     rightContent: React.ReactNode;
-    /** Override left panel background. Defaults to DTN Blue gradient. */
+    /** Override left panel background. Defaults to blue gradient. */
     leftBackground?: "blue" | "navy";
     /** Override padding for the right panel. Defaults to true (px-12 py-10). */
     rightPadding?: boolean;
@@ -45,7 +45,7 @@ export function LayoutSplit({
     const { template } = useTemplate();
     const isKickoff = template === "kickoff";
     return (
-        <div className="relative w-full h-full flex overflow-hidden">
+        <div data-layout="split" className="relative w-full h-full flex overflow-hidden">
             {backgroundNode}
             
             {/* LEFT PANEL — 40% */}

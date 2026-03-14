@@ -35,10 +35,8 @@ try {
     console.warn('Could not determine git version', e);
 }
 
-// Fallbacks for Railway or other CI environments
-const finalHash = process.env.RAILWAY_GIT_COMMIT_SHA
-    ? process.env.RAILWAY_GIT_COMMIT_SHA.substring(0, 7)
-    : commitHash;
+// Fallback for non-git environments (e.g. fresh clone before first commit)
+const finalHash = commitHash;
 
 const envSuffix = process.env.NODE_ENV === 'production' ? '' : '-local';
 const appVersion = `v1.0.${commitCount}${envSuffix} (${finalHash})${syncStatus}`;

@@ -8,18 +8,20 @@ import { deleteDeck, renameDeck, togglePinDeck, archiveDeck } from "@/app/action
 
 const TEMPLATE_STYLES: Record<string, { bg: string, text: string, icon: React.FC<any> }> = {
     strategy: { bg: "bg-[var(--accent-template-strategy)]/15", text: "text-[var(--accent-template-strategy)]", icon: Target },
-    status: { bg: "bg-[var(--accent-template-status)]/15", text: "text-[var(--accent-template-status)]", icon: Activity },
-    kickoff: { bg: "bg-[var(--accent-template-kickoff)]/15", text: "text-[var(--accent-template-kickoff)]", icon: Rocket },
-    default: { bg: "bg-[var(--surface-subtle)]/15", text: "text-[var(--text-secondary)]", icon: FileText },
+    status:   { bg: "bg-[var(--accent-template-status)]/15",   text: "text-[var(--accent-template-status)]",   icon: Activity },
+    standup:  { bg: "bg-[var(--accent-template-status)]/15",   text: "text-[var(--accent-template-status)]",   icon: Activity },
+    kickoff:  { bg: "bg-[var(--accent-template-kickoff)]/15",  text: "text-[var(--accent-template-kickoff)]",  icon: Rocket },
+    default:  { bg: "bg-[var(--surface-subtle)]/15",           text: "text-[var(--text-secondary)]",           icon: FileText },
 };
 
 const TEMPLATE_LABELS: Record<string, string> = {
-    status: "Project Status",
+    status: "Status",
+    standup: "Standup",
     strategy: "Strategy",
     allHands: "All Hands",
     requirements: "Requirements",
+    kickoff: "Kickoff",
     custom: "Custom",
-    kickoff: "Launch Kickoff",
 };
 
 const RAG_STYLES: Record<string, string> = {
@@ -46,6 +48,7 @@ type DeckRow = {
     created_at: Date;
     slideCount: number;
     theme?: string | null;
+    project?: string | null;
 };
 
 export function DeckList({ decks }: { decks: DeckRow[] }) {
@@ -245,9 +248,10 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
     
     // Subtitle logic
     const templateLabel = TEMPLATE_LABELS[deck.template] ?? deck.template;
-    const titleParts = deck.title.split(/ [-—] /);
-    const projectName = titleParts.length > 1 ? titleParts[0] : "";
-    const subtitle = projectName ? `${projectName} • ${templateLabel}` : templateLabel;
+    const projectName = deck.project || deck.title.split(/ [-\u2014] /)[0];
+    const subtitle = projectName
+        ? `Project: ${projectName} \u2022 ${templateLabel}`
+        : templateLabel;
 
     return (
         <div className="card p-3 flex items-center gap-4 hover:shadow-md transition-all group relative">
@@ -292,12 +296,7 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
 
                 <div className="flex items-center gap-2 mt-1">
                     <span className="text-xs text-[var(--text-secondary)] pointer-events-none">
-                        {subtitle}
-                    </span>
-                    <span className="text-gray-300 text-xs pointer-events-none">•</span>
-                    <span className="inline-flex items-center gap-1 text-[11px] text-[var(--text-secondary)] pointer-events-none">
-                        <Calendar className="w-3 h-3" />
-                        {formatDate(deck.date.toISOString())}
+                        {subtitle} &bull; {formatDate(deck.date.toISOString())}
                     </span>
                 </div>
             </div>

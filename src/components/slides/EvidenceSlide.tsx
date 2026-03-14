@@ -37,7 +37,7 @@ function renderMetric(metricStr: string, isQualitative: boolean) {
                 <span className="text-text-muted/40 font-light" style={{ fontSize: "clamp(24px, 4vw, 42px)" }}>
                     →
                 </span>
-                <Typography as="span" variant="metric" className={isQualitative ? 'text-accent-warning' : 'text-accent-success'}>
+                <Typography as="div" variant="h1" className={isQualitative ? '!text-accent-warning line-clamp-2' : '!text-accent-success line-clamp-2'}>
                     {after}
                 </Typography>
             </div>
@@ -54,11 +54,11 @@ function renderMetric(metricStr: string, isQualitative: boolean) {
 
             return (
                 <div className="flex flex-col xl:flex-row xl:items-baseline gap-2">
-                    <Typography as="span" variant="metric" className="text-text-primary drop-shadow-sm tracking-tight">
+                    <Typography as="div" variant="h1" className="!text-text-primary drop-shadow-sm tracking-tight line-clamp-2">
                         {numPart}
                     </Typography>
                     {textPart && (
-                        <Typography as="span" variant="h2" className="text-text-secondary max-w-[250px] leading-tight mt-2 xl:mt-0 xl:ml-3">
+                        <Typography as="div" variant="h2" className="text-text-secondary max-w-[250px] leading-tight mt-2 xl:mt-0 xl:ml-3 line-clamp-2">
                             {textPart}
                         </Typography>
                     )}
@@ -68,7 +68,7 @@ function renderMetric(metricStr: string, isQualitative: boolean) {
     }
 
     return (
-        <Typography as="span" variant="metric" className="drop-shadow-sm tracking-tight text-text-primary">
+        <Typography as="div" variant="h1" className="drop-shadow-sm tracking-tight !text-text-primary line-clamp-2">
             {metricStr}
         </Typography>
     );
@@ -119,11 +119,11 @@ export function EvidenceSlide({ slide, deckMeta, disableAnimation = false }: { s
                                         </div>
 
                                         <div className="mt-6 relative bg-surface-muted p-5 rounded-xl border border-border-default/50">
-                                            <Typography variant="body" className="font-medium leading-relaxed mb-4">
+                                            <Typography variant="body" className="font-medium leading-relaxed mb-4 line-clamp-3">
                                                 {isQualitative ? `"${point.body}"` : point.body}
                                             </Typography>
                                             <Typography variant="caption" className="text-accent-info font-bold flex items-center gap-2 before:content-['—'] before:mr-1">
-                                                {point.source}
+                                                <span className="truncate">{point.source}</span>
                                             </Typography>
                                         </div>
                                     </div>

@@ -44,15 +44,14 @@ const RAG_LABELS: Record<string, string> = {
 };
 
 const SHORTCUTS = [
-    { key: "← / →", action: "Navigate slides" },
-    { key: "↑ / ↓", action: "Navigate slides" },
+    { key: "← / → / ↑ / ↓", action: "Navigate slides" },
     { key: "N", action: "Speaker notes overlay" },
-    { key: "G", action: "Slide grid overview" },
+    { key: "O / G", action: "Slide grid overview" },
+    { key: "E", action: "Edit this slide" },
+    { key: "Shift + E", action: "Edit entire deck" },
     { key: "D", action: "Toggle Executive / Full density" },
     { key: "P", action: "Print / export to PDF" },
-    { key: "E", action: "Return to home" },
-    { key: "Shift + E", action: "Edit current deck" },
-    { key: "Esc", action: "Dismiss overlay" },
+    { key: "Esc", action: "Dismiss overlay / Return to home" },
 ];
 
 const BLANK_SCAFFOLD = JSON.stringify(
@@ -101,6 +100,7 @@ export default async function HomePage() {
         let slideCount = 0;
         let ragOverride = deck.rag;
         let theme = null;
+        let project = null;
         try {
             const parsed = JSON.parse(deck.content_json);
             slideCount = Array.isArray(parsed.slides) ? parsed.slides.length : 0;
@@ -109,6 +109,9 @@ export default async function HomePage() {
             }
             if (parsed.meta?.theme) {
                 theme = parsed.meta.theme;
+            }
+            if (parsed.meta?.project) {
+                project = parsed.meta.project;
             }
         } catch (e) {
             // ignore JSON parse errors
@@ -124,7 +127,8 @@ export default async function HomePage() {
             archived: deck.archived,
             created_at: deck.created_at,
             slideCount,
-            theme
+            theme,
+            project,
         };
     });
 
