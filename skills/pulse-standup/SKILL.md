@@ -2,7 +2,7 @@
 
 **Mode:** EXECUTE
 **Purpose:** Generate a daily standup deck as structured JSON from current project state.
-**Output:** Save JSON to the project's folder as `[project-name]-Pulse-Standup-[TODAY].json`
+**Output:** Save JSON to a `pulse-decks/` subfolder within the project's folder as `[project-name]-Pulse-Standup-[TODAY].json`
 
 ---
 
@@ -119,7 +119,7 @@ All five slides are always included. Even an empty parking lot is spoken to — 
 
 ### Final Step — Deliver to Pulse
 
-After saving the JSON file to the project folder:
+Create a `pulse-decks/` subfolder in the project folder if it doesn't exist, and write the JSON file there. Then:
 
 1. If the `pulse_create_deck` tool is available, call it with the full JSON string.
    Report the returned deck URL to the user.
@@ -282,7 +282,7 @@ Topics that surfaced during standup needing a deeper conversation outside the 15
 ## Rules
 
 ### Output
-- Write raw JSON to the project's folder as `[project-name]-Pulse-Standup-[TODAY].json`
+- Write raw JSON to the `pulse-decks/` subfolder as `[project-name]-Pulse-Standup-[TODAY].json`
 - Your conversational response is **only** a save confirmation and file link
 
 ### Content

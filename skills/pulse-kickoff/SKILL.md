@@ -2,7 +2,7 @@
 
 **Mode:** EXECUTE
 **Purpose:** Generate a kickoff briefing deck as structured JSON from a project charter
-**Output:** `02-Projects/[Project-Name]/[Project-Name]-Pulse-Kickoff-[TODAY].json`
+**Output:** Save JSON to a `pulse-decks/` subfolder within the project's folder as `[Project-Name]-Pulse-Kickoff-[TODAY].json`
 
 ---
 
@@ -263,7 +263,7 @@ Do not include a slide type if the charter does not support it. Omit rather than
 
 ### Final Step — Deliver to Pulse
 
-After saving the JSON file to the project folder:
+Create a `pulse-decks/` subfolder in the project folder if it doesn't exist, and write the JSON file there. Then:
 
 1. If the `pulse_create_deck` tool is available, call it with the full JSON string.
    Report the returned deck URL to the user.
@@ -505,7 +505,7 @@ Rhetorical job: **Assign commitments.** Every person leaves knowing their part.
 ## Rules
 
 - Output raw JSON only. No text before or after.
-- Save to `02-Projects/[Project-Name]/[Project-Name]-Pulse-Kickoff-[TODAY].json`.
+- Save to the `pulse-decks/` subfolder as `[Project-Name]-Pulse-Kickoff-[TODAY].json`.
 - Every body field: **20 words maximum.** Cut ruthlessly. Exceptions: `problem.primary.body` allows 30 words. `grid.cards.body` allows 25 words.
 - **Speaker notes:** The presenter's internal monologue — what you're thinking while the audience reads the slide. They answer "Why does this matter to this room?" or "What should I emphasize that isn't written here?" Written in first person, 2-3 sentences max. NEVER describe the layout of the slide, how it was generated, or simply list what is visible. For every metric or point shown, state the underlying business implication, the hidden win, or the specific risk it exposes. Connect every point back to why this project exists or what the audience needs to do.
 - **Speaker notes quality test:** "Would a presenter who knows this project still find this note useful 30 seconds before going on stage?" If no, the note is too generic or too obvious. Rewrite.

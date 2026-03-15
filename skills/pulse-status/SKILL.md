@@ -2,7 +2,7 @@
 
 **Mode:** EXECUTE
 **Purpose:** Generate a structured JSON status presentation for any project in the vault.
-**Output:** Save JSON to the project's folder as `[project-name]-Pulse-[TODAY].json`
+**Output:** Save JSON to a `pulse-decks/` subfolder within the project's folder as `[project-name]-Pulse-[TODAY].json`
 
 ---
 
@@ -119,7 +119,7 @@ Generate the deck JSON. Every slide must earn its place by improving executive u
 
 ### Final Step — Deliver to Pulse
 
-After saving the JSON file to the project folder:
+Create a `pulse-decks/` subfolder in the project folder if it doesn't exist, and write the JSON file there. Then:
 
 1. If the `pulse_create_deck` tool is available, call it with the full JSON string.
    Report the returned deck URL to the user.
@@ -245,7 +245,7 @@ If dates exist only as quarters or ranges, normalize to the best specific date. 
 ## Rules
 
 ### Output
-- Write raw JSON to the project's folder as `[project-name]-Pulse-[TODAY].json`. Valid JSON only — no preamble, no markdown fences.
+- Write raw JSON to the `pulse-decks/` subfolder as `[project-name]-Pulse-[TODAY].json`. Valid JSON only — no preamble, no markdown fences.
 - Your conversational response is **only** a save confirmation and file link. Do not output JSON in chat.
 
 ### Content Quality
