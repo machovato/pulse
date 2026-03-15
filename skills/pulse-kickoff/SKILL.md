@@ -2,7 +2,7 @@
 
 **Mode:** EXECUTE
 **Purpose:** Generate a kickoff briefing deck as structured JSON from a project charter
-**Output:** Save JSON to a `pulse-decks/` subfolder within the project's folder as `[Project-Name]-Pulse-Kickoff-[TODAY].json`
+**Output:** Save JSON to the project's `pulse-decks/` folder as `[project-name]-Pulse-Kickoff-[TODAY].json`
 
 ---
 
@@ -241,16 +241,16 @@ Only after completing Steps 1-4, generate the deck JSON. Every slide must earn i
 
 **Slide sequence for `kickoff` type:**
 
-| Slide | Type | Purpose | Include when |
-|---|---|---|---|
-| 1 | `hero` | Mission statement + key facts | Always |
-| 2 | `context` | Shared reality | Always — anchors the room |
-| 3 | `problem` | Why this matters | Always — but brief, ≤20% of deck energy |
-| 4 | `evidence` | Why trust this approach | Source has ≥2 quantified proof points |
-| 5 | `grid` | Deliverables | Always — the operational core |
-| 6 | `timeline` | Sprint/phase schedule | Always — creates accountability |
-| 7 | `context` | Success criteria — how we measure done | Charter has defined success criteria |
-| 8 | `blockers` | Team commitments + scope boundaries | Always — why the deck exists |
+| Slide | Type | Eyebrow | Purpose | Include when |
+|---|---|---|---|---|
+| 1 | `hero` | _(from meta)_ "Leadership Briefing" | Mission statement + key facts | Always |
+| 2 | `context` | "Shared Reality" | Shared reality | Always |
+| 3 | `problem` | "Anchor Tension" | Why this matters | Always |
+| 4 | `evidence` | "Credibility" | Why trust this approach | Source has ≥2 quantified proof points |
+| 5 | `grid` | "Deliverables" | Deliverables | Always |
+| 6 | `timeline` | "Milestones" | Sprint/phase schedule | Always |
+| 7 | `context` | "Success Criteria" | How we measure done | Charter has defined success criteria |
+| 8 | `blockers` | "Commitments" | Team commitments + scope boundaries | Always |
 
 Optional additions:
 | Slide | Type | Purpose | Include when |
@@ -327,6 +327,7 @@ Rhetorical job: **Anchor the room.** The audience nods. No debate.
   "title": "What Everyone Agrees On",
   "notes": "GENERATE NOTE ANSWERING: 'What's the one piece of context that, if misunderstood, would derail the rest of this deck?' Identify which context item is most likely to be misunderstood or forgotten by this audience, and what assumption or decision it protects. If one item is a newer or less-familiar decision, call it out. Example: 'The tiered support model making the KB load-bearing is firm — I'm stating it here because some teams still think base-tier customers will have agent fallback. Everything in this deck assumes they won't.'",
   "data": {
+    "eyebrow": "Shared Reality",
     "items": [
       {
         "title": "string",
@@ -351,6 +352,7 @@ Rhetorical job: **Remind why this matters.** Anchor, don't argue.
   "title": "Why This Is Urgent",
   "notes": "GENERATE NOTE ANSWERING: 'Why is this problem worth solving for this specific audience, and what happens if we don't?' Connect the primary problem to a specific metric, workflow, or accountability this audience owns. State the consequence of inaction in concrete terms — not abstract risk. If the problem has been discussed before but not solved, explain what's different now. Example: 'Today the answer to what goes in the KB is we don't know — 416 articles with no taxonomy, no metadata, no migration plan. If we don't solve this before July 29, the implementation team either gets nothing or invents something under deadline pressure.'",
   "data": {
+    "eyebrow": "Anchor Tension",
     "primary": {
       "title": "string",
       "body": "≤30 words. The forcing function or failure state.",
@@ -379,6 +381,7 @@ Rhetorical job: **Establish credibility.** The audience should trust the lead an
   "title": "What We Already Know",
   "notes": "GENERATE NOTE ANSWERING per evidence card: 'How does this proof point demonstrate progress toward the mission, and why should this audience trust it?' For each card, (a) connect the proof back to a specific deliverable, problem, or success criterion from the charter, and (b) explain why this source or data point is credible. If the evidence shows velocity or momentum, state that explicitly. Example for audit card: 'The 416-article audit gives us actual scope for the conversion workstream. The credentials and broken links surfaced are problems that would have migrated silently into Guide. This is done — we're working from real data, which is why the timeline is credible.'",
   "data": {
+    "eyebrow": "Credibility",
     "points": [
       {
         "metric": "string — the number or outcome. E.g. '416 articles in 1 day' or '85.5 hrs → 3.5 hrs'",
@@ -402,6 +405,7 @@ Rhetorical job: **Set expectations.** Concrete outputs, not abstract goals.
   "title": "What You're Getting",
   "notes": "GENERATE NOTE ANSWERING: 'Which deliverable is the linchpin, and what dependency or risk isn't obvious from the card titles?' Identify the one deliverable that unlocks the others or carries the highest risk, and explain why. If there's a sequencing dependency not obvious from the visual order, call it out. If one deliverable has a hard external dependency, name it. This prepares the audience for the timeline and blockers slides. Example: 'The conversion template is the linchpin — it's what makes Energy and AG follow without reinventing the process. If that template isn't documented and tested during Weather, we lose the scalability promise.'",
   "data": {
+    "eyebrow": "Deliverables",
     "cards": [
       {
         "title": "string — deliverable name",
@@ -425,6 +429,7 @@ Rhetorical job: **Create accountability.** Dates, outputs, visible progress.
   "title": "The Timeline",
   "notes": "GENERATE NOTE ANSWERING: 'What's already done that builds confidence, and what's the one date that can't move?' Highlight completed milestones to establish credibility, then identify the immovable date and why it's immovable (external dependency, business event, contractual obligation). If the active phase has a progress indicator, explain what that percentage represents. Example: 'Phase 0 is done — that's the evidence from two slides ago, proving we're not starting from zero. The immovable date is April 24. Sprint 5 is where we'll need the most from Justin's team — that's the likely bottleneck if SME time gets pulled.'",
   "data": {
+    "eyebrow": "Milestones",
     "milestones": [
       {
         "label": "string — phase or sprint name",
@@ -454,6 +459,7 @@ Rhetorical job: **Define done.** The audience knows what success looks like.
   "title": "How We Measure Success",
   "notes": "GENERATE NOTE ANSWERING: 'Which success criterion is hardest to measure or most likely to be disputed, and how will we know we're done?' Identify the criterion with the most ambiguity and explain how it will be validated. If one criterion represents the primary stakeholder's definition of done, call that out. If the charter defines a failure state, restate it as the boundary condition. Example: 'The repeatability criterion is the hardest — it's easy to convert Weather content, but proving the template works for Energy and AG requires documentation discipline. The failure state is clear: if content isn't ready when Zendesk goes live, base-tier customers get nothing.'",
   "data": {
+    "eyebrow": "Success Criteria",
     "items": [
       {
         "title": "string — criterion name, scannable",
@@ -480,6 +486,7 @@ Rhetorical job: **Assign commitments.** Every person leaves knowing their part.
   "title": "What I Need — And What's Not In Scope",
   "notes": "GENERATE NOTE ANSWERING: 'What's the smallest ask that unblocks the biggest risk, and what do I need someone to commit to before leaving this room?' Identify the highest-priority action item and which blocker it resolves. State the specific commitment needed (decision, resource, time, access). For out-of-scope FYIs, explain why you're surfacing them — what scope creep they prevent. Example: 'Justin's 3-4 hrs/wk is the critical ask — without SME review, converted articles can't be validated and the timeline stalls at Sprint 5. The out-of-scope items are here because in past projects, teams tried to expand into Academy sites and DaaS docs. That's not this project.'",
   "data": {
+    "eyebrow": "Commitments",
     "summary": {
       "actions": "number",
       "approvals": "number",
@@ -505,7 +512,7 @@ Rhetorical job: **Assign commitments.** Every person leaves knowing their part.
 ## Rules
 
 - Output raw JSON only. No text before or after.
-- Save to the `pulse-decks/` subfolder as `[Project-Name]-Pulse-Kickoff-[TODAY].json`.
+- Save to the project's `pulse-decks/` subfolder as `[Project-Name]-Pulse-Kickoff-[TODAY].json`. Create the `pulse-decks/` folder if it doesn't exist.
 - Every body field: **20 words maximum.** Cut ruthlessly. Exceptions: `problem.primary.body` allows 30 words. `grid.cards.body` allows 25 words.
 - **Speaker notes:** The presenter's internal monologue — what you're thinking while the audience reads the slide. They answer "Why does this matter to this room?" or "What should I emphasize that isn't written here?" Written in first person, 2-3 sentences max. NEVER describe the layout of the slide, how it was generated, or simply list what is visible. For every metric or point shown, state the underlying business implication, the hidden win, or the specific risk it exposes. Connect every point back to why this project exists or what the audience needs to do.
 - **Speaker notes quality test:** "Would a presenter who knows this project still find this note useful 30 seconds before going on stage?" If no, the note is too generic or too obvious. Rewrite.
@@ -513,7 +520,9 @@ Rhetorical job: **Assign commitments.** Every person leaves knowing their part.
 - **Slide selection:** Omit any slide type the charter cannot support. Never fabricate content to fill a slide.
 - **JSON hygiene:** Omit empty arrays and optional fields entirely. An absent key is cleaner than an empty value.
 - **Schema version:** Always `2`.
-- **Eyebrow:** Always `"Leadership Briefing"` for kickoff decks. This is hardcoded — do not vary it. The renderer reads `meta.eyebrow` for the small label above the title on slide 1.
+- **Eyebrow:** `meta.eyebrow` is always `"Leadership Briefing"`. Hero inherits from meta.
+- All other slides set `slide.data.eyebrow` explicitly per the slide sequence table above.
+- The eyebrow describes the slide's role, not the meeting type.
 - **Do not invent facts.** If a field cannot be determined from the charter, omit it or flag it.
 - **Source fidelity:** Every data point in the JSON must be traceable to the charter. The vault provides current state (done/current/upcoming) — it does not introduce new content. If you find yourself pulling a metric, quote, or fact from the project page that the charter doesn't mention, stop and cut it.
 - **If unclear, stop and ask.** Do not improvise.

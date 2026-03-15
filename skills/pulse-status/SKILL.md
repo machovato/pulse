@@ -2,7 +2,7 @@
 
 **Mode:** EXECUTE
 **Purpose:** Generate a structured JSON status presentation for any project in the vault.
-**Output:** Save JSON to a `pulse-decks/` subfolder within the project's folder as `[project-name]-Pulse-[TODAY].json`
+**Output:** Save JSON to the project's `pulse-decks/` folder as `[project-name]-Pulse-Status-[TODAY].json`
 
 ---
 
@@ -107,6 +107,18 @@ Better no pipeline than a fabricated one.
 
 Generate the deck JSON. Every slide must earn its place by improving executive understanding of the project.
 
+**Slide sequence:**
+
+| Slide | Type | Eyebrow | Title | Always? |
+|---|---|---|---|---|
+| 1 | `hero` | _(from meta.eyebrow)_ "Project Update" | [Project Name] | Yes |
+| 2 | `grid` | "Completed" | Accomplishments | No — only if ≥1 item passes quality filter |
+| 3 | `pipeline` | "Pipeline" | In Progress | No — only if active work distills into ≤4 valid steps |
+| 4 | `timeline` | "Progress" | Roadmap | No — only if dated milestones or phases exist |
+| 5 | `blockers` | "Blockers" | Asks & Blockers | Yes — may have empty `items` array |
+
+**Eyebrow logic:** The hero slide inherits from `meta.eyebrow` ("Project Update") to set meeting context once. All other slides set `slide.data.eyebrow` explicitly to describe the slide's role — not repeat the meeting type.
+
 **Slide inclusion rules:**
 
 | Slide | Always? | Include When | Omit When |
@@ -135,7 +147,7 @@ The MCP delivery is best-effort. The saved file is the guarantee.
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "meta": {
     "title": "[Project Name] — [Current Phase/Sprint or 'Status Update']",
     "eyebrow": "Project Update",
@@ -180,6 +192,7 @@ Always slide 1.
   "title": "Roadmap",
   "notes": "Walk through the strategic arc. For the current milestone, include a progress indicator.",
   "data": {
+    "eyebrow": "Progress",
     "milestones": [
       { "label": "string", "date": "YYYY-MM-DD | null", "state": "done | current | upcoming", "detail": "≤20 words" }
     ]
@@ -203,6 +216,7 @@ If dates exist only as quarters or ranges, normalize to the best specific date. 
   "title": "Accomplishments",
   "notes": "Lead with wins. Maximum 4. Strategic signal, not operational detail.",
   "data": {
+    "eyebrow": "Completed",
     "cards": [
       { "title": "string", "body": "≤20 words. What was done and why it matters.", "icon": "lucide icon name" }
     ]
@@ -218,6 +232,7 @@ If dates exist only as quarters or ranges, normalize to the best specific date. 
   "title": "In Progress",
   "notes": "Current phase critical path only.",
   "data": {
+    "eyebrow": "Pipeline",
     "steps": [
       { "label": "Verb + Noun", "status": "current | next", "badges": ["optional context"] }
     ]
@@ -230,9 +245,10 @@ If dates exist only as quarters or ranges, normalize to the best specific date. 
 ```json
 {
   "type": "blockers",
-  "title": "Blockers & Asks",
+  "title": "Asks & Blockers",
   "notes": "Frame as asks, not complaints. What requires leadership attention?",
   "data": {
+    "eyebrow": "Blockers",
     "items": [
       { "text": "≤20 words.", "severity": "action | approval | fyi", "owner": "named person or team", "badges": ["optional timing context"] }
     ]
@@ -245,7 +261,7 @@ If dates exist only as quarters or ranges, normalize to the best specific date. 
 ## Rules
 
 ### Output
-- Write raw JSON to the `pulse-decks/` subfolder as `[project-name]-Pulse-[TODAY].json`. Valid JSON only — no preamble, no markdown fences.
+- Write raw JSON to the `pulse-decks/` subfolder as `[project-name]-Pulse-Status-[TODAY].json`. Create the `pulse-decks/` folder if it doesn't exist. Valid JSON only — no preamble, no markdown fences.
 - Your conversational response is **only** a save confirmation and file link. Do not output JSON in chat.
 
 ### Content Quality
@@ -266,7 +282,9 @@ If dates exist only as quarters or ranges, normalize to the best specific date. 
 - If no phase structure exists: `[Project Name] — Status Update`
 
 ### Eyebrow
-- Always `"Project Update"`. Hardcoded — do not vary.
+- `meta.eyebrow` is always `"Project Update"`. Hero inherits from meta.
+- Slides 2–5 set `slide.data.eyebrow` explicitly per the slide sequence table above.
+- The eyebrow describes the slide's role, not the meeting type.
 
 ### Stale Data
 - If the most recent project update is older than 14 days, note staleness in hero `notes`.

@@ -2,7 +2,7 @@
 
 **Mode:** EXECUTE
 **Purpose:** Generate a strategy briefing deck as structured JSON from project source material.
-**Output:** Save JSON to a `pulse-decks/` subfolder within the project's folder as `[project-name]-Pulse-Strategy-[TODAY].json`
+**Output:** Save JSON to the project's `pulse-decks/` folder as `[project-name]-Pulse-Strategy-[TODAY].json`
 
 ---
 
@@ -160,6 +160,20 @@ Items with `severity`, `owner`, and optional `badges` carry presentation intent 
 
 Only after completing Steps 1-5, generate the deck JSON. Every slide must earn its place by advancing the argument toward the Punchline.
 
+**Slide sequence:**
+
+| Slide | Type | Eyebrow | Title |
+|---|---|---|---|
+| 1 | `hero` | _(from meta.eyebrow)_ "Strategy Briefing" | [Project Name] |
+| 2 | `context` | "Current State" | Where We Are |
+| 3 | `problem` | "Risk" | The Complication |
+| 4 | `evidence` | "Proof Points" | What the Evidence Shows |
+| 5 | `framework` | "Ownership Model" | The Architecture |
+| 6 | `roadmap` | "Timeline" | The Path |
+| 7 | `blockers` | "The Ask" | What We Need |
+
+**Eyebrow logic:** The hero slide inherits from `meta.eyebrow` ("Strategy Briefing") to set meeting context once. All other slides set `slide.data.eyebrow` explicitly to describe the slide's role — not repeat the meeting type.
+
 **Slide selection logic:**
 
 | Slide Type | Purpose | Include when |
@@ -239,6 +253,7 @@ Rhetorical job: **Settle the reader.** Stable ground. Consensus.
   "title": "Where We Are",
   "notes": "The Situation from SCQA. What does everyone agree on?",
   "data": {
+    "eyebrow": "Current State",
     "items": [
       {
         "title": "string",
@@ -261,6 +276,7 @@ Rhetorical job: **Create urgency.** One dominant tension, supporting pressures.
   "title": "The Complication",
   "notes": "What disrupts the stable ground? This is the emotional engine of the deck.",
   "data": {
+    "eyebrow": "Risk",
     "primary": {
       "title": "string",
       "body": "≤30 words. The main tension.",
@@ -289,6 +305,7 @@ Rhetorical job: **Build conviction.** Numbers are the headline.
   "title": "What the Evidence Shows",
   "notes": "Lead with the strongest quantified evidence. Attribution separates evidence from assertion.",
   "data": {
+    "eyebrow": "Proof Points",
     "points": [
       {
         "metric": "string — the number or outcome",
@@ -312,6 +329,7 @@ Rhetorical job: **Show relationships.** Components layered by ownership.
   "title": "The Architecture",
   "notes": "Only include if source contains a structured model with relationships.",
   "data": {
+    "eyebrow": "Ownership Model",
     "lanes": [
       {
         "title": "string",
@@ -335,6 +353,7 @@ Rhetorical job: **Show sequenced time.**
   "title": "The Path",
   "notes": "Phased plan. What sequencing logic determines the order?",
   "data": {
+    "eyebrow": "Timeline",
     "milestones": [
       {
         "label": "string",
@@ -357,6 +376,7 @@ Rhetorical job: **Make the ask explicit.**
   "title": "What We Need",
   "notes": "The Ask made explicit. Every item is an action, approval, or awareness.",
   "data": {
+    "eyebrow": "The Ask",
     "items": [
       {
         "text": "≤20 words. Specific ask.",
@@ -374,7 +394,7 @@ Rhetorical job: **Make the ask explicit.**
 ## Rules
 
 ### Output
-- Write raw JSON to the `pulse-decks/` subfolder as `[project-name]-Pulse-Strategy-[TODAY].json`. Valid JSON only — no preamble, no markdown fences.
+- Write raw JSON to the `pulse-decks/` subfolder as `[project-name]-Pulse-Strategy-[TODAY].json`. Create the `pulse-decks/` folder if it doesn't exist. Valid JSON only — no preamble, no markdown fences.
 - Your conversational response is **only** a save confirmation and file link. Do not output JSON in chat.
 
 ### Content Quality
@@ -391,7 +411,9 @@ Rhetorical job: **Make the ask explicit.**
 - Schema version: Always `2`.
 
 ### Eyebrow
-- Always `"Strategy Briefing"`. Hardcoded — do not vary.
+- `meta.eyebrow` is always `"Strategy Briefing"`. Hero inherits from meta.
+- All other slides set `slide.data.eyebrow` explicitly per the slide sequence table above.
+- The eyebrow describes the slide's role, not the meeting type.
 
 ### RAG Status
 - `green` = no active blockers requiring stakeholder action
