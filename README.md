@@ -106,6 +106,8 @@ The deck appears in Pulse. No paste, no switching windows.
 
 ---
 
+![Guided Install](docs/concierge-banner.png)
+
 ## Guided Install
 
 If the quick start above doesn't match your setup — or you'd rather have a guide walk you through it — paste this into Claude Code or Claude Chat:
