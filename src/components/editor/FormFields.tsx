@@ -286,6 +286,20 @@ export function RepeatableGroup<T extends { id: string }>({
     renderItem: (item: T, index: number) => React.ReactNode;
     addButtonText?: string;
 }) {
+    const handleMoveUp = (index: number) => {
+        if (index === 0) return;
+        const newOrder = [...items];
+        [newOrder[index - 1], newOrder[index]] = [newOrder[index], newOrder[index - 1]];
+        onReorder(newOrder);
+    };
+
+    const handleMoveDown = (index: number) => {
+        if (index === items.length - 1) return;
+        const newOrder = [...items];
+        [newOrder[index + 1], newOrder[index]] = [newOrder[index], newOrder[index + 1]];
+        onReorder(newOrder);
+    };
+
     return (
         <div className="space-y-3">
             <Reorder.Group axis="y" values={items} onReorder={onReorder} className="space-y-3">
@@ -293,7 +307,11 @@ export function RepeatableGroup<T extends { id: string }>({
                     <RepeatableItem
                         key={item.id}
                         item={item}
+                        isFirst={index === 0}
+                        isLast={index === items.length - 1}
                         onRemove={() => onRemove(item.id)}
+                        onMoveUp={() => handleMoveUp(index)}
+                        onMoveDown={() => handleMoveDown(index)}
                     >
                         {renderItem(item, index)}
                     </RepeatableItem>
@@ -314,11 +332,19 @@ export function RepeatableGroup<T extends { id: string }>({
 
 function RepeatableItem({
     item,
+    isFirst,
+    isLast,
     onRemove,
+    onMoveUp,
+    onMoveDown,
     children,
 }: {
     item: any;
+    isFirst?: boolean;
+    isLast?: boolean;
     onRemove: () => void;
+    onMoveUp?: () => void;
+    onMoveDown?: () => void;
     children: React.ReactNode;
 }) {
     const dragControls = useDragControls();
@@ -330,11 +356,35 @@ function RepeatableItem({
             dragControls={dragControls}
             className="flex gap-2 p-3 bg-gray-50 border border-[var(--border-default)] rounded-md group relative"
         >
-            <div
-                className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 mt-1"
-                onPointerDown={(e) => dragControls.start(e)}
-            >
-                <Icons.GripVertical className="w-4 h-4" />
+            <div className="flex flex-col items-center gap-1 mt-1">
+                <div
+                    className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600"
+                    onPointerDown={(e) => dragControls.start(e)}
+                >
+                    <Icons.GripVertical className="w-4 h-4" />
+                </div>
+                <div className="flex flex-col items-center mt-2 -space-y-1">
+                    {!isFirst && onMoveUp && (
+                        <button
+                            type="button"
+                            onClick={onMoveUp}
+                            className="text-gray-400 hover:text-[var(--accent-info)] transition-colors p-1"
+                            title="Move up"
+                        >
+                            <Icons.ChevronUp className="w-4 h-4" />
+                        </button>
+                    )}
+                    {!isLast && onMoveDown && (
+                        <button
+                            type="button"
+                            onClick={onMoveDown}
+                            className="text-gray-400 hover:text-[var(--accent-info)] transition-colors p-1"
+                            title="Move down"
+                        >
+                            <Icons.ChevronDown className="w-4 h-4" />
+                        </button>
+                    )}
+                </div>
             </div>
 
             <div className="flex-1 space-y-3 pt-0.5">
