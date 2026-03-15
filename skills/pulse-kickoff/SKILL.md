@@ -20,7 +20,26 @@ This skill fails loudly rather than fails convincingly. If the charter cannot su
 
 ### Step 1 — Read the Charter (Primary Source)
 
-Locate the project folder at `02-Projects/[project-name]/`. Read all files present. Identify the **charter document** — the one that contains scope, deliverables, timeline, roles, dependencies, and success criteria.
+Search the vault for a project matching `[project-name]`. Look for:
+- A folder whose name matches or contains the project name
+- A standalone file whose name matches the project name
+- Any reasonable location the vault uses for projects
+
+Do not assume a specific folder path. The vault may organize projects in any structure.
+
+**If no match is found**, stop with:
+```
+SKILL STOPPED: No project found matching '[project-name]'.
+I searched the vault and could not locate a matching project folder or file.
+```
+
+**If multiple matches are found**, stop with:
+```
+SKILL STOPPED: Multiple projects match '[project-name]': [list them].
+Please specify the exact project name.
+```
+
+Once the project folder is located, read all files present. Identify the **charter document** — the one that contains scope, deliverables, timeline, roles, dependencies, and success criteria.
 
 **Source hierarchy — this is binding:**
 

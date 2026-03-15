@@ -38,7 +38,7 @@ export function SlideRenderer({ slide, density, deckMeta, schemaVersion = 1, dis
             case "problem":
             case "evidence":
             case "framework":
-                return <GridSlide slide={slide} disableAnimation={disableAnimation} />;
+                return <GridSlide slide={slide} deckMeta={deckMeta} disableAnimation={disableAnimation} />;
         }
     }
 

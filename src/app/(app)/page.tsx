@@ -101,6 +101,7 @@ export default async function HomePage() {
         let ragOverride = deck.rag;
         let theme = null;
         let project = null;
+        let eyebrow = null;
         try {
             const parsed = JSON.parse(deck.content_json);
             slideCount = Array.isArray(parsed.slides) ? parsed.slides.length : 0;
@@ -112,6 +113,9 @@ export default async function HomePage() {
             }
             if (parsed.meta?.project) {
                 project = parsed.meta.project;
+            }
+            if (parsed.meta?.eyebrow) {
+                eyebrow = parsed.meta.eyebrow;
             }
         } catch (e) {
             // ignore JSON parse errors
@@ -129,6 +133,7 @@ export default async function HomePage() {
             slideCount,
             theme,
             project,
+            eyebrow,
         };
     });
 
