@@ -3,15 +3,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
-import { Play, Calendar, Trash2, Edit2, Loader2, Pin, Target, Activity, Rocket, FileText, Archive, Star, Code, Type } from "lucide-react";
+import { Play, Calendar, Trash2, Edit2, Loader2, Pin, Target, Activity, Rocket, FileText, Archive, Star, Code, Type, Coffee } from "lucide-react";
 import { deleteDeck, renameDeck, togglePinDeck, archiveDeck } from "@/app/actions";
 
 const TEMPLATE_STYLES: Record<string, { bg: string, text: string, icon: React.FC<any> }> = {
-    strategy: { bg: "bg-[var(--accent-template-strategy)]/15", text: "text-[var(--accent-template-strategy)]", icon: Target },
-    status:   { bg: "bg-[var(--accent-template-status)]/15",   text: "text-[var(--accent-template-status)]",   icon: Activity },
-    standup:  { bg: "bg-[var(--accent-template-status)]/15",   text: "text-[var(--accent-template-status)]",   icon: Activity },
-    kickoff:  { bg: "bg-[var(--accent-template-kickoff)]/15",  text: "text-[var(--accent-template-kickoff)]",  icon: Rocket },
-    default:  { bg: "bg-[var(--surface-subtle)]/15",           text: "text-[var(--text-secondary)]",           icon: FileText },
+    strategy: { bg: "bg-[#7C3AED]/10", text: "text-[#7C3AED]", icon: Target },
+    kickoff:  { bg: "bg-[#EA580C]/10", text: "text-[#EA580C]", icon: Rocket },
+    status:   { bg: "bg-[#2563EB]/10", text: "text-[#2563EB]", icon: Activity },
+    standup:  { bg: "bg-[#0D9488]/10", text: "text-[#0D9488]", icon: Coffee },
+    default:  { bg: "bg-[var(--surface-subtle)]/15", text: "text-[var(--text-secondary)]", icon: FileText },
 };
 
 const TEMPLATE_LABELS: Record<string, string> = {
@@ -48,6 +48,7 @@ type DeckRow = {
     created_at: Date;
     slideCount: number;
     theme?: string | null;
+    eyebrow?: string | null;
     project?: string | null;
 };
 
@@ -243,28 +244,33 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
 
     if (deleted || archived) return null;
 
-    const styleConfig = TEMPLATE_STYLES[deck.template] || TEMPLATE_STYLES.default;
-    const IconComponent = styleConfig.icon;
+    // Subtitle logic is now just the date, the rest is handled by the left column icon
+    let effectiveTemplate = deck.template;
+    if (effectiveTemplate === "status" && deck.eyebrow === "Daily Standup") {
+        effectiveTemplate = "standup";
+    }
     
-    // Subtitle logic
-    const templateLabel = TEMPLATE_LABELS[deck.template] ?? deck.template;
-    const projectName = deck.project || deck.title.split(/ [-\u2014] /)[0];
-    const subtitle = projectName
-        ? `Project: ${projectName} \u2022 ${templateLabel}`
-        : templateLabel;
+    const styleConfig = TEMPLATE_STYLES[effectiveTemplate] || TEMPLATE_STYLES.default;
+    const IconComponent = styleConfig.icon;
+    const templateLabel = TEMPLATE_LABELS[effectiveTemplate] ?? effectiveTemplate;
 
     return (
         <div className="card p-3 flex items-center gap-4 hover:shadow-md transition-all group relative">
             
             <Link href={`/deck/${deck.id}`} className="absolute inset-0 z-0 rounded-xl" aria-label={`Open ${deck.title}`}></Link>
 
-            {/* Icon Treatment */}
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 relative z-10 pointer-events-none ${styleConfig.bg}`}>
-                <IconComponent className={`w-5 h-5 ${styleConfig.text}`} />
+            {/* Left Column: Icon Treatment */}
+            <div className="flex flex-col items-center justify-center shrink-0 w-16 gap-1.5 relative z-10 pointer-events-none">
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${styleConfig.bg}`}>
+                    <IconComponent className={`w-6 h-6 ${styleConfig.text}`} />
+                </div>
+                <span className={`text-[12px] font-medium leading-none ${styleConfig.text}`}>
+                    {templateLabel}
+                </span>
             </div>
 
-            {/* Title & Subtitle Stack */}
-            <div className="flex-1 min-w-0 relative z-10 py-1">
+            {/* Right Column: Title & Subtitle Stack */}
+            <div className="flex-1 min-w-0 relative z-10 py-1 pl-1">
                 <div className="flex items-center gap-2">
                     {isEditing ? (
                         <div className="flex items-center gap-2">
@@ -296,7 +302,7 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
 
                 <div className="flex items-center gap-2 mt-1">
                     <span className="text-xs text-[var(--text-secondary)] pointer-events-none">
-                        {subtitle} &bull; {formatDate(deck.date.toISOString())}
+                        {formatDate(deck.date.toISOString())}
                     </span>
                 </div>
             </div>
