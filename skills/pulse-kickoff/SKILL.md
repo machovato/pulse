@@ -276,7 +276,7 @@ Optional additions:
 |---|---|---|---|
 | — | `pipeline` | Active workstreams in flight | Project has parallel streams worth showing |
 | — | `callout` | Closing statement or rallying quote | Source contains a strong closer |
-| — | `decision-log` | Decisions already made | Multiple decisions the audience should know about |
+| — | `decision_log` | Decisions already made | Multiple decisions the audience should know about |
 
 Do not include a slide type if the charter does not support it. Omit rather than fabricate.
 
@@ -546,7 +546,7 @@ Rhetorical job: **Assign commitments.** Every person leaves knowing their part.
 - **Do not invent facts.** If a field cannot be determined from the charter, omit it or flag it.
 - **Source fidelity:** Every data point in the JSON must be traceable to the charter. The vault provides current state (done/current/upcoming) — it does not introduce new content. If you find yourself pulling a metric, quote, or fact from the project page that the charter doesn't mention, stop and cut it.
 - **If unclear, stop and ask.** Do not improvise.
-- **Post-save delivery:** After saving, provide a `computer://` link so Tony can view/download directly.
+- **Post-save delivery:** After saving, provide a direct link so the user can view/download.
 
 ---
 

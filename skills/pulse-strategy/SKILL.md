@@ -184,7 +184,6 @@ Only after completing Steps 1-5, generate the deck JSON. Every slide must earn i
 | `evidence` | Conviction evidence | Always — proves the answer |
 | `framework` | Architecture or model | Source contains a model with component relationships |
 | `roadmap` | Phased plan | Source contains phases |
-| `pipeline` | Active workstreams | Source contains current initiatives |
 | `blockers` | The Ask | Always — makes the ask explicit |
 
 Do not include a slide type if the source does not support it. Omit rather than fabricate.
@@ -231,7 +230,7 @@ Always slide 1. Punchline on arrival.
 {
   "type": "hero",
   "title": "[Project Name]",
-  "notes": "State the punchline and why it matters now. What is the forcing function?",
+  "notes": "GENERATE NOTE ANSWERING: 'What is the punchline, and what forcing function makes this argument urgent right now?' State the conclusion upfront — the one thing the stakeholder should believe after this deck. Then name the timing trigger: a deadline, a competitive move, a budget cycle, or a decision window that makes this the moment to act. Example: 'The punchline is that our content infrastructure isn't ready for the platform it's about to run on. Zendesk goes live July 29, and there is no structured knowledge base to load into Guide. This deck builds the case for why the conversion project needs staffing approval this quarter, not next.'",
   "data": {
     "subtitle": "[Punchline]",
     "rag": "green | yellow | red",
@@ -251,7 +250,7 @@ Rhetorical job: **Settle the reader.** Stable ground. Consensus.
 {
   "type": "context",
   "title": "Where We Are",
-  "notes": "The Situation from SCQA. What does everyone agree on?",
+  "notes": "GENERATE NOTE ANSWERING: 'What is the one piece of settled ground that, if the audience doesn't accept, makes the rest of this argument fall apart?' Identify which context item is the load-bearing assumption. If one item is a recent decision or shift the audience may not all be aware of, call it out. The goal is to make the audience nod before the complication hits. Example: 'The critical context is the tiered support model — base-tier customers will not have agent fallback. Some stakeholders still think there's a safety net. There isn't. Everything in this deck assumes self-serve is the only path for base-tier.'",
   "data": {
     "eyebrow": "Current State",
     "items": [
@@ -274,7 +273,7 @@ Rhetorical job: **Create urgency.** One dominant tension, supporting pressures.
 {
   "type": "problem",
   "title": "The Complication",
-  "notes": "What disrupts the stable ground? This is the emotional engine of the deck.",
+  "notes": "GENERATE NOTE ANSWERING: 'Why would the stakeholder lose sleep over this complication, and what breaks if they do nothing?' Connect the primary tension to something the stakeholder is personally accountable for — a metric they own, a team they manage, a commitment they've made. State the consequence of inaction in concrete terms, not abstract risk. If the complication has been discussed before but remains unsolved, explain what's changed. Example: 'The primary risk is that 416 articles have no taxonomy, no metadata, and no migration path. If this isn't solved before July 29, the implementation team either gets nothing to load or invents a structure under deadline pressure — and whoever owns CX metrics inherits that debt.'",
   "data": {
     "eyebrow": "Risk",
     "primary": {
@@ -303,7 +302,7 @@ Rhetorical job: **Build conviction.** Numbers are the headline.
 {
   "type": "evidence",
   "title": "What the Evidence Shows",
-  "notes": "Lead with the strongest quantified evidence. Attribution separates evidence from assertion.",
+  "notes": "GENERATE NOTE ANSWERING per evidence point: 'How does this proof point earn the punchline, and why should the stakeholder trust this source?' For each point, (a) connect it back to the complication or recommendation — evidence that doesn't advance the argument is decoration, and (b) explain why this data point is credible: who produced it, how it was measured, or what precedent it establishes. Lead with the strongest quantified evidence. Example: 'The 85.5-to-3.5-hour conversion metric isn't just efficiency — it proves the AI-assisted approach can handle the volume at scale. Tony ran this on real articles, not test data, so the number reflects production conditions.'",
   "data": {
     "eyebrow": "Proof Points",
     "points": [
@@ -327,7 +326,7 @@ Rhetorical job: **Show relationships.** Components layered by ownership.
 {
   "type": "framework",
   "title": "The Architecture",
-  "notes": "Only include if source contains a structured model with relationships.",
+  "notes": "GENERATE NOTE ANSWERING: 'What relationship between these components is non-obvious, and why does the layering matter for the stakeholder's decision?' Explain why this is a model with dependencies, not a flat list. Identify which lane the stakeholder has direct control over and which ones they can only influence. If the ordering (rank) implies a build sequence or dependency chain, state it. Example: 'The innermost layer — content structure — is what we directly control. The middle layer — platform configuration — we can influence through the implementation team. The outer layer — customer adoption — we can only monitor. The decision being asked for affects layer one, but the ROI lives in layer three.'",
   "data": {
     "eyebrow": "Ownership Model",
     "lanes": [
@@ -351,7 +350,7 @@ Rhetorical job: **Show sequenced time.**
 {
   "type": "roadmap",
   "title": "The Path",
-  "notes": "Phased plan. What sequencing logic determines the order?",
+  "notes": "GENERATE NOTE ANSWERING: 'What sequencing logic determines this order, and which phase is the highest-risk gate?' Explain why the phases are ordered this way — is it a dependency chain, a risk-reduction sequence, or a value-delivery order? Identify the phase most likely to slip or require external input. If a completed phase builds credibility for the plan, say so. Example: 'Phase 1 is done — the audit that produced the evidence two slides ago. The phases are sequenced by dependency: you can't convert without taxonomy, can't validate without SMEs, can't template without a completed pilot. Phase 3 is the gate — it requires Justin's team, and that's the resource this deck is asking to secure.'",
   "data": {
     "eyebrow": "Timeline",
     "milestones": [
@@ -374,7 +373,7 @@ Rhetorical job: **Make the ask explicit.**
 {
   "type": "blockers",
   "title": "What We Need",
-  "notes": "The Ask made explicit. Every item is an action, approval, or awareness.",
+  "notes": "GENERATE NOTE ANSWERING: 'What is the one decision or resource commitment that, if granted today, unblocks the highest-impact workstream?' State the specific ask, who needs to provide it, and what happens if they don't. Connect the ask back to the complication — the audience should feel the SCQA arc closing: the situation was stable, the complication created urgency, the evidence proved the approach, and now this is what's needed to act. Example: 'The critical ask is staffing approval for the conversion team — 3 people, 8 weeks. Without it, the July 29 deadline passes with no structured KB, and base-tier customers launch into a self-serve experience with no content behind it.'",
   "data": {
     "eyebrow": "The Ask",
     "items": [

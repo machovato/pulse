@@ -24,3 +24,6 @@ Thumbs.db
 .vscode/
 *.swp
 
+# Private themes — local only, never pushed
+public/themes/dtn.css
+

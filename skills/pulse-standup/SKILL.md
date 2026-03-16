@@ -160,7 +160,7 @@ Sprint context and confidence. The headline is the Sprint Goal — connecting da
 {
   "type": "hero",
   "title": "[Project Name]",
-  "notes": "State the sprint goal. This deck is a mirror for the team, not a report to the boss — the facilitator surfaces progress and blockers, the team owns the conversation. If yellow/red, say why in one sentence.",
+  "notes": "GENERATE NOTE ANSWERING: 'Is the sprint on track, and what's the one-sentence status the team needs to hear first?' If green, state what's working. If yellow or red, lead with why in one sentence — name the specific blocker or risk. Keep it operational: the team needs a pulse check, not an argument. Example: 'Sprint 2 is green — conversion pipeline is ahead of pace, and we have 6 working days to close the remaining 12 articles. The only watch item is SME availability for Thursday's review batch.'",
   "data": {
     "subtitle": "Sprint 2 of 8 | Day 4 of 10",
     "rag": "green | yellow | red",
@@ -185,7 +185,7 @@ What got done since last standup.
 {
   "type": "grid",
   "title": "Yesterday",
-  "notes": "What the team completed. No filter — full visibility.",
+  "notes": "GENERATE NOTE ANSWERING: 'Did yesterday's completions move us closer to the sprint goal, or was it maintenance work?' Call out which completion has the most downstream impact on today's pipeline. If nothing was completed, note whether that's expected or a signal. Example: 'The API endpoint completion unblocks today's integration test — that's the important one. The other two items are cleanup from last sprint.'",
   "data": {
     "eyebrow": "Completed",
     "cards": [
@@ -211,7 +211,7 @@ What's in focus today.
 {
   "type": "pipeline",
   "title": "Today",
-  "notes": "The focus for today. One item is current — the rest are next.",
+  "notes": "GENERATE NOTE ANSWERING: 'What's the single most important thing to finish today, and what happens if it slips?' Name the current item and why it's the priority. If any step depends on someone outside the room, flag it. Example: 'Convert Priority Articles is current — if these don't finish today, tomorrow's review batch has nothing to review and Alex is idle.'",
   "data": {
     "eyebrow": "Pipeline",
     "steps": [
@@ -235,7 +235,7 @@ What's stuck or needs routing.
 {
   "type": "blockers",
   "title": "Asks & Blockers",
-  "notes": "Surface early. Not everything here is a full stop — some are asks that need routing to the right person.",
+  "notes": "GENERATE NOTE ANSWERING: 'Is anyone stuck right now, and who needs to be pulled in to unblock them?' Surface blockers early — a small blocker mentioned today prevents a big one Thursday. For each item, name who can resolve it. If there are no blockers, say so — an empty slide is a good sign. Example: 'Alex is waiting on staging credentials from DevOps — Maria can you route that today? Everything else is clear.'",
   "data": {
     "eyebrow": "Blockers",
     "items": [
@@ -261,7 +261,7 @@ Topics that surfaced during standup needing a deeper conversation outside the 15
 {
   "type": "grid",
   "title": "Parking Lot",
-  "notes": "Always spoken to, even when empty. Ask: 'Anything that needs a separate conversation?' Capture topics here — they get their own meeting, not standup airtime.",
+  "notes": "GENERATE NOTE ANSWERING: 'Is there anything that came up today that needs its own meeting, not standup airtime?' Always ask, even when the slide is empty. If topics carried over from a previous standup, flag them — unscheduled carryovers are a process smell. Example: 'The taxonomy naming convention needs a 30-minute session with Alex and Justin — it's too detailed for standup but it's blocking the template work if we don't resolve it this week.'",
   "data": {
     "eyebrow": "Discussion Items",
     "cards": [

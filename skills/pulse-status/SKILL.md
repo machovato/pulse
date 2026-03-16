@@ -170,7 +170,7 @@ Always slide 1.
 {
   "type": "hero",
   "title": "[Project Name]",
-  "notes": "Opening context — what's the one thing the audience should know? If RAG is yellow/red, first sentence MUST justify the status.",
+  "notes": "GENERATE NOTE ANSWERING: 'What is the single most important thing leadership should take away from this update, and has anything changed since the last one?' If RAG is yellow or red, the first sentence MUST justify the status with a specific blocker or risk. If green, state what momentum looks like right now — not 'on track' but what concretely moved. Example: 'We closed Sprint 3 with all committed items delivered. The pipeline conversion is ahead of schedule, which gives us buffer for the SME review bottleneck we expect in Sprint 5.'",
   "data": {
     "subtitle": "Sprint X of Y | Phase Name",
     "rag": "green | yellow | red",
@@ -184,13 +184,15 @@ Always slide 1.
 
 **KPI rule:** Only use metrics explicitly stated in project files. Do not calculate percentages from raw task counts. Weak KPIs are worse than no KPIs. If no hard metrics exist, use fewer KPIs or omit the array.
 
+**Trend:** Use `"up"` when the metric has improved since last update, `"down"` when it's declined, `"flat"` when unchanged, or omit entirely if trend data isn't available.
+
 ### Slide Type: `timeline`
 
 ```json
 {
   "type": "timeline",
   "title": "Roadmap",
-  "notes": "Walk through the strategic arc. For the current milestone, include a progress indicator.",
+  "notes": "GENERATE NOTE ANSWERING: 'Are we where we expected to be at this point, and what's the next date that matters?' Call out whether the current phase is on schedule, ahead, or behind. Identify the next milestone with a hard date and explain what makes that date firm (external dependency, business event, or commitment). If a completed milestone retired a risk, say so. Example: 'Phase 1 closed on time — that's the audit and taxonomy work. We're midway through Phase 2 with 60% of conversions done. March 28 is the next gate — if SME reviews aren't complete by then, Sprint 5 slips.'",
   "data": {
     "eyebrow": "Progress",
     "milestones": [
@@ -214,7 +216,7 @@ If dates exist only as quarters or ranges, normalize to the best specific date. 
 {
   "type": "grid",
   "title": "Accomplishments",
-  "notes": "Lead with wins. Maximum 4. Strategic signal, not operational detail.",
+  "notes": "GENERATE NOTE ANSWERING: 'Which of these accomplishments changed the project's risk profile or unlocked the next phase, and why should leadership care?' Don't repeat what the cards say — explain the strategic consequence. If an accomplishment retired a blocker from a previous update, connect them. If one accomplishment is clearly more important than the others, lead with it. Example: 'The taxonomy approval is the big one — it means the conversion pipeline has a validated target structure, not a guess. Without that, every article we converted would have needed re-categorization later.'",
   "data": {
     "eyebrow": "Completed",
     "cards": [
@@ -230,7 +232,7 @@ If dates exist only as quarters or ranges, normalize to the best specific date. 
 {
   "type": "pipeline",
   "title": "In Progress",
-  "notes": "Current phase critical path only.",
+  "notes": "GENERATE NOTE ANSWERING: 'Which step on this pipeline has the highest risk of slipping, and what would that delay?' Identify the step with the most dependencies or the tightest timeline. If work is ahead of schedule, say what created the buffer. If a step depends on an external team, name them. Example: 'Validate Triage Decisions is current and on track, but Convert Priority Articles is where the bottleneck lives — it requires SME time from Justin's team, and that's the resource we don't fully control.'",
   "data": {
     "eyebrow": "Pipeline",
     "steps": [
@@ -246,7 +248,7 @@ If dates exist only as quarters or ranges, normalize to the best specific date. 
 {
   "type": "blockers",
   "title": "Asks & Blockers",
-  "notes": "Frame as asks, not complaints. What requires leadership attention?",
+  "notes": "GENERATE NOTE ANSWERING: 'What is the one ask that, if resolved this week, would have the biggest impact on the project timeline?' Frame blockers as requests, not complaints. For each action item, state what it unblocks — the audience needs to understand the consequence of inaction, not just the existence of the problem. If there are no blockers, say what that means for momentum. Example: 'The API access approval is the critical ask — without it by Friday, the integration testing in Sprint 4 can't start on schedule and we lose the buffer we built in Sprint 3.'",
   "data": {
     "eyebrow": "Blockers",
     "items": [

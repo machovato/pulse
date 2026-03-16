@@ -27,7 +27,7 @@ Every Pulse deck is a single JSON object with two top-level keys: `meta` and `sl
 | `subtitle` | string | No | Punchline (strategy) or mission statement (kickoff) |
 | `date` | string | Yes | ISO date: `YYYY-MM-DD` |
 | `audience` | string | Yes | `"exec"` / `"team"` / `"customer"` / `"mixed"` |
-| `template` | string | Yes | `"status"` / `"strategy"` / `"kickoff"` / `"allHands"` / `"requirements"` / `"custom"` |
+| `template` | string | Yes | `"status"` / `"standup"` / `"strategy"` / `"kickoff"` / `"allHands"` / `"requirements"` / `"custom"` |
 | `theme` | string | No | Theme name. Loads `public/themes/{theme}.css`. Omit for default neutral theme |
 | `rag` | string | No | `"green"` / `"yellow"` / `"red"` |
 | `headline` | string | No | One sentence. Strategic momentum, not operational detail |
@@ -538,7 +538,7 @@ Which slide types are used by which template, and when.
 The Pulse renderer validates incoming JSON against Zod schemas in `schema.ts`. Invalid JSON is rejected with specific error messages in the Editor's validation panel. Common validation failures:
 
 - `meta.audience` must be one of: `exec`, `team`, `customer`, `mixed` (not `"operational"`)
-- `meta.template` must be one of: `status`, `strategy`, `kickoff`, `allHands`, `requirements`, `custom`
+- `meta.template` must be one of: `status`, `standup`, `strategy`, `kickoff`, `allHands`, `requirements`, `custom`
 - `grid.data` must use `cards` key (not `items`)
 - `pipeline.data.steps` maximum 4 items
 - `callout.data.kind` must be one of: `decision`, `risk`, `quote`, `highlight` (not `stat` or `insight`)
