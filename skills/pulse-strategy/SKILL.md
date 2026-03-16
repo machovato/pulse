@@ -209,7 +209,7 @@ The MCP delivery is best-effort. The saved file is the guarantee.
 {
   "schemaVersion": 2,
   "meta": {
-    "title": "[Project Name] — Strategy Briefing",
+    "title": "[Project Name] — Sprint N of N",
     "eyebrow": "Strategy Briefing",
     "subtitle": "[Punchline — one sentence]",
     "date": "YYYY-MM-DD",
@@ -409,6 +409,11 @@ Rhetorical job: **Make the ask explicit.**
 ### JSON Hygiene
 - Omit empty arrays and optional fields entirely. An absent key is cleaner than an empty value.
 - Schema version: Always `2`.
+
+### Deck Title
+- Format: `[Project Name] — Sprint N of N` when sprint structure exists. Just `[Project Name]` when it doesn't.
+- No date in the title — `meta.date` handles that.
+- No template type in the title — the Pulse UI already shows template type under the deck icon.
 
 ### Eyebrow
 - `meta.eyebrow` is always `"Strategy Briefing"`. Hero inherits from meta.

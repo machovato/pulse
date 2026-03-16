@@ -300,7 +300,7 @@ The MCP delivery is best-effort. The saved file is the guarantee.
 {
   "schemaVersion": 2,
   "meta": {
-    "title": "[Project Name]",
+    "title": "[Project Name] — Sprint N of N",
     "eyebrow": "Leadership Briefing",
     "subtitle": "[Mission Statement — one sentence]",
     "date": "YYYY-MM-DD",
@@ -539,6 +539,7 @@ Rhetorical job: **Assign commitments.** Every person leaves knowing their part.
 - **Slide selection:** Omit any slide type the charter cannot support. Never fabricate content to fill a slide.
 - **JSON hygiene:** Omit empty arrays and optional fields entirely. An absent key is cleaner than an empty value.
 - **Schema version:** Always `2`.
+- **Deck Title:** Format: `[Project Name] — Sprint N of N` when sprint structure exists. Just `[Project Name]` when it doesn't. No date in the title — `meta.date` handles that. No template type in the title — the Pulse UI already shows template type under the deck icon.
 - **Eyebrow:** `meta.eyebrow` is always `"Leadership Briefing"`. Hero inherits from meta.
 - All other slides set `slide.data.eyebrow` explicitly per the slide sequence table above.
 - The eyebrow describes the slide's role, not the meeting type.

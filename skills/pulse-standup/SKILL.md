@@ -137,7 +137,7 @@ The MCP delivery is best-effort. The saved file is the guarantee.
 {
   "schemaVersion": 2,
   "meta": {
-    "title": "[Project Name] — Standup [TODAY]",
+    "title": "[Project Name] — Sprint N of N",
     "eyebrow": "Daily Standup",
     "date": "YYYY-MM-DD",
     "audience": "team",
@@ -150,7 +150,7 @@ The MCP delivery is best-effort. The saved file is the guarantee.
 }
 ```
 
-**Note:** Uses `template: "status"` for renderer compatibility. The status renderer handles all four slide types the standup needs.
+
 
 ### Slide 1: `hero`
 
@@ -291,6 +291,11 @@ Topics that surfaced during standup needing a deeper conversation outside the 15
 - **Person names when available.** Standups are person-aware
 - **Sprint-scoped only.** No project-level history, no accomplishments from previous sprints
 - **No speaker notes philosophy.** Notes can be brief — "Walk the board" is fine
+
+### Deck Title
+- Format: `[Project Name] — Sprint N of N` when sprint structure exists. Just `[Project Name]` when it doesn't.
+- No date in the title — `meta.date` handles that.
+- No template type in the title — the Pulse UI already shows template type under the deck icon.
 
 ### JSON Hygiene
 - Omit empty arrays except `blockers.items`

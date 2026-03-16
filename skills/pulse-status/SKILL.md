@@ -149,7 +149,7 @@ The MCP delivery is best-effort. The saved file is the guarantee.
 {
   "schemaVersion": 2,
   "meta": {
-    "title": "[Project Name] — [Current Phase/Sprint or 'Status Update']",
+    "title": "[Project Name] — Sprint N of N",
     "eyebrow": "Project Update",
     "date": "YYYY-MM-DD",
     "audience": "exec",
@@ -278,8 +278,9 @@ If dates exist only as quarters or ranges, normalize to the best specific date. 
 - If a pipeline step has no badges, omit `badges` entirely.
 
 ### Deck Title
-- Format: `[Project Name] — [Phase/Sprint Label]`
-- If no phase structure exists: `[Project Name] — Status Update`
+- Format: `[Project Name] — Sprint N of N` when sprint structure exists. Just `[Project Name]` when it doesn't.
+- No date in the title — `meta.date` handles that.
+- No template type in the title — the Pulse UI already shows template type under the deck icon.
 
 ### Eyebrow
 - `meta.eyebrow` is always `"Project Update"`. Hero inherits from meta.

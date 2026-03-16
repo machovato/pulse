@@ -58,21 +58,23 @@ export function DeckList({ decks }: { decks: DeckRow[] }) {
 
     // Calculate versions implicitly by grouping titles over time
     const titleCounts: Record<string, number> = {};
+    const versionKey = (d: DeckRow) => `${d.title}::${d.template}`;
     const decksWithVersion = [...decks]
         .map(d => ({ ...d, _ts: new Date(d.created_at).getTime() }))
         .sort((a, b) => a._ts - b._ts) // Sort oldest to newest
         .map(deck => {
-            titleCounts[deck.title] = (titleCounts[deck.title] || 0) + 1;
+            const key = versionKey(deck);
+            titleCounts[key] = (titleCounts[key] || 0) + 1;
             return {
                 ...deck,
-                version: titleCounts[deck.title],
+                version: titleCounts[key],
                 totalVersions: 0 // Will backfill
             };
         });
 
     // Backfill total versions so we only show "v2" if there's more than 1 version
     for (const d of decksWithVersion) {
-        d.totalVersions = titleCounts[d.title];
+        d.totalVersions = titleCounts[versionKey(d)];
     }
 
     // Re-sort newest to oldest for display
@@ -99,6 +101,7 @@ export function DeckList({ decks }: { decks: DeckRow[] }) {
         { id: "starred", label: "Starred" },
         { id: "strategy", label: "Strategy" },
         { id: "status", label: "Status" },
+        { id: "standup", label: "Standup" },
         { id: "kickoff", label: "Kickoff" },
     ];
 
@@ -245,14 +248,9 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
     if (deleted || archived) return null;
 
     // Subtitle logic is now just the date, the rest is handled by the left column icon
-    let effectiveTemplate = deck.template;
-    if (effectiveTemplate === "status" && deck.eyebrow === "Daily Standup") {
-        effectiveTemplate = "standup";
-    }
-    
-    const styleConfig = TEMPLATE_STYLES[effectiveTemplate] || TEMPLATE_STYLES.default;
+    const styleConfig = TEMPLATE_STYLES[deck.template] || TEMPLATE_STYLES.default;
     const IconComponent = styleConfig.icon;
-    const templateLabel = TEMPLATE_LABELS[effectiveTemplate] ?? effectiveTemplate;
+    const templateLabel = TEMPLATE_LABELS[deck.template] ?? deck.template;
 
     return (
         <div className="card p-3 flex items-center gap-4 hover:shadow-md transition-all group relative">
