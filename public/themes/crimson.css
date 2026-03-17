@@ -1,0 +1,213 @@
+/* ============================================================
+   PULSE THEME — "Crimson"
+
+   Personality: Bold. Commanding. High-stakes.
+   Default for: Any deck that needs boardroom gravity.
+   Loaded when meta.theme = "crimson".
+
+   Palette: Deep burgundy + crimson accent + rose highlights.
+   Inspired by pomegranate — dark, rich, layered.
+
+   ARCHITECTURE: Targets [data-layout] hooks. No [data-template]
+   selectors. All surfaces are dark — this theme overrides ALL
+   layout types uniformly. Adding a new template requires zero
+   changes here.
+   ============================================================ */
+
+[data-theme="crimson"] {
+
+  /* ── Source palette ─────────────────────────────────────────── */
+  --palette-black:        #1A0A0E;
+  --palette-burgundy:     #2D0A16;
+  --palette-burgundy-mid: #4A1525;
+  --palette-burgundy-700: #6B1D34;
+  --palette-wine:         #8B2346;
+  --palette-crimson:      #DC2626;
+  --palette-crimson-light:#EF4444;
+  --palette-rose:         #FB7185;
+  --palette-rose-bg:      rgba(251, 113, 133, 0.12);
+  --palette-blush:        #FECDD3;
+  --palette-white:        #FFFFFF;
+  --palette-gold:         #F59E0B;
+  --palette-gold-light:   #FBBF24;
+  --palette-green:        #34D399;
+  --palette-cyan:         #22D3EE;
+  --palette-cyan-bg:      rgba(34, 211, 238, 0.12);
+
+  /* ── Theme surface tokens ── */
+  --theme-bg-hero:        var(--palette-burgundy);
+  --theme-bg-split:       var(--palette-burgundy);
+  --theme-bg-split-alt:   var(--palette-burgundy-mid);
+  --theme-bg-split-light: var(--palette-burgundy);
+  --theme-bg-secondary:   var(--palette-burgundy-mid);
+  --theme-bg-page:        var(--palette-burgundy);
+
+  /* ── Theme accent tokens — override template hardcoded colors ── */
+  --theme-accent-primary:  var(--palette-crimson);
+  --theme-accent-info:     var(--palette-crimson);
+  --theme-accent-progress: var(--palette-crimson);
+  --theme-accent-success:  var(--palette-green);
+  --theme-border-strong:   var(--palette-crimson);
+
+  /* ── Surfaces ── */
+  --surface-primary:        var(--palette-burgundy-mid);
+  --surface-secondary:      var(--palette-burgundy-mid);
+  --surface-dark:           var(--palette-burgundy);
+  --surface-muted:          rgba(255, 255, 255, 0.04);
+  --surface-subtle:         rgba(255, 255, 255, 0.03);
+  --surface-glass:          rgba(255, 255, 255, 0.05);
+  --surface-page:           var(--palette-burgundy);
+  --surface-split:          var(--palette-burgundy);
+  --surface-split-alt:      var(--palette-burgundy-mid);
+  --surface-hero:           var(--palette-burgundy);
+  --surface-emphasis:       var(--palette-burgundy-mid);
+  --surface-card:           var(--palette-burgundy-mid);
+
+  /* ── Text ── */
+  --text-primary:           var(--palette-white);
+  --text-secondary:         rgba(255, 255, 255, 0.75);
+  --text-tertiary:          var(--palette-blush);
+  --text-on-dark:           var(--palette-white);
+  --text-on-dark-muted:     rgba(255, 255, 255, 0.75);
+  --text-muted:             rgba(255, 255, 255, 0.45);
+  --text-on-emphasis:       var(--palette-white);
+  --text-on-hero:           var(--palette-white);
+
+  /* ── Accents ── */
+  --accent-primary:         var(--palette-crimson);
+  --accent-primary-bg:      var(--palette-rose-bg);
+  --accent-success:         var(--palette-green);
+  --accent-warning:         var(--palette-gold);
+  --accent-danger:          var(--palette-crimson-light);
+  --accent-vault:           var(--palette-rose);
+  --accent-info:            var(--palette-crimson);
+  --accent-progress:        var(--palette-crimson);
+
+  /* ── Borders ── */
+  --border-default:         rgba(255, 255, 255, 0.15);
+  --border-subtle:          rgba(255, 255, 255, 0.06);
+  --border-on-dark:         rgba(255, 255, 255, 0.10);
+  --border-strong:          rgba(255, 255, 255, 0.35);
+  --border-muted:           rgba(255, 255, 255, 0.20);
+
+  /* ── Shadows ── */
+  --shadow-card:            0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-elevated:        0 4px 12px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.4);
+
+  /* ── Typography ── */
+  --font-heading:           'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body:              'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:              'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* ── Badge tokens ── */
+  --badge-action-bg:        rgba(239, 68, 68, 0.15);
+  --badge-action-text:      var(--palette-crimson-light);
+  --badge-approval-bg:      rgba(245, 158, 11, 0.15);
+  --badge-approval-text:    var(--palette-gold-light);
+  --badge-fyi-bg:           rgba(34, 211, 238, 0.12);
+  --badge-fyi-text:         var(--palette-cyan);
+  --badge-critical-bg:      rgba(239, 68, 68, 0.18);
+  --badge-critical-text:    var(--palette-crimson-light);
+  --badge-high-bg:          rgba(245, 158, 11, 0.15);
+  --badge-high-text:        var(--palette-gold-light);
+  --badge-moderate-bg:      rgba(34, 211, 238, 0.12);
+  --badge-moderate-text:    var(--palette-cyan);
+
+  /* ── RAG status — brighter for dark bg ── */
+  --rag-green:              var(--palette-green);
+  --rag-yellow:             var(--palette-gold);
+  --rag-red:                var(--palette-crimson-light);
+
+  /* ── Blocker severity ── */
+  --severity-action:        var(--palette-crimson-light);
+  --severity-approval:      var(--palette-gold);
+  --severity-fyi:           var(--palette-cyan);
+
+  /* ── Template personality accents ── */
+  --accent-template-status:   var(--palette-rose);
+  --accent-template-strategy: var(--palette-crimson);
+  --accent-template-kickoff:  var(--palette-gold);
+}
+
+/* ─── ALL LAYOUTS — universal dark token reset ─────────────────────────────
+   Crimson overrides text/border/surface tokens on ALL layout elements.
+   Without this, [data-template] sets --text-primary: charcoal at (0,1,0),
+   child layout elements inherit it, and slides get dark text on dark bg.
+   ─────────────────────────────────────────────────────────────────────────── */
+:where([data-theme="crimson"] [data-layout]) {
+  --text-primary:        var(--palette-white);
+  --text-secondary:      rgba(255, 255, 255, 0.75);
+  --text-tertiary:       var(--palette-blush);
+  --text-muted:          rgba(255, 255, 255, 0.45);
+  --text-on-emphasis:    var(--palette-white);
+  --text-on-hero:        var(--palette-white);
+  --border-default:      rgba(255, 255, 255, 0.10);
+  --border-subtle:       rgba(255, 255, 255, 0.06);
+  --border-muted:        rgba(255, 255, 255, 0.08);
+  --border-strong:       rgba(255, 255, 255, 0.30);
+  --border-on-dark:      rgba(255, 255, 255, 0.10);
+  --surface-page:        var(--palette-burgundy);
+  --surface-primary:     var(--palette-burgundy-mid);
+  --surface-secondary:   var(--palette-burgundy-mid);
+  --surface-muted:       rgba(255, 255, 255, 0.02);
+  --surface-glass:       rgba(255, 255, 255, 0.04);
+  --surface-card:        var(--palette-burgundy-mid);
+}
+
+/* ─── HERO LAYOUT ──────────────────────────────────────────────────────────── */
+:where([data-theme="crimson"] [data-layout="hero"]) {
+  --surface-hero:     var(--palette-burgundy);
+  --surface-primary:  var(--palette-burgundy);
+}
+
+/* ─── SPLIT LAYOUT ─────────────────────────────────────────────────────────── */
+:where([data-theme="crimson"] [data-layout="split"]) {
+  --surface-split:      var(--palette-burgundy);
+  --surface-split-alt:  var(--palette-burgundy-mid);
+}
+
+/* ─── WHITE LAYOUT (overridden dark — no bright white surfaces) ─────────────── */
+:where([data-theme="crimson"] [data-layout="white"]) {
+  --surface-page: var(--palette-burgundy);
+}
+
+/* ─── COMPONENT OVERRIDES ──────────────────────────────────────────────────── */
+/* Hero surface needs distinct elevation from page */
+[data-theme="crimson"] .slide-hero {
+  --surface-primary:    var(--palette-burgundy);
+  --surface-secondary:  rgba(255, 255, 255, 0.04);
+}
+
+/* Card borders need visible definition on dark surfaces */
+[data-theme="crimson"] [data-surface="card"] {
+  --border-default:     var(--palette-burgundy-700);
+}
+
+/* Prevent card invisibility when surface-dark = page bg */
+[data-theme="crimson"] .dark-surface {
+  --surface-primary:   var(--palette-burgundy-mid);
+  --surface-secondary: var(--palette-burgundy-mid);
+}
+
+/* Crimson pill eyebrows — rich red on dark background */
+[data-theme="crimson"] .pulse-eyebrow {
+  background-color: rgba(220, 38, 38, 0.85);
+  color: #FFFFFF;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  display: inline-flex;
+  width: fit-content;
+  align-self: flex-start;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CONTRAST CHECK NEEDED:
+   - #FFFFFF on --palette-burgundy (#2D0A16) — text on page bg
+   - #FFFFFF on --palette-burgundy-mid (#4A1525) — text on cards
+   - --palette-blush (#FECDD3) on --palette-burgundy-mid (#4A1525) — tertiary text
+   - --palette-crimson-light (#EF4444) on --palette-burgundy-mid (#4A1525) — accent on cards
+   - --palette-green (#34D399) on --palette-burgundy (#2D0A16) — RAG green on bg
+   - --palette-gold (#F59E0B) on --palette-burgundy (#2D0A16) — RAG yellow on bg
+   ─────────────────────────────────────────────────────────────────────────── */

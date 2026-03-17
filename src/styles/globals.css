@@ -362,12 +362,12 @@ body {
   --accent-success: var(--palette-green);
   --accent-warning: var(--palette-amber);
   --accent-danger: var(--palette-red);
-  --accent-info: var(--palette-blue);
-  --accent-progress: var(--palette-blue);
+  --accent-info: var(--theme-accent-info, var(--palette-blue));
+  --accent-progress: var(--theme-accent-progress, var(--palette-blue));
 
   /* Borders */
   --border-default: var(--palette-gray-200);
-  --border-strong: var(--palette-blue);
+  --border-strong: var(--theme-border-strong, var(--palette-blue));
   --border-muted: var(--palette-gray-300);
   --border-width-card: 1px;
   --border-width-accent: 3px;
@@ -469,18 +469,14 @@ body {
   }
 
   --border-default: var(--palette-gray-200);
-  --border-strong: var(--palette-charcoal);
+  --border-strong: var(--theme-border-strong, var(--palette-charcoal));
   --border-muted: var(--palette-gray-300);
 
   --accent-success: var(--palette-green);
   --accent-warning: var(--palette-amber);
   --accent-danger: var(--palette-red);
-  --accent-info: var(--palette-blue);
-  --accent-progress: var(--palette-blue);
-
-  --border-default: var(--palette-gray-200);
-  --border-strong: var(--palette-charcoal);
-  --border-muted: var(--palette-gray-300);
+  --accent-info: var(--theme-accent-info, var(--palette-blue));
+  --accent-progress: var(--theme-accent-progress, var(--palette-blue));
 
   --badge-critical-bg: var(--palette-red);
   --badge-critical-text: var(--palette-white);
@@ -549,15 +545,15 @@ body {
   --text-on-emphasis: var(--palette-white);
 
   --border-default: var(--palette-gray-200);
-  --border-strong: #EA580C;    /* Safety Orange — kickoff accent */
+  --border-strong: var(--theme-border-strong, #EA580C);    /* Safety Orange — kickoff default */
   --border-muted: var(--palette-gray-100);
 
-  --accent-success: #4CB944;   /* Green — positive/complete */
+  --accent-success: var(--theme-accent-success, #4CB944);   /* Green — positive/complete */
   --accent-warning: var(--palette-amber);
   --accent-danger: var(--palette-red);
-  --accent-info: #EA580C;      /* Orange — primary interactive */
-  --accent-progress: #EA580C;  /* Orange — progress indicators */
-  --accent-primary: #EA580C;   /* Orange — used by timeline, pipeline, etc */
+  --accent-info: var(--theme-accent-info, #EA580C);      /* Orange — primary interactive */
+  --accent-progress: var(--theme-accent-progress, #EA580C);  /* Orange — progress indicators */
+  --accent-primary: var(--theme-accent-primary, #EA580C);   /* Orange — used by timeline, pipeline, etc */
 
   --badge-critical-bg: var(--palette-red);
   --badge-critical-text: var(--palette-white);

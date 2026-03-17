@@ -36,11 +36,18 @@
   --blue-neutral-bg:    #F5F7FA;
 
   /* ── Theme surface tokens — consumed by globals.css template blocks ── */
-  --theme-bg-hero:        linear-gradient(135deg, #1497E3 0%, #4AAFE8 50%, #7DC5EF 100%);
+  --theme-bg-hero:        linear-gradient(135deg, #1497E3 0%, #1672B8 50%, #003057 100%);
   --theme-bg-split:       #1497E3;   /* primary split — status, standup, allHands */
   --theme-bg-split-alt:   var(--blue-navy);  /* deep split — strategy */
   --theme-bg-split-light: var(--blue-neutral-bg); /* light split — kickoff stays light in blue */
   --theme-bg-hero-strategy: linear-gradient(135deg, #003057 0%, #1B4F7A 50%, #2255A4 100%);
+
+  /* ── Theme accent tokens — override template hardcoded colors ─────────── */
+  --theme-accent-primary:  var(--blue-primary);
+  --theme-accent-info:     var(--blue-primary);
+  --theme-accent-progress: var(--blue-primary);
+  --theme-accent-success:  var(--blue-green);
+  --theme-border-strong:   var(--blue-primary);
 
   /* ── Semantic role tokens ── */
   --accent-primary:      var(--blue-primary);

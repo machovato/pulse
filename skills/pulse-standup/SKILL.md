@@ -101,6 +101,10 @@ Assess overall sprint health based on what you've gathered:
 
 This is a quick pulse, not a deep RAG analysis. If in doubt, go yellow — it surfaces the conversation without sounding an alarm.
 
+### Content Prioritization
+
+When the available content exceeds available slots, evaluate each candidate by asking: "What decision or action becomes impossible, delayed, or wrong for this specific audience if this item is absent?" Items where a concrete consequence exists survive. Items recoverable after the meeting do not. When candidates are equally consequential, prefer the one with the shorter action window or the more irreversible outcome. Rank all candidates explicitly before selecting — do not select and rank simultaneously. Treat sparse documentation as underreporting, not low priority — a deadline mentioned once with no surrounding context may be the most consequential item in the vault.
+
 ### Step 8 — Generate the JSON
 
 **Slide sequence — always 5 slides:**
@@ -142,7 +146,7 @@ The MCP delivery is best-effort. The saved file is the guarantee.
     "date": "YYYY-MM-DD",
     "audience": "team",
     "template": "standup",
-    "theme": "blue",
+    "theme": "tide",
     "rag": "green | yellow | red",
     "headline": "The Sprint Goal — what the team is trying to achieve this sprint."
   },
@@ -296,6 +300,9 @@ Topics that surfaced during standup needing a deeper conversation outside the 15
 - Format: `[Project Name] — Sprint N of N` when sprint structure exists. Just `[Project Name]` when it doesn't.
 - No date in the title — `meta.date` handles that.
 - No template type in the title — the Pulse UI already shows template type under the deck icon.
+
+### Theme
+- Always include `meta.theme` set to `"tide"`. Do not omit it.
 
 ### JSON Hygiene
 - Omit empty arrays except `blockers.items`

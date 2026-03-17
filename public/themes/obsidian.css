@@ -38,6 +38,13 @@
   --theme-bg-secondary:   var(--palette-slate-800);
   --theme-bg-page:        var(--palette-obsidian);
 
+  /* ── Theme accent tokens — override template hardcoded colors ─────────── */
+  --theme-accent-primary:  var(--palette-violet);
+  --theme-accent-info:     var(--palette-violet);
+  --theme-accent-progress: var(--palette-cyan);
+  --theme-accent-success:  var(--palette-green);
+  --theme-border-strong:   var(--palette-violet);
+
   /* ── Surfaces ── */
   --surface-primary:        #1E293B;
   --surface-secondary:      #1E293B;

@@ -28,7 +28,7 @@ export type TemplateName =
   | "requirements"
   | "custom";
 
-export type ThemeName = "blue" | "obsidian" | "ember";
+export type ThemeName = "blue" | "obsidian" | "ember" | "tide" | "crimson";
 
 export type SlideGroup = "primary" | "secondary";
 
@@ -63,7 +63,7 @@ export const TEMPLATE_REGISTRY: Record<TemplateName, TemplateDefinition> = {
     label: "Standup",
     description: "Scrum standup or daily sync meeting",
     defaultEyebrow: "Daily Standup",
-    defaultTheme: "blue",
+    defaultTheme: "tide",
     allowedSlideTypes: ["hero", "kpis", "pipeline", "blockers", "grid"],
     defaultOrder: ["hero", "kpis", "blockers", "pipeline"],
   },

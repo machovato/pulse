@@ -103,6 +103,10 @@ If pipeline data is ambiguous, follow this fallback:
 
 Better no pipeline than a fabricated one.
 
+### Content Prioritization
+
+When the available content exceeds available slots, evaluate each candidate by asking: "What decision or action becomes impossible, delayed, or wrong for this specific audience if this item is absent?" Items where a concrete consequence exists survive. Items recoverable after the meeting do not. When candidates are equally consequential, prefer the one with the shorter action window or the more irreversible outcome. Rank all candidates explicitly before selecting — do not select and rank simultaneously. Treat sparse documentation as underreporting, not low priority — a deadline mentioned once with no surrounding context may be the most consequential item in the vault.
+
 ### Step 6 — Encode the JSON
 
 Generate the deck JSON. Every slide must earn its place by improving executive understanding of the project.
@@ -216,7 +220,7 @@ If dates exist only as quarters or ranges, normalize to the best specific date. 
 {
   "type": "grid",
   "title": "Accomplishments",
-  "notes": "GENERATE NOTE ANSWERING: 'Which of these accomplishments changed the project's risk profile or unlocked the next phase, and why should leadership care?' Don't repeat what the cards say — explain the strategic consequence. If an accomplishment retired a blocker from a previous update, connect them. If one accomplishment is clearly more important than the others, lead with it. Example: 'The taxonomy approval is the big one — it means the conversion pipeline has a validated target structure, not a guess. Without that, every article we converted would have needed re-categorization later.'",
+  "notes": "GENERATE NOTE ANSWERING: 'Which of these accomplishments changed the project's risk profile or unlocked the next phase, and why should leadership care?' Don't repeat what the cards say — explain the strategic consequence. If an accomplishment retired a blocker from a previous update, connect them. If one accomplishment is clearly more important than the others, lead with it. Example: 'The taxonomy approval is the big one — it means the conversion pipeline has a validated target structure, not a guess. Without that, every article we converted would have needed re-categorization later.' If accomplishments were excluded due to slot limits, add: Included [X] because [consequence]. Set aside [Y] because [reason it ranked lower].",
   "data": {
     "eyebrow": "Completed",
     "cards": [
@@ -283,6 +287,9 @@ If dates exist only as quarters or ranges, normalize to the best specific date. 
 - Format: `[Project Name] — Sprint N of N` when sprint structure exists. Just `[Project Name]` when it doesn't.
 - No date in the title — `meta.date` handles that.
 - No template type in the title — the Pulse UI already shows template type under the deck icon.
+
+### Theme
+- Always include `meta.theme` set to `"blue"`. Do not omit it.
 
 ### Eyebrow
 - `meta.eyebrow` is always `"Project Update"`. Hero inherits from meta.

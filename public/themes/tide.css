@@ -1,0 +1,146 @@
+/* ============================================================
+   PULSE THEME — "Tide"
+
+   Personality: Clean. Focused. Daily-cadence energy.
+   Default for: Standup decks.
+   Loaded when meta.theme = "tide".
+
+   Palette: Deep teal + cyan accent + seafoam green success.
+   Built on the same structure as blue.css.
+
+   ARCHITECTURE: Targets [data-layout] hooks set by layout
+   components (LayoutBrand, LayoutSplit, LayoutWhite). It never
+   lists template names. Adding a new template requires zero
+   changes here.
+   ============================================================ */
+
+/* ─── ROOT PALETTE & THEME TOKENS ──────────────────────────────────────────
+   :where() gives zero specificity so globals.css template rules always win.
+   ─────────────────────────────────────────────────────────────────────────── */
+:where([data-theme="tide"]) {
+  /* ── Source palette ── */
+  --tide-teal:          #0D9488;   /* Primary teal */
+  --tide-teal-light:    #14B8A6;   /* Lighter teal for hover/accents */
+  --tide-teal-bright:   #2DD4BF;   /* Bright accent teal */
+  --tide-teal-bg:       rgba(13, 148, 136, 0.08);
+  --tide-deep:          #0F766E;   /* Dark teal for headings */
+  --tide-navy:          #134E4A;   /* Deepest teal — hero/split dark bg */
+  --tide-navy-mid:      #115E59;   /* Mid-dark — split-alt */
+  --tide-navy-light:    #1A6B65;   /* Slightly lighter navy */
+  --tide-green:         #4ADE80;   /* Success green */
+  --tide-green-dark:    #15803D;   /* Dark green for text */
+  --tide-amber:         #F59E0B;   /* Warning amber */
+  --tide-red:           #EF4444;   /* Danger red */
+  --tide-neutral-dark:  #1C3534;   /* Near-black with teal tone */
+  --tide-neutral-mid:   #6B8A89;   /* Muted teal-gray */
+  --tide-neutral-light: #CCE4E2;   /* Light teal-gray border */
+  --tide-neutral-bg:    #F0FAFA;   /* Very light teal wash */
+  --tide-white:         #FFFFFF;
+
+  /* ── Theme surface tokens — consumed by globals.css template blocks ── */
+  --theme-bg-hero:        linear-gradient(135deg, var(--tide-navy) 0%, var(--tide-navy-mid) 50%, var(--tide-teal) 100%);
+  --theme-bg-hero-strategy: linear-gradient(135deg, var(--tide-navy) 0%, var(--tide-navy-mid) 60%, var(--tide-navy-light) 100%);
+  --theme-bg-split:       var(--tide-teal);
+  --theme-bg-split-alt:   var(--tide-navy);
+  --theme-bg-split-light: var(--tide-neutral-bg);
+
+  /* ── Theme accent tokens — override template hardcoded colors ─────────── */
+  --theme-accent-primary:  var(--tide-teal);
+  --theme-accent-info:     var(--tide-teal);
+  --theme-accent-progress: var(--tide-teal);
+  --theme-accent-success:  var(--tide-green);
+  --theme-border-strong:   var(--tide-teal);
+
+  /* ── Semantic role tokens ── */
+  --accent-primary:      var(--tide-teal);
+  --accent-primary-bg:   var(--tide-teal-bg);
+  --accent-success:      var(--tide-green);
+  --accent-warning:      var(--tide-amber);
+  --accent-danger:       var(--tide-red);
+  --accent-info:         var(--tide-teal);
+  --accent-progress:     var(--tide-teal);
+
+  --color-brand:         var(--tide-teal);
+  --color-brand-alt:     var(--tide-teal-bright);
+  --color-success:       var(--tide-green);
+  --color-success-bg:    #EDFAF4;
+  --color-success-border:#A7F3D0;
+  --color-success-text:  var(--tide-green-dark);
+  --color-warning:       var(--tide-amber);
+  --color-warning-bg:    #FFF8DC;
+  --color-warning-border:var(--tide-amber);
+  --color-warning-text:  #8A6A00;
+  --color-error:         var(--tide-red);
+  --color-error-bg:      #FEF2F2;
+  --color-error-border:  #FECACA;
+  --color-error-text:    #991B1B;
+
+  --color-text-heading:  var(--tide-deep);
+  --color-text-body:     var(--tide-neutral-dark);
+  --color-text-muted:    var(--tide-neutral-mid);
+  --color-border:        var(--tide-neutral-light);
+  --color-surface:       var(--tide-neutral-bg);
+  --color-surface-card:  #FFFFFF;
+
+  --border-strong:       var(--tide-teal);
+  --card-border:         var(--tide-neutral-light);
+  --card-shadow:         0 1px 4px rgba(13, 148, 136, 0.08), 0 2px 8px rgba(13, 148, 136, 0.05);
+  --radius:              0.5rem;
+
+  /* ── Gradients ── */
+  --tide-gradient:          linear-gradient(135deg, var(--tide-teal) 0%, var(--tide-deep) 60%, var(--tide-navy) 100%);
+  --tide-gradient-navy:     linear-gradient(160deg, var(--tide-teal) 0%, var(--tide-navy) 100%);
+  --tide-gradient-timeline: linear-gradient(90deg, var(--tide-teal) 0%, var(--tide-teal-bright) 100%);
+
+  /* ── Typography ── */
+  --font-family:         'Plus Jakarta Sans', Arial, sans-serif;
+  --type-display:        clamp(40px, 5vw, 68px);
+  --type-headline:       clamp(28px, 3.5vw, 48px);
+  --type-subheadline:    clamp(20px, 2vw, 28px);
+  --type-metric-unit:    clamp(14px, 1.3vw, 18px);
+  --type-eyebrow:        11px;
+
+  /* ── Badges ── */
+  --badge-action-bg:    rgba(239, 68, 68, 0.1);
+  --badge-action-text:  var(--tide-red);
+  --badge-approval-bg:  rgba(245, 158, 11, 0.1);
+  --badge-approval-text:#92400E;
+  --badge-fyi-bg:       rgba(13, 148, 136, 0.1);
+  --badge-fyi-text:     var(--tide-deep);
+  --badge-critical-bg:  rgba(239, 68, 68, 0.12);
+  --badge-critical-text:var(--tide-red);
+  --badge-high-bg:      rgba(245, 158, 11, 0.12);
+  --badge-high-text:    #92400E;
+  --badge-moderate-bg:  rgba(13, 148, 136, 0.1);
+  --badge-moderate-text:var(--tide-deep);
+
+  /* ── Template personality accents ── */
+  --accent-template-status:   var(--tide-teal);
+  --accent-template-strategy: var(--tide-navy);
+  --accent-template-kickoff:  var(--tide-teal-bright);
+}
+
+/* ─── HERO LAYOUT ─────────────────────────────────────────────────────────── */
+:where([data-theme="tide"] [data-layout="hero"]) {
+  --surface-hero:    var(--theme-bg-hero);
+  --surface-primary: var(--tide-navy);
+  --text-primary:    var(--tide-white);
+  --text-on-hero:    var(--tide-white);
+  --border-strong:   var(--tide-teal);
+}
+
+/* ─── SPLIT LAYOUT ─────────────────────────────────────────────────────────── */
+:where([data-theme="tide"] [data-layout="split"]) {
+  --surface-split:     var(--theme-bg-split);
+  --surface-split-alt: var(--tide-gradient-navy);
+  --border-strong:     var(--tide-teal);
+}
+
+/* ─── COMPONENT OVERRIDES ─────────────────────────────────────────────────── */
+:where([data-theme="tide"] [data-layout="split"]) .dark-surface .pulse-eyebrow {
+  color: var(--tide-white);
+}
+
+:where([data-theme="tide"] [data-layout="white"]) .pulse-slide-title {
+  color: var(--tide-deep);
+}

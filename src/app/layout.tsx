@@ -3,6 +3,9 @@ import "@/styles/globals.css";
 import "../../public/themes/blue.css";
 import "../../public/themes/obsidian.css";
 import "../../public/themes/ember.css";
+import "../../public/themes/tide.css";
+import "../../public/themes/crimson.css";
+import LocalThemeLoader from "@/components/LocalThemeLoader";
 
 export const metadata: Metadata = {
     title: "Project Pulse",
@@ -20,7 +23,9 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <head />
+            <head>
+                <LocalThemeLoader />
+            </head>
             <body className="min-h-screen flex flex-col bg-[var(--surface-primary)]">
                 {children}
             </body>

@@ -254,6 +254,10 @@ The audience should leave with a clear personal commitment or awareness.
 
 ---
 
+### Content Prioritization
+
+When the available content exceeds available slots, evaluate each candidate by asking: "What decision or action becomes impossible, delayed, or wrong for this specific audience if this item is absent?" Items where a concrete consequence exists survive. Items recoverable after the meeting do not. When candidates are equally consequential, prefer the one with the shorter action window or the more irreversible outcome. Rank all candidates explicitly before selecting — do not select and rank simultaneously. Treat sparse documentation as underreporting, not low priority — a deadline mentioned once with no surrounding context may be the most consequential item in the vault.
+
 ### Step 5 — Generate the JSON
 
 Only after completing Steps 1-4, generate the deck JSON. Every slide must earn its place by moving the audience from "I understand" to "I know what to do."
@@ -369,7 +373,7 @@ Rhetorical job: **Remind why this matters.** Anchor, don't argue.
 {
   "type": "problem",
   "title": "Why This Is Urgent",
-  "notes": "GENERATE NOTE ANSWERING: 'Why is this problem worth solving for this specific audience, and what happens if we don't?' Connect the primary problem to a specific metric, workflow, or accountability this audience owns. State the consequence of inaction in concrete terms — not abstract risk. If the problem has been discussed before but not solved, explain what's different now. Example: 'Today the answer to what goes in the KB is we don't know — 416 articles with no taxonomy, no metadata, no migration plan. If we don't solve this before July 29, the implementation team either gets nothing or invents something under deadline pressure.'",
+  "notes": "GENERATE NOTE ANSWERING: 'Why is this problem worth solving for this specific audience, and what happens if we don't?' Connect the primary problem to a specific metric, workflow, or accountability this audience owns. State the consequence of inaction in concrete terms — not abstract risk. If the problem has been discussed before but not solved, explain what's different now. Example: 'Today the answer to what goes in the KB is we don't know — 416 articles with no taxonomy, no metadata, no migration plan. If we don't solve this before July 29, the implementation team either gets nothing or invents something under deadline pressure.' If tensions were excluded due to slot limits, add: Included [X] because [consequence]. Set aside [Y] because [reason it ranked lower].",
   "data": {
     "eyebrow": "Anchor Tension",
     "primary": {
@@ -503,7 +507,7 @@ Rhetorical job: **Assign commitments.** Every person leaves knowing their part.
 {
   "type": "blockers",
   "title": "What I Need — And What's Not In Scope",
-  "notes": "GENERATE NOTE ANSWERING: 'What's the smallest ask that unblocks the biggest risk, and what do I need someone to commit to before leaving this room?' Identify the highest-priority action item and which blocker it resolves. State the specific commitment needed (decision, resource, time, access). For out-of-scope FYIs, explain why you're surfacing them — what scope creep they prevent. Example: 'Justin's 3-4 hrs/wk is the critical ask — without SME review, converted articles can't be validated and the timeline stalls at Sprint 5. The out-of-scope items are here because in past projects, teams tried to expand into Academy sites and DaaS docs. That's not this project.'",
+  "notes": "GENERATE NOTE ANSWERING: 'What's the smallest ask that unblocks the biggest risk, and what do I need someone to commit to before leaving this room?' Identify the highest-priority action item and which blocker it resolves. State the specific commitment needed (decision, resource, time, access). For out-of-scope FYIs, explain why you're surfacing them — what scope creep they prevent. Example: 'Justin's 3-4 hrs/wk is the critical ask — without SME review, converted articles can't be validated and the timeline stalls at Sprint 5. The out-of-scope items are here because in past projects, teams tried to expand into Academy sites and DaaS docs. That's not this project.' If blocker items were excluded due to slot limits, add: Included [X] because [consequence]. Set aside [Y] because [reason it ranked lower].",
   "data": {
     "eyebrow": "Commitments",
     "summary": {
@@ -540,6 +544,7 @@ Rhetorical job: **Assign commitments.** Every person leaves knowing their part.
 - **JSON hygiene:** Omit empty arrays and optional fields entirely. An absent key is cleaner than an empty value.
 - **Schema version:** Always `2`.
 - **Deck Title:** Format: `[Project Name] — Sprint N of N` when sprint structure exists. Just `[Project Name]` when it doesn't. No date in the title — `meta.date` handles that. No template type in the title — the Pulse UI already shows template type under the deck icon.
+- **Theme:** Always include `meta.theme` set to `"ember"`. Do not omit it.
 - **Eyebrow:** `meta.eyebrow` is always `"Leadership Briefing"`. Hero inherits from meta.
 - All other slides set `slide.data.eyebrow` explicitly per the slide sequence table above.
 - The eyebrow describes the slide's role, not the meeting type.

@@ -21,9 +21,16 @@
 
   /* ── Theme surface tokens — consumed by globals.css template blocks ── */
   --theme-bg-hero:        linear-gradient(135deg, var(--ember-navy) 0%, var(--ember-navy-mid) 60%, var(--ember-navy-light) 100%);
-  --theme-bg-split:       var(--surface-muted);
-  --theme-bg-split-alt:   var(--surface-primary);
+  --theme-bg-split:       var(--ember-navy);
+  --theme-bg-split-alt:   var(--ember-navy-mid);
   --theme-bg-split-light: var(--surface-muted);
+
+  /* ── Theme accent tokens — override template hardcoded colors ─────────── */
+  --theme-accent-primary:  var(--ember-orange);
+  --theme-accent-info:     var(--ember-orange);
+  --theme-accent-progress: var(--ember-orange);
+  --theme-accent-success:  var(--ember-green);
+  --theme-border-strong:   var(--ember-orange);
 
   /* ─── SEMANTIC TOKENS ─────────────────────────────────────────────────── */
   --accent-primary:     var(--ember-orange);

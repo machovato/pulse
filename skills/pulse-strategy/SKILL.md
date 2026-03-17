@@ -158,6 +158,10 @@ Items with `severity`, `owner`, and optional `badges` carry presentation intent 
 
 ### Step 6 — Generate the JSON
 
+### Content Prioritization
+
+When the available content exceeds available slots, evaluate each candidate by asking: "What decision or action becomes impossible, delayed, or wrong for this specific audience if this item is absent?" Items where a concrete consequence exists survive. Items recoverable after the meeting do not. When candidates are equally consequential, prefer the one with the shorter action window or the more irreversible outcome. Rank all candidates explicitly before selecting — do not select and rank simultaneously. Treat sparse documentation as underreporting, not low priority — a deadline mentioned once with no surrounding context may be the most consequential item in the vault.
+
 Only after completing Steps 1-5, generate the deck JSON. Every slide must earn its place by advancing the argument toward the Punchline.
 
 **Slide sequence:**
@@ -250,7 +254,7 @@ Rhetorical job: **Settle the reader.** Stable ground. Consensus.
 {
   "type": "context",
   "title": "Where We Are",
-  "notes": "GENERATE NOTE ANSWERING: 'What is the one piece of settled ground that, if the audience doesn't accept, makes the rest of this argument fall apart?' Identify which context item is the load-bearing assumption. If one item is a recent decision or shift the audience may not all be aware of, call it out. The goal is to make the audience nod before the complication hits. Example: 'The critical context is the tiered support model — base-tier customers will not have agent fallback. Some stakeholders still think there's a safety net. There isn't. Everything in this deck assumes self-serve is the only path for base-tier.'",
+  "notes": "GENERATE NOTE ANSWERING: 'What is the one piece of settled ground that, if the audience doesn't accept, makes the rest of this argument fall apart?' Identify which context item is the load-bearing assumption. If one item is a recent decision or shift the audience may not all be aware of, call it out. The goal is to make the audience nod before the complication hits. Example: 'The critical context is the tiered support model — base-tier customers will not have agent fallback. Some stakeholders still think there's a safety net. There isn't. Everything in this deck assumes self-serve is the only path for base-tier.' If context items were excluded due to slot limits, add: Included [X] because [consequence]. Set aside [Y] because [reason it ranked lower].",
   "data": {
     "eyebrow": "Current State",
     "items": [
@@ -302,7 +306,7 @@ Rhetorical job: **Build conviction.** Numbers are the headline.
 {
   "type": "evidence",
   "title": "What the Evidence Shows",
-  "notes": "GENERATE NOTE ANSWERING per evidence point: 'How does this proof point earn the punchline, and why should the stakeholder trust this source?' For each point, (a) connect it back to the complication or recommendation — evidence that doesn't advance the argument is decoration, and (b) explain why this data point is credible: who produced it, how it was measured, or what precedent it establishes. Lead with the strongest quantified evidence. Example: 'The 85.5-to-3.5-hour conversion metric isn't just efficiency — it proves the AI-assisted approach can handle the volume at scale. Tony ran this on real articles, not test data, so the number reflects production conditions.'",
+  "notes": "GENERATE NOTE ANSWERING per evidence point: 'How does this proof point earn the punchline, and why should the stakeholder trust this source?' For each point, (a) connect it back to the complication or recommendation — evidence that doesn't advance the argument is decoration, and (b) explain why this data point is credible: who produced it, how it was measured, or what precedent it establishes. Lead with the strongest quantified evidence. Example: 'The 85.5-to-3.5-hour conversion metric isn't just efficiency — it proves the AI-assisted approach can handle the volume at scale. Tony ran this on real articles, not test data, so the number reflects production conditions.' If evidence points were excluded due to slot limits, add: Included [X] because [consequence]. Set aside [Y] because [reason it ranked lower].",
   "data": {
     "eyebrow": "Proof Points",
     "points": [
@@ -413,6 +417,9 @@ Rhetorical job: **Make the ask explicit.**
 - Format: `[Project Name] — Sprint N of N` when sprint structure exists. Just `[Project Name]` when it doesn't.
 - No date in the title — `meta.date` handles that.
 - No template type in the title — the Pulse UI already shows template type under the deck icon.
+
+### Theme
+- Always include `meta.theme` set to `"obsidian"`. Do not omit it.
 
 ### Eyebrow
 - `meta.eyebrow` is always `"Strategy Briefing"`. Hero inherits from meta.
