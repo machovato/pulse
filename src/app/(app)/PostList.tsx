@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { FileText, Hash, Briefcase, Trash2, Loader2, Archive } from "lucide-react";
+import { FileText, Hash, Briefcase, Trash2, Loader2, Archive, PenLine } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { deletePost, archivePost } from "@/app/actions";
 
@@ -96,11 +96,11 @@ export function PostList({ posts }: { posts: PostRow[] }) {
 }
 
 const PLATFORM_STYLES: Record<string, { bg: string; text: string }> = {
-    LinkedIn: { bg: "bg-[#0077B5]/10", text: "text-[#0077B5]" },
+    LinkedIn: { bg: "bg-[#0A66C2]/10", text: "text-[#0A66C2]" },
     X:        { bg: "bg-gray-100",     text: "text-gray-700"   },
 };
 
-function PostRowItem({ post }: { post: PostRow }) {
+export function PostRowItem({ post, isTimelineView = false }: { post: PostRow, isTimelineView?: boolean }) {
     const [isDeleting, setIsDeleting] = useState(false);
     const [isArchiving, setIsArchiving] = useState(false);
     const [gone, setGone] = useState(false);
@@ -134,20 +134,28 @@ function PostRowItem({ post }: { post: PostRow }) {
     if (gone) return null;
 
     return (
-        <div className="card p-3 flex items-center gap-4 hover:shadow-md transition-all group relative">
+        <div className={`card p-3 flex items-center gap-4 hover:shadow-md transition-all group relative ${isTimelineView ? 'overflow-hidden' : ''}`}>
+            {isTimelineView && (
+                <div className={cn("absolute left-0 top-0 bottom-0 w-1 z-20 pointer-events-none", platform === 'X' ? 'bg-gray-700' : 'bg-[#0A66C2]')} />
+            )}
             <Link href={`/posts/${post.id}`} className="absolute inset-0 z-0 rounded-xl" aria-label={`Open post: ${post.hook}`} />
 
             {/* Left: platform circle */}
             <div className="flex flex-col items-center justify-center shrink-0 w-16 gap-1.5 relative z-10 pointer-events-none">
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center ${style.bg}`}>
-                    <PlatformIcon platform={platform} className={`w-6 h-6 ${style.text}`} />
+                    <PlatformIcon platform={platform} className={`w-6 h-6 fill-current ${style.text}`} />
                 </div>
                 <span className={`text-[12px] font-medium leading-none ${style.text}`}>{platform}</span>
             </div>
 
             {/* Center: hook + meta */}
             <div className="flex-1 min-w-0 relative z-10 py-1 pl-1">
-                <Link href={`/posts/${post.id}`} className="text-[15px] font-bold text-[var(--text-primary)] truncate hover:text-[var(--accent-primary)] transition-colors block">
+                {isTimelineView && (
+                    <div className={cn("text-[10px] font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5 opacity-90", platform === "X" ? "text-gray-600" : "text-[#0A66C2]")}>
+                        <PenLine className="w-3 h-3" /> {platform} Post
+                    </div>
+                )}
+                <Link href={`/posts/${post.id}`} className={cn("text-[15px] font-bold text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors block", isTimelineView ? "leading-snug" : "truncate")}>
                     {post.hook}
                 </Link>
                 <div className="flex items-center gap-2 mt-1 text-xs text-[var(--text-secondary)]">

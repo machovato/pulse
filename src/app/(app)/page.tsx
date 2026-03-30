@@ -83,9 +83,11 @@ export default async function HomePage() {
                 hook_char_count: true,
                 total_char_count: true,
                 status: true,
+                // @ts-ignore
+                pinned: true,
                 created_at: true,
             },
-        }),
+        }) as Promise<any[]>,
     ]);
 
     const decks = rawDecks.map(deck => {

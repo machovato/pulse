@@ -44,6 +44,7 @@ model Post {
   source_raw      String
   platform        String   @default("LinkedIn")
   status          String   @default("Draft")
+  pinned          Boolean  @default(false)
   archived        Boolean  @default(false)
   created_at      DateTime @default(now())
 }

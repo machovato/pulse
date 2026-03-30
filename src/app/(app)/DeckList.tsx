@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
-import { Play, Calendar, Trash2, Edit2, Loader2, Pin, Target, Activity, Rocket, FileText, Archive, Star, Code, Type, Coffee } from "lucide-react";
+import { Play, Calendar, Trash2, Edit2, Loader2, Pin, Target, Activity, Rocket, FileText, Archive, Star, Code, Type, Coffee, Presentation } from "lucide-react";
 import { deleteDeck, renameDeck, togglePinDeck, archiveDeck } from "@/app/actions";
 
 const TEMPLATE_STYLES: Record<string, { bg: string, text: string, icon: React.FC<any> }> = {
@@ -164,7 +164,7 @@ export function DeckList({ decks }: { decks: DeckRow[] }) {
     );
 }
 
-function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersions: number } }) {
+export function DeckRowItem({ deck, isTimelineView = false }: { deck: DeckRow & { version: number, totalVersions: number }, isTimelineView?: boolean }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editValue, setEditValue] = useState(deck.title);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -253,7 +253,10 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
     const templateLabel = TEMPLATE_LABELS[deck.template] ?? deck.template;
 
     return (
-        <div className="card p-3 flex items-center gap-4 hover:shadow-md transition-all group relative">
+        <div className={`card p-3 flex items-center gap-4 hover:shadow-md transition-all group relative ${isTimelineView ? 'overflow-hidden' : ''}`}>
+            {isTimelineView && (
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#D04423] z-20 pointer-events-none" />
+            )}
             
             <Link href={`/deck/${deck.id}`} className="absolute inset-0 z-0 rounded-xl" aria-label={`Open ${deck.title}`}></Link>
 
@@ -269,6 +272,11 @@ function DeckRowItem({ deck }: { deck: DeckRow & { version: number, totalVersion
 
             {/* Right Column: Title & Subtitle Stack */}
             <div className="flex-1 min-w-0 relative z-10 py-1 pl-1">
+                {isTimelineView && (
+                    <div className="text-[10px] font-bold text-[#D04423] uppercase tracking-wider mb-1 flex items-center gap-1.5 opacity-90">
+                        <Presentation className="w-3 h-3" /> Presentation Deck
+                    </div>
+                )}
                 <div className="flex items-center gap-2">
                     {isEditing ? (
                         <div className="flex items-center gap-2">
