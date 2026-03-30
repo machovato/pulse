@@ -352,3 +352,30 @@ export const SLIDE_TYPES: SlideType[] = [
 
 export const RAG_VALUES = ["green", "yellow", "red"] as const;
 export type RAG = (typeof RAG_VALUES)[number];
+
+// ─── LinkedIn Post schema ────────────────────────────────────────────────────
+
+export const LinkedInPostSchema = z.object({
+    type: z.literal("linkedin_post"),
+    id: z.string().optional(),
+    created_at: z.string().optional(),
+    project: z.string(),
+    pillar: z.string(),
+    theme: z.string(),
+    hook: z.string(),
+    body: z.string(),
+    cta: z.string().optional(),
+    hashtags: z.array(z.string()).optional(),
+    hook_char_count: z.number(),
+    total_char_count: z.number(),
+    voice_version: z.string().default("1.0"),
+});
+
+export type LinkedInPost = z.infer<typeof LinkedInPostSchema>;
+
+// ─── Generic Pulse artifact (discriminated by type) ──────────────────────────
+
+export const PulseArtifactSchema = z.discriminatedUnion("type", [
+    z.object({ type: z.literal("deck"), content: DeckSchema }),
+    z.object({ type: z.literal("linkedin_post"), content: LinkedInPostSchema }),
+]);

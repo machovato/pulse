@@ -1,16 +1,18 @@
 # Pulse
 
-**A local presentation engine for AI-powered personal operating systems.**
+**A local content engine for AI-powered personal operating systems.**  
+Vault data → decks, LinkedIn posts, and more. Run a skill, get an artifact.
 
-You've automated your projects, tasks, and tracking in a markdown vault using tools like [Dex](https://github.com/davekilleen/Dex) or [Claude Chief of Staff](https://github.com/mimurchison/claude-chief-of-staff). But when it's time to present, you're still copying and pasting into PowerPoint.
+You've automated your projects, tasks, and tracking in a markdown vault using tools like [Dex](https://github.com/davekilleen/Dex) or [Claude Chief of Staff](https://github.com/mimurchison/claude-chief-of-staff). But when it's time to present — or publish — you're still copying and pasting.
 
-Pulse is the last mile. Run a skill, get a deck.
+Pulse is the last mile. Run a skill, get an artifact.
 
 ```
 /pulse-status my-project
+/linkedin my-project
 ```
 
-Your vault data becomes a navigable, animated slide deck in the browser — with speaker notes, keyboard shortcuts, and themed layouts. With the MCP server enabled, the deck just *appears*. No copy-paste. No switching windows.
+Your vault data becomes a navigable, animated slide deck — or a publish-ready LinkedIn post — in the browser. With the MCP server enabled, the artifact just *appears*. No copy-paste. No switching windows.
 
 ![Pulse Demo](docs/Pulse-Generator.gif)
 
@@ -24,8 +26,9 @@ Your vault data becomes a navigable, animated slide deck in the browser — with
 - [What You Get](#what-you-get)
 - [Quick Start for Dex Users](#quick-start-for-dex-users-60-seconds)
 - [Guided Install](#guided-install)
-- [MCP — Automatic Deck Delivery](#mcp--automatic-deck-delivery)
+- [MCP — Automatic Artifact Delivery](#mcp--automatic-artifact-delivery)
 - [The Four Skills](#the-four-skills)
+- [The LinkedIn Skill](#the-linkedin-skill)
 - [Themes](#themes)
 - [MISSING Slides](#missing-slides)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
@@ -40,11 +43,11 @@ Your vault data becomes a navigable, animated slide deck in the browser — with
 
 Pulse is built for people who already run an AI-powered personal operating system — a vault of markdown files managed through [Claude Code](https://claude.ai/download) or [Cursor](https://cursor.com), with project folders, sprint plans, and task tracking.
 
-**To generate your own decks, you need:**
+**To generate your own artifacts, you need:**
 
 - A vault or project folder with markdown files
 - Claude Code or Cursor to run the skills
-- Pulse running locally to render the decks
+- Pulse running locally to render the output
 
 Pulse is an add-on to an existing AI workflow. Without a vault and Claude Code, you can explore the demo decks but you can't generate your own.
 
@@ -74,10 +77,11 @@ Click through all four. You'll see how the same project data tells a different s
 
 Under the hood:
 
-- **4 skills** — status, strategy, standup, kickoff
+- **4 deck skills** — status, strategy, standup, kickoff
+- **1 LinkedIn skill** — project extraction, voice-aware writing, 210-char hook constraint
 - **3 themes** — Blue, Obsidian, Ember
 - **14 slide types** — hero, context, problem, evidence, framework, roadmap, grid, pipeline, timeline, kpis, blockers, and more
-- **MCP server** — skills push decks directly to Pulse, no clipboard involved
+- **MCP server** — skills push artifacts directly to Pulse, no clipboard involved
 - **MISSING slides** — when data is absent, Pulse tells you what to add instead of making something up
 
 ---
@@ -134,7 +138,7 @@ For reference, the manual steps are: `git clone` → `npm install` → `npm run 
 
 ---
 
-## MCP — Automatic Deck Delivery
+## MCP — Automatic Artifact Delivery
 
 **Without MCP:**
 ```
@@ -143,10 +147,10 @@ Run skill → open JSON file → copy → open Pulse → paste → save → view
 
 **With MCP:**
 ```
-Run skill → deck appears in Pulse
+Run skill → artifact appears in Pulse
 ```
 
-Seven steps become two. For daily standups, that's the difference between "I should use this" and "I can't stop using this."
+Seven steps become two. For daily standups, that's the difference between "I should use this" and "I can't stop using this." For LinkedIn posts, it means your draft is rendered, readable, and copy-ready before you've switched windows.
 
 The MCP server is set up automatically during `npm run setup` if you provide your vault path. To verify it's working, type `/mcp` in Claude Code and look for:
 
@@ -170,6 +174,38 @@ Each skill reads your project files and generates a specific kind of deck. Think
 | `/pulse-kickoff` | Project launch | Ember | Shortest — charter-bound, nothing beyond the doc |
 
 **"Leash"** is how much interpretation a skill is allowed. Short leash = stick tightly to the source files. Long leash = synthesize across them and build a story. Every skill follows the cardinal rule: **no invention.** If the data isn't there, the slide says [MISSING], not something that sounds plausible.
+
+---
+
+## The LinkedIn Skill
+
+Pulse isn't just for decks. The `/linkedin` skill turns any project folder into a publish-ready LinkedIn post — grounded in what you actually built, not what you remember to summarize.
+
+```
+/linkedin Pulse
+```
+
+The skill reads your project files, extracts 3–5 content themes with hook seeds and pillar mapping, waits for you to pick one, then runs a three-pass pipeline against your personal voice profile. The result pushes to Pulse via MCP and renders at `/posts/[id]`.
+
+![LinkedIn Post Renderer](docs/pulse-linkedin-renderer.png)
+
+**Key design decisions:**
+
+- **Hook-first** — the opening line is written for the 210-character mobile fold, not trimmed to fit after the fact. If the hook doesn't earn the scroll, the rest doesn't matter.
+- **Voice file as tiebreaker** — your writing examples override LinkedIn best practices. The post should sound like you, not like a thought leader template.
+- **Post memory** — tracks previously used angles in `published.md` to prevent theme repetition across posts.
+- **CHECK mode** — theme selection and angle format involve your judgment. The skill proposes, you decide. Writing is autonomous. Choices are yours.
+- **Relevancy gate** — runs silently before writing. If the selected angle is too navel-gazing for your audience, the skill redirects before investing in a draft.
+- **Series mode** — add `--series` to propose a 3–5 post arc with narrative threading across related angles.
+
+**The renderer shows:** bold hook, body, optional CTA, 210-char hook progress bar (green → red), character count footer, project and pillar labels, Draft status badge, and a copy-to-clipboard button.
+
+**To use the LinkedIn skill**, you need two files in your vault:
+
+- `linkedin-voice.md` — your writing examples, voice principles, signature phrases, and anti-patterns. This is the tiebreaker for every writing decision.
+- `published.md` — an empty log the skill appends to after every run.
+
+See `skills/linkedin/SKILL.md` for setup instructions.
 
 ---
 
@@ -229,12 +265,20 @@ When a skill can't find data for a slide, it doesn't guess. It shows a **MISSING
 - Speaker notes, density toggle, print/export
 - Atlas demo decks showing a full project lifecycle
 
+### Shipped (v1.1)
+
+- **LinkedIn skill** — project extraction, voice-aware three-pass writing, 210-char hook constraint, theme selection with user approval
+- **LinkedIn renderer** — hook preview, progress bar, copy-to-clipboard, Draft status, pillar and project labels
+- **`pulse_create_artifact`** — generic MCP tool replacing `pulse_create_deck`, routes by content type. Backward compatible with all existing deck skills.
+- **`/posts` index** — list and browse all LinkedIn drafts alongside decks
+
 ### Planned
 
-- **MCP upsert** — run the same skill twice without duplicating the deck
+- **MCP upsert** — run the same skill twice without duplicating the artifact
 - **Slug URLs** — `/deck/atlas-strategy` instead of `/deck/cmmqhlh0b0003...`
 - **Retrospective skill** — went well, improve, action items
 - **PDF export** — direct generation without print dialog
+- **Image generation** — optional AI-generated header image as part of the LinkedIn skill pipeline
 
 ---
 
@@ -246,7 +290,7 @@ Pulse is open source and MIT licensed.
 
 **Want the easiest first contribution?** → add a **theme**. Drop a CSS file in `public/themes/`. See `docs/THEME-PLAYBOOK.md`.
 
-**React/TypeScript developers** → build new **renderers**. See `SCHEMA.md` for slide types.
+**React/TypeScript developers** → build new **renderers**. See `SCHEMA.md` for slide types and artifact schemas.
 
 ---
 
@@ -258,7 +302,7 @@ Pulse is open source and MIT licensed.
 | [Claude Chief of Staff](https://github.com/mimurchison/claude-chief-of-staff) | Mike Murchison | CEO-oriented AI OS with inbox triage and relationship CRM |
 | [AI Chief of Staff](https://github.com/tomochang/ai-chief-of-staff) | Tomo Chang | VP-oriented AI OS with multi-channel triage |
 
-Pulse is the presentation layer these systems don't have.
+Pulse is the presentation and publishing layer these systems don't have.
 
 ---
 

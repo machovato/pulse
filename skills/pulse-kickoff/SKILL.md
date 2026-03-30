@@ -171,7 +171,7 @@ Each slide type draws from specific charter sections. This prevents data from dr
 |---|---|---|---|
 | **Context** | Charter: strategic context, org decisions | Stakeholder interviews | Audit findings, operational data |
 | **Problem** | Charter: problem statement, risks, strategic context | — | Audit results, deliverable benefits |
-| **Evidence** | Project file: completed work, metrics, audit findings | Charter: referenced precedents | Charter problem statement |
+| **Evidence** | Charter: completed work referenced in charter, metrics stated in charter | Project file: detail for items the charter explicitly mentions | Audit results not referenced in charter, vault-only findings |
 | **Grid** | Charter: deliverables table | — | Audit data, operational findings |
 | **Timeline** | Charter: sprint plan | Project file: status updates | — |
 | **Success** | Charter: success criteria | — | — |

@@ -151,3 +151,64 @@ export async function archiveDeck(id: string, archived: boolean): Promise<{ succ
         return { success: false, error: "Failed to archive deck." };
     }
 }
+
+export async function updatePost(
+    id: string,
+    data: { hook: string; body: string; cta: string | null; hashtags: string[] }
+): Promise<{ success: boolean; error?: string }> {
+    try {
+        const hashtagLine = data.hashtags
+            .map((t) => (t.startsWith("#") ? t : `#${t}`))
+            .join(" ");
+        const hookCharCount = Array.from(data.hook).length;
+        const totalCharCount =
+            Array.from(data.hook).length +
+            Array.from(data.body).length +
+            (data.cta ? Array.from(data.cta).length : 0) +
+            Array.from(hashtagLine).length;
+
+        await prisma.post.update({
+            where: { id },
+            data: {
+                hook: data.hook,
+                body: data.body,
+                cta: data.cta || null,
+                hashtags: JSON.stringify(data.hashtags),
+                hook_char_count: hookCharCount,
+                total_char_count: totalCharCount,
+            },
+        });
+
+        revalidatePath("/");
+        revalidatePath("/posts");
+        revalidatePath(`/posts/${id}`);
+        return { success: true };
+    } catch (err) {
+        console.error("Update post error:", err);
+        return { success: false, error: "Failed to update post." };
+    }
+}
+
+export async function archivePost(id: string): Promise<{ success: boolean; error?: string }> {
+    try {
+        await prisma.post.update({ where: { id }, data: { archived: true } });
+        revalidatePath("/");
+        revalidatePath("/posts");
+        return { success: true };
+    } catch (err) {
+        console.error("Archive post error:", err);
+        return { success: false, error: "Failed to archive post." };
+    }
+}
+
+export async function deletePost(id: string): Promise<{ success: boolean; error?: string }> {
+    try {
+        await prisma.post.delete({ where: { id } });
+        revalidatePath("/");
+        revalidatePath("/posts");
+        return { success: true };
+    } catch (err) {
+        console.error("Delete post error:", err);
+        return { success: false, error: "Failed to delete post." };
+    }
+}

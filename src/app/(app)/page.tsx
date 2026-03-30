@@ -1,46 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { formatDate } from "@/lib/utils";
 import prisma from "@/lib/db";
 import {
     PlusCircle,
     FileText,
-    Calendar,
     ArrowRight,
     Keyboard,
-    Star,
     Archive,
 } from "lucide-react";
-import { DeckList } from "./DeckList";
+import { ArtifactTabs } from "./ArtifactTabs";
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-    title: "Project Pulse — Presentation Engine",
-    description: "Create and present project updates with the meeting presentation engine.",
-};
-
-const TEMPLATE_LABELS: Record<string, string> = {
-    status: "Project Status",
-    allHands: "All Hands",
-    requirements: "Requirements",
-    custom: "Custom",
-};
-
-const RAG_CLASSES: Record<string, string> = {
-    green: "rag-green",
-    yellow: "rag-yellow",
-    red: "rag-red",
-};
-const RAG_DOTS: Record<string, string> = {
-    green: "bg-emerald-500",
-    yellow: "bg-amber-400",
-    red: "bg-rose-500",
-};
-const RAG_LABELS: Record<string, string> = {
-    green: "On Track",
-    yellow: "At Risk",
-    red: "Off Track",
+    title: "Project Pulse",
+    description: "Multi-format artifact engine — decks, posts, and more.",
 };
 
 const SHORTCUTS = [
@@ -80,21 +54,39 @@ const BLANK_SCAFFOLD = JSON.stringify(
 );
 
 export default async function HomePage() {
-    const rawDecks = await prisma.update.findMany({
-        orderBy: { created_at: "desc" },
-        select: {
-            id: true,
-            title: true,
-            date: true,
-            template: true,
-            rag: true,
-            status: true,
-            pinned: true,
-            archived: true,
-            created_at: true,
-            content_json: true,
-        },
-    });
+    // Fetch both artifact types in parallel
+    const [rawDecks, rawPosts] = await Promise.all([
+        prisma.update.findMany({
+            orderBy: { created_at: "desc" },
+            select: {
+                id: true,
+                title: true,
+                date: true,
+                template: true,
+                rag: true,
+                status: true,
+                pinned: true,
+                archived: true,
+                created_at: true,
+                content_json: true,
+            },
+        }),
+        prisma.post.findMany({
+            where: { archived: false },
+            orderBy: { created_at: "desc" },
+            select: {
+                id: true,
+                project: true,
+                pillar: true,
+                theme: true,
+                hook: true,
+                hook_char_count: true,
+                total_char_count: true,
+                status: true,
+                created_at: true,
+            },
+        }),
+    ]);
 
     const decks = rawDecks.map(deck => {
         let slideCount = 0;
@@ -105,20 +97,12 @@ export default async function HomePage() {
         try {
             const parsed = JSON.parse(deck.content_json);
             slideCount = Array.isArray(parsed.slides) ? parsed.slides.length : 0;
-            if (parsed.meta?.rag) {
-                ragOverride = parsed.meta.rag;
-            }
-            if (parsed.meta?.theme) {
-                theme = parsed.meta.theme;
-            }
-            if (parsed.meta?.project) {
-                project = parsed.meta.project;
-            }
-            if (parsed.meta?.eyebrow) {
-                eyebrow = parsed.meta.eyebrow;
-            }
+            if (parsed.meta?.rag) ragOverride = parsed.meta.rag;
+            if (parsed.meta?.theme) theme = parsed.meta.theme;
+            if (parsed.meta?.project) project = parsed.meta.project;
+            if (parsed.meta?.eyebrow) eyebrow = parsed.meta.eyebrow;
         } catch (e) {
-            // ignore JSON parse errors
+            // ignore
         }
         return {
             id: deck.id,
@@ -138,29 +122,25 @@ export default async function HomePage() {
     });
 
     const activeDecks = decks.filter(d => !d.archived);
-    const pinnedCount = activeDecks.filter(d => d.pinned).length;
-
     const editorHref = `/editor?prefill=${encodeURIComponent(BLANK_SCAFFOLD)}`;
 
     return (
-        <div className="max-w-5xl mx-auto w-full px-6 py-10 flex flex-col gap-12">
+        <div className="max-w-7xl mx-auto w-full px-6 py-10 flex flex-col gap-12">
 
             {/* ── Hero header ── */}
             <div className="flex items-start justify-between gap-6">
                 <div>
-                    <p className="eyebrow mb-1">Project Pulse</p>
                     <h1
                         className="font-bold text-[var(--text-primary)]"
                         style={{ fontSize: "clamp(26px, 3vw, 36px)" }}
                     >
-                        Presentation Engine
+                        Artifact Hub
                     </h1>
-                    <p className="text-[var(--text-secondary)] mt-1.5 text-sm max-w-sm">
-                        JSON-driven meeting decks. Every publish is an immutable record.
+                    <p className="text-[var(--text-secondary)] mt-1.5 text-sm">
+                        Structured content from your vault — decks, posts, and more.
                     </p>
                 </div>
 
-                {/* New Deck CTA */}
                 <Link
                     href={editorHref}
                     id="new-deck-btn"
@@ -172,26 +152,18 @@ export default async function HomePage() {
                 </Link>
             </div>
 
-            {/* ── Deck list ── */}
+            {/* ── Artifact tabs (Decks | Posts) ── */}
             <section>
-                <div className="flex items-baseline gap-3 mb-4">
-                    <h2 className="text-lg font-bold text-[var(--text-primary)]">
-                        Published Decks
-                    </h2>
-                    <span className="text-xs text-[var(--text-secondary)] font-medium">
-                        {activeDecks.length} record{activeDecks.length !== 1 ? "s" : ""}
-                    </span>
-                </div>
-
-                {decks.length === 0 ? (
-                    <EmptyState editorHref={editorHref} />
-                ) : (
-                    <DeckList decks={decks} />
-                )}
+                <ArtifactTabs
+                    decks={decks}
+                    posts={rawPosts}
+                    deckCount={activeDecks.length}
+                    postCount={rawPosts.length}
+                />
             </section>
 
-            {/* ── Bottom Navigation Cards ── */}
-            <section className="grid grid-cols-1 sm:grid-cols-1 gap-4">
+            {/* ── Bottom Navigation ── */}
+            <section className="grid grid-cols-1 gap-4">
                 <Link href="/archive" className="card p-4 flex items-center gap-4 hover:border-[var(--accent-primary)] hover:shadow-md transition-all group">
                     <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center shrink-0">
                         <Archive className="w-5 h-5 text-slate-500" />
@@ -244,29 +216,6 @@ export default async function HomePage() {
                 </div>
             </section>
 
-        </div>
-    );
-}
-
-function EmptyState({ editorHref }: { editorHref: string }) {
-    return (
-        <div className="card p-12 flex flex-col items-center text-center gap-4">
-            <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center">
-                <FileText className="w-8 h-8 text-[var(--accent-primary)]" />
-            </div>
-            <div>
-                <p className="text-lg font-bold text-[var(--text-primary)] mb-1">No decks yet</p>
-                <p className="text-sm text-[var(--text-secondary)]">
-                    Create your first presentation deck to get started.
-                </p>
-            </div>
-            <Link
-                href={editorHref}
-                className="inline-flex items-center gap-2 bg-[var(--accent-primary)] text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-[var(--accent-primary-bg)] transition-colors"
-            >
-                <PlusCircle className="w-4 h-4" />
-                New Deck
-            </Link>
         </div>
     );
 }

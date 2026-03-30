@@ -27,3 +27,23 @@ model Update {
   archived       Boolean  @default(false)
   created_at     DateTime @default(now())
 }
+
+model Post {
+  id              String   @id @default(cuid())
+  project         String
+  pillar          String
+  theme           String
+  hook            String
+  body            String
+  cta             String?
+  hashtags        String   @default("[]")
+  hook_char_count Int
+  total_char_count Int
+  voice_version   String   @default("1.0")
+  content_json    String
+  source_raw      String
+  platform        String   @default("LinkedIn")
+  status          String   @default("Draft")
+  archived        Boolean  @default(false)
+  created_at      DateTime @default(now())
+}
