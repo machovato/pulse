@@ -10,7 +10,7 @@ Pulse is the last mile. Run a skill, get the artifact.
 
 ```
 /pulse-status my-project     → slide deck appears in the browser
-/linkedin my-project         → LinkedIn post, ready to publish
+/pulse-linkedin my-project   → LinkedIn post, ready to publish
 ```
 
 Your vault data becomes navigable slide decks, structured social posts, and more — with speaker notes, keyboard shortcuts, themed layouts, and zero copy-paste. With the MCP server enabled, artifacts just *appear*.
@@ -204,7 +204,7 @@ Each skill reads your project files and generates a specific artifact. Think of 
 
 | Skill | Use Case | Output | Leash |
 |---|---|---|---|
-| `/linkedin` | Share a project insight on LinkedIn | Structured post with hook, body, CTA, hashtags | Medium — extracts real insights, filtered through a voice file that protects your authentic writing style |
+| `/pulse-linkedin` | Share a project insight on LinkedIn | Structured post with hook, body, CTA, hashtags | Medium — extracts real insights, filtered through a voice file that protects your authentic writing style |
 
 **"Leash"** is how much interpretation a skill is allowed. Short leash = stick tightly to the source files. Long leash = synthesize across them and build a story. Every skill follows the cardinal rule: **no invention.** If the data isn't there, the slide says [MISSING], not something that sounds plausible. If the insight isn't genuinely interesting, the LinkedIn skill tells you instead of posting anyway.
 
@@ -212,10 +212,10 @@ Each skill reads your project files and generates a specific artifact. Think of 
 
 ## Newly Added: The LinkedIn Skill
 
-Pulse isn't just for decks. The `/linkedin` skill turns any project folder into a publish-ready LinkedIn post — grounded in what you actually built, not what you remember to summarize.
+Pulse isn't just for decks. The `/pulse-linkedin` skill turns any project folder into a publish-ready LinkedIn post — grounded in what you actually built, not what you remember to summarize.
 
 ```
-/linkedin Pulse
+/pulse-linkedin Pulse
 ```
 
 The skill reads your project files, extracts 3–5 content themes with hook seeds and pillar mapping, waits for you to pick one, then runs a three-pass pipeline against your personal voice profile. The result pushes to Pulse via MCP and renders at `/posts/[id]`.
