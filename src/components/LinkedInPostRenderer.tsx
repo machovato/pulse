@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { updatePost } from "@/app/actions";
+import { VoiceSetupDrawer } from "./VoiceSetupDrawer";
 
 // ─── Unicode Formatting ────────────────────────────────────────────────────────
 
@@ -314,6 +315,8 @@ export function LinkedInPostRenderer({ post }: { post: LinkedInPostData }) {
 
                 {/* Bottom bar — full width */}
                 <div className="flex items-center gap-3 px-4 py-3 border-t border-gray-100">
+                    <VoiceSetupDrawer />
+                    
                     <button
                         onClick={handleCopy}
                         className={cn(
