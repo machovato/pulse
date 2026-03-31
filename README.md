@@ -1,18 +1,19 @@
 # Pulse
 
-**A local content engine for AI-powered personal operating systems.**  
-Vault data → decks, LinkedIn posts, and more. Run a skill, get an artifact.
+**The publishing layer for your personal OS.**
 
-You've automated your projects, tasks, and tracking in a markdown vault using tools like [Dex](https://github.com/davekilleen/Dex) or [Claude Chief of Staff](https://github.com/mimurchison/claude-chief-of-staff). But when it's time to present — or publish — you're still copying and pasting.
+Your vault captures the work. Pulse transforms it into whatever the moment requires.
 
-Pulse is the last mile. Run a skill, get an artifact.
+You've automated your projects, tasks, and tracking in a markdown vault using tools like [Dex](https://github.com/davekilleen/Dex) or [Claude Chief of Staff](https://github.com/mimurchison/claude-chief-of-staff). But when it's time to share the work — a status deck for your VP, a standup for your team, a LinkedIn post from a project insight — you're still copying and pasting into other tools.
+
+Pulse is the last mile. Run a skill, get the artifact.
 
 ```
-/pulse-status my-project
-/linkedin my-project
+/pulse-status my-project     → slide deck appears in the browser
+/linkedin my-project         → LinkedIn post, ready to publish
 ```
 
-Your vault data becomes a navigable, animated slide deck — or a publish-ready LinkedIn post — in the browser. With the MCP server enabled, the artifact just *appears*. No copy-paste. No switching windows.
+Your vault data becomes navigable slide decks, structured social posts, and more — with speaker notes, keyboard shortcuts, themed layouts, and zero copy-paste. With the MCP server enabled, artifacts just *appear*.
 
 ![Pulse Demo](docs/Pulse-Generator.gif)
 
@@ -24,10 +25,11 @@ Your vault data becomes a navigable, animated slide deck — or a publish-ready 
 
 - [Who This Is For](#who-this-is-for)
 - [What You Get](#what-you-get)
+- [Before You Install](#before-you-install)
 - [Quick Start for Dex Users](#quick-start-for-dex-users-60-seconds)
 - [Guided Install](#guided-install)
 - [MCP — Automatic Artifact Delivery](#mcp--automatic-artifact-delivery)
-- [The Four Skills](#the-four-skills)
+- [The Skills](#the-skills)
 - [The LinkedIn Skill](#the-linkedin-skill)
 - [Themes](#themes)
 - [MISSING Slides](#missing-slides)
@@ -79,10 +81,32 @@ Under the hood:
 
 - **4 deck skills** — status, strategy, standup, kickoff
 - **1 LinkedIn skill** — project extraction, voice-aware writing, 210-char hook constraint
+- **2 artifact types** — slide decks and LinkedIn posts, with more on the way
 - **3 themes** — Blue, Obsidian, Ember
 - **14 slide types** — hero, context, problem, evidence, framework, roadmap, grid, pipeline, timeline, kpis, blockers, and more
 - **MCP server** — skills push artifacts directly to Pulse, no clipboard involved
 - **MISSING slides** — when data is absent, Pulse tells you what to add instead of making something up
+
+---
+
+## Before You Install
+
+Pulse has two requirements that aren't obvious from the repo:
+
+**1. You need a vault.** Pulse reads your project files to generate artifacts. Without a vault — a folder of markdown files managed through Claude Code — there's nothing to transform. If you don't have one yet, start with [Dex](https://github.com/davekilleen/Dex) and come back.
+
+**2. Pulse runs in its own terminal.** Pulse is a local web app (`localhost:3000`). It needs to be running at the same time as Claude Code for MCP artifact delivery to work. That means two terminals:
+
+```
+Your work happens here              Leave this running
+────────────────────────             ─────────────────
+Claude Code                          Pulse
+/pulse-status my-project             npm run dev
+       ↓                                ↑
+       └── skill pushes artifact ──→ MCP server receives
+```
+
+If Pulse isn't running when a skill fires, the JSON saves to your project folder as a fallback. No work is lost — start Pulse later and re-push.
 
 ---
 
@@ -118,17 +142,19 @@ If the quick start above doesn't match your setup — or you'd rather have a gui
 
 > You are the Pulse Repo Concierge — my friendly, patient guide who installs Pulse step-by-step like a friend sitting next to me.
 >
-> Pulse turns my project files into beautiful slide decks that appear in the browser. Repo: https://github.com/machovato/pulse
+> Pulse is the publishing layer for a personal OS. It transforms project vault data into slide decks, LinkedIn posts, and other artifacts that appear in the browser. Repo: https://github.com/machovato/pulse
 >
 > Rules:
 > - Start by asking what OS I'm on (Mac, Windows, or Linux)
 > - Go ONE STEP AT A TIME. Never list all steps at once.
-> - Check for Git, Node.js, and Python first. Help me install anything missing.
+> - Before anything else, ask: "Do you have a markdown vault — a folder of project files managed through Claude Code or Cursor?" If no, direct them to set up Dex first (https://github.com/davekilleen/Dex) and come back. Don't proceed without a vault.
+> - Check for Git, Node.js, and Python first. If Python is missing, install it before proceeding — don't skip it. It's required for build tools on some systems.
 > - Then guide: clone → npm install → npm run setup → npm run dev
-> - During setup, ask if I want the MCP server (automatic deck delivery, no copy-paste). Explain it in plain English.
+> - Before telling the user to run `npm run setup`, explain what MCP is in plain English (automatic artifact delivery, no copy-paste) and ask if they want it. Don't let them hit the MCP prompt in setup without context.
 > - After every command, ask "Did that work? Paste any error if not" and fix it before continuing.
+> - When `npm run dev` succeeds, explicitly say: "Keep this terminal open. Pulse needs to stay running at localhost:3000 while you use it. Open a second terminal for Claude Code." Clarify that skills are typed in Claude Code's chat interface, not in the terminal directly — the second terminal just keeps Claude Code running.
 > - If I skip MCP, show me how to use Pulse with manual copy-paste instead.
-> - End by verifying: demo decks visible at localhost:3000, and if MCP is set up, one skill delivers a deck.
+> - End by verifying: demo decks visible at localhost:3000, and if MCP is set up, one skill delivers an artifact with both terminals running.
 >
 > Begin!
 
@@ -158,13 +184,15 @@ The MCP server is set up automatically during `npm run setup` if you provide you
 pulse · ✅ connected
 ```
 
-Pulse must be running (`npm run dev`) for delivery to work. If Pulse isn't running, the skill saves the JSON file as a fallback.
+Pulse must be running in its own terminal (`npm run dev`) for delivery to work. If Pulse isn't running, the skill saves the JSON file as a fallback. See [How It Runs](#how-it-runs--two-terminals) for the two-terminal setup.
 
 ---
 
-## The Four Skills
+## The Skills
 
-Each skill reads your project files and generates a specific kind of deck. Think of them like lenses — same project, different angle depending on the audience.
+Each skill reads your project files and generates a specific artifact. Think of them like lenses — same project, different output depending on who's in the room and what the moment requires.
+
+### Deck Skills
 
 | Skill | Use Case | Theme | Leash |
 |---|---|---|---|
@@ -173,7 +201,13 @@ Each skill reads your project files and generates a specific kind of deck. Think
 | `/pulse-standup` | Daily standup | Blue | Short — yesterday, today, blockers. That's it. |
 | `/pulse-kickoff` | Project launch | Ember | Shortest — charter-bound, nothing beyond the doc |
 
-**"Leash"** is how much interpretation a skill is allowed. Short leash = stick tightly to the source files. Long leash = synthesize across them and build a story. Every skill follows the cardinal rule: **no invention.** If the data isn't there, the slide says [MISSING], not something that sounds plausible.
+### Content Skills
+
+| Skill | Use Case | Output | Leash |
+|---|---|---|---|
+| `/linkedin` | Share a project insight on LinkedIn | Structured post with hook, body, CTA, hashtags | Medium — extracts real insights, filtered through a voice file that protects your authentic writing style |
+
+**"Leash"** is how much interpretation a skill is allowed. Short leash = stick tightly to the source files. Long leash = synthesize across them and build a story. Every skill follows the cardinal rule: **no invention.** If the data isn't there, the slide says [MISSING], not something that sounds plausible. If the insight isn't genuinely interesting, the LinkedIn skill tells you instead of posting anyway.
 
 ---
 
@@ -231,7 +265,7 @@ When a skill can't find data for a slide, it doesn't guess. It shows a **MISSING
 >
 > No sprint dates or milestones found in project files.
 >
-> 💡 Add a timeline or sprint schedule to your project folder to populate this slide.
+> Add a timeline or sprint schedule to your project folder to populate this slide.
 
 **The output teaches the input.** You run the skill, see what's missing, improve your vault, run it again. Over time, your project documentation gets better because Pulse keeps gently pointing at the gaps.
 
@@ -254,12 +288,13 @@ When a skill can't find data for a slide, it doesn't guess. It shows a **MISSING
 
 ## Roadmap
 
-### Shipped (v1)
+### Shipped
 
-- Four skills: status, strategy, standup, kickoff
+- Five skills: status, strategy, standup, kickoff, LinkedIn posts
+- Two artifact types: slide decks and LinkedIn posts
 - Three themes: Blue, Obsidian, Ember
 - 14 slide types with Zod validation
-- MCP server for zero-click deck delivery
+- MCP server for zero-click artifact delivery
 - MISSING slide placeholders
 - Inline editor with keyboard shortcuts
 - Speaker notes, density toggle, print/export
@@ -279,6 +314,7 @@ When a skill can't find data for a slide, it doesn't guess. It shows a **MISSING
 - **Retrospective skill** — went well, improve, action items
 - **PDF export** — direct generation without print dialog
 - **Image generation** — optional AI-generated header image as part of the LinkedIn skill pipeline
+- **New surfaces** — if your vault has the data and the moment calls for it, Pulse should render it. More formats ahead.
 
 ---
 
@@ -286,7 +322,7 @@ When a skill can't find data for a slide, it doesn't guess. It shows a **MISSING
 
 Pulse is open source and MIT licensed.
 
-**Prompters & workflow designers** → build new **skills**. See the `skills/` folder for the pattern.
+**Prompters & workflow designers** → build new **skills**. See the `skills/` folder for the pattern. Deck skills and content skills follow the same structure.
 
 **Want the easiest first contribution?** → add a **theme**. Drop a CSS file in `public/themes/`. See `docs/THEME-PLAYBOOK.md`.
 
@@ -302,7 +338,7 @@ Pulse is open source and MIT licensed.
 | [Claude Chief of Staff](https://github.com/mimurchison/claude-chief-of-staff) | Mike Murchison | CEO-oriented AI OS with inbox triage and relationship CRM |
 | [AI Chief of Staff](https://github.com/tomochang/ai-chief-of-staff) | Tomo Chang | VP-oriented AI OS with multi-channel triage |
 
-Pulse is the presentation and publishing layer these systems don't have.
+Pulse is the publishing layer these systems don't have.
 
 ---
 
