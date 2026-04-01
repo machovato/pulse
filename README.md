@@ -68,14 +68,13 @@ Get Dex running first. Once you have projects in your vault and Claude Code on y
 
 Pulse ships ready to explore. On first launch, you'll see four **Atlas** demo decks and one **Atlas LinkedIn post** — a single fictional project moving through its full lifecycle:
 
-| Deck | Skill | Theme | The Moment |
-|---|---|---|---|
-| Strategy Briefing | `/pulse-strategy` | Obsidian (dark) | Pitching the VP on why Atlas needs to happen |
-| Project Kickoff | `/pulse-kickoff` | Ember (warm) | Aligning the execution team after approval |
-| Sprint 2 Status | `/pulse-status` | Blue (light) | Week 5 — migration on track, review sessions slipping |
-| Daily Standup | `/pulse-standup` | Blue (light) | Day 8 — clearing the review backlog before it compounds |
-
-You'll also find one **Atlas LinkedIn post** — the kind of insight someone on the team might share after seeing the Week 5 results. It renders in the LinkedIn post editor at `/posts/[id]`.
+| Skill | Artifact | The Output |
+|---|---|---|
+| `/pulse-strategy` | Deck | Obsidian-themed briefing — pitching the VP on why Atlas needs to happen |
+| `/pulse-kickoff` | Deck | Ember-themed kickoff — aligning the execution team after approval |
+| `/pulse-status` | Deck | Blue-themed status — Week 5, migration on track, review sessions slipping |
+| `/pulse-standup` | Deck | Blue-themed standup — Day 8, clearing the review backlog before it compounds |
+| `/pulse-linkedin` | LinkedIn Post | A post sharing the Week 5 documentation results with your network |
 
 Click through all five. You'll see how the same project data tells a different story depending on who's in the room and what the format demands. You don't need a vault to explore the demos — just install Pulse and browse.
 
@@ -193,20 +192,13 @@ Pulse must be running in its own terminal (`npm run dev`) for delivery to work. 
 
 Each skill reads your project files and generates a specific artifact. Think of them like lenses — same project, different output depending on who's in the room and what the moment requires.
 
-### Deck Skills
-
-| Skill | Use Case | Theme | Leash |
-|---|---|---|---|
-| `/pulse-status` | Weekly project update | Blue | Medium — cites everything, no editorial spin |
-| `/pulse-strategy` | Leadership briefing | Obsidian | Long — synthesizes patterns, builds a narrative |
-| `/pulse-standup` | Daily standup | Blue | Short — yesterday, today, blockers. That's it. |
-| `/pulse-kickoff` | Project launch | Ember | Shortest — charter-bound, nothing beyond the doc |
-
-### Content Skills
-
-| Skill | Use Case | Output | Leash |
-|---|---|---|---|
-| `/pulse-linkedin` | Share a project insight on LinkedIn | Structured post with hook, body, CTA, hashtags | Medium — extracts real insights, filtered through a voice file that protects your authentic writing style |
+| Skill | Use Case | Leash |
+|---|---|---|
+| `/pulse-status` | Weekly project update | Medium — cites everything, no editorial spin |
+| `/pulse-strategy` | Leadership briefing | Long — synthesizes patterns, builds a narrative |
+| `/pulse-standup` | Daily standup | Short — yesterday, today, blockers. That's it. |
+| `/pulse-kickoff` | Project launch | Shortest — charter-bound, nothing beyond the doc |
+| `/pulse-linkedin` | Share a project insight on LinkedIn | Medium — extracts real insights, filtered through your voice file |
 
 **"Leash"** is how much interpretation a skill is allowed. Short leash = stick tightly to the source files. Long leash = synthesize across them and build a story. Every skill follows the cardinal rule: **no invention.** If the data isn't there, the slide says [MISSING], not something that sounds plausible. If the insight isn't genuinely interesting, the LinkedIn skill tells you instead of posting anyway.
 
@@ -260,7 +252,7 @@ When a skill can't find data for a slide, it doesn't guess. It shows a **MISSING
 Pulse isn't just for decks. The `/pulse-linkedin` skill turns any project folder into a publish-ready LinkedIn post — grounded in what you actually built, not what you remember to summarize.
 
 ```
-/pulse-linkedin Pulse
+/pulse-linkedin my-project
 ```
 
 The skill reads your project files, extracts 3–5 content themes with hook seeds and pillar mapping, waits for you to pick one, then runs a three-pass pipeline against your personal voice profile. The result pushes to Pulse via MCP and renders at `/posts/[id]`.
@@ -274,7 +266,7 @@ The skill reads your project files, extracts 3–5 content themes with hook seed
 - **Post memory** — tracks previously used angles in `published.md` to prevent theme repetition across posts.
 - **Relevancy gate** — runs silently before writing. If the selected angle is too navel-gazing for your audience, the skill redirects before investing in a draft.
 
-To use the LinkedIn skill, you need two files in your vault: `linkedin-voice.md` (your writing examples and anti-patterns) and `published.md` (an empty log the skill appends to after every run). See `skills/pulse-linkedin/SKILL.md` for the full skill and setup instructions.
+To use the LinkedIn skill, you need two files in your vault: `linkedin-voice.md` (your writing examples and anti-patterns) and `published.md` (an empty log the skill appends to after every run). Both are installed automatically during setup. To customize your voice file, click **"Customize your voice"** in the post editor — it gives you a prompt that walks you through a 5-minute interview in Claude Code. See `skills/pulse-linkedin/SKILL.md` for the full skill reference.
 
 ---
 
@@ -333,3 +325,4 @@ Built by Tony Melendez. Inspired by [Dave Killeen's Dex](https://github.com/dave
 Designed in Claude Chat. Built with Claude Code and Gemini. Powered by Next.js, Framer Motion, Prisma, and Zod.
 
 Released under the MIT License. See `LICENSE` for details.
+  
