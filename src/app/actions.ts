@@ -138,6 +138,40 @@ export async function togglePinDeck(id: string, pinned: boolean): Promise<{ succ
     }
 }
 
+// ─── Post Actions ──────────────────────────────────────────────────────────────
+
+export async function updatePost(
+    id: string,
+    data: { hook?: string; body?: string; cta?: string | null; hashtags?: string[]; status?: string }
+): Promise<{ success: boolean; error?: string }> {
+    try {
+        const updateData: Record<string, unknown> = {};
+        if (data.hook !== undefined) updateData.hook = data.hook;
+        if (data.body !== undefined) updateData.body = data.body;
+        if (data.cta !== undefined) updateData.cta = data.cta;
+        if (data.hashtags !== undefined) updateData.hashtags = JSON.stringify(data.hashtags);
+        if (data.status !== undefined) updateData.status = data.status;
+
+        if (data.hook !== undefined || data.body !== undefined) {
+            const fullText = [data.hook || "", data.body || "", data.cta || ""].join("\n\n");
+            updateData.hook_char_count = Array.from(data.hook || "").length;
+            updateData.total_char_count = Array.from(fullText).length;
+        }
+
+        await prisma.post.update({
+            where: { id },
+            data: updateData,
+        });
+
+        revalidatePath("/");
+        revalidatePath(`/posts/${id}`);
+        return { success: true };
+    } catch (err) {
+        console.error("Update post error:", err);
+        return { success: false, error: "Failed to update post." };
+    }
+}
+
 export async function archiveDeck(id: string, archived: boolean): Promise<{ success: boolean; error?: string }> {
     try {
         await prisma.update.update({
@@ -149,66 +183,5 @@ export async function archiveDeck(id: string, archived: boolean): Promise<{ succ
     } catch (err) {
         console.error("Archive error:", err);
         return { success: false, error: "Failed to archive deck." };
-    }
-}
-
-export async function updatePost(
-    id: string,
-    data: { hook: string; body: string; cta: string | null; hashtags: string[] }
-): Promise<{ success: boolean; error?: string }> {
-    try {
-        const hashtagLine = data.hashtags
-            .map((t) => (t.startsWith("#") ? t : `#${t}`))
-            .join(" ");
-        const hookCharCount = Array.from(data.hook).length;
-        const totalCharCount =
-            Array.from(data.hook).length +
-            Array.from(data.body).length +
-            (data.cta ? Array.from(data.cta).length : 0) +
-            Array.from(hashtagLine).length;
-
-        await prisma.post.update({
-            where: { id },
-            data: {
-                hook: data.hook,
-                body: data.body,
-                cta: data.cta || null,
-                hashtags: JSON.stringify(data.hashtags),
-                hook_char_count: hookCharCount,
-                total_char_count: totalCharCount,
-            },
-        });
-
-        revalidatePath("/");
-        revalidatePath("/posts");
-        revalidatePath(`/posts/${id}`);
-        return { success: true };
-    } catch (err) {
-        console.error("Update post error:", err);
-        return { success: false, error: "Failed to update post." };
-    }
-}
-
-export async function archivePost(id: string): Promise<{ success: boolean; error?: string }> {
-    try {
-        await prisma.post.update({ where: { id }, data: { archived: true } });
-        revalidatePath("/");
-        revalidatePath("/posts");
-        return { success: true };
-    } catch (err) {
-        console.error("Archive post error:", err);
-        return { success: false, error: "Failed to archive post." };
-    }
-}
-
-export async function deletePost(id: string): Promise<{ success: boolean; error?: string }> {
-    try {
-        await prisma.post.delete({ where: { id } });
-        revalidatePath("/");
-        revalidatePath("/posts");
-        return { success: true };
-    } catch (err) {
-        console.error("Delete post error:", err);
-        return { success: false, error: "Failed to delete post." };
     }
 }

@@ -30,10 +30,10 @@ Your vault data becomes navigable slide decks, structured social posts, and more
 - [Guided Install](#guided-install)
 - [MCP — Automatic Artifact Delivery](#mcp--automatic-artifact-delivery)
 - [The Skills](#the-skills)
-- [Newly Added: The LinkedIn Skill](#newly-added-the-linkedin-skill)
 - [Themes](#themes)
 - [MISSING Slides](#missing-slides)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
+- [The LinkedIn Skill](#the-linkedin-skill)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [Related Projects](#related-projects)
@@ -66,7 +66,7 @@ Get Dex running first. Once you have projects in your vault and Claude Code on y
 
 ## What You Get
 
-Pulse ships ready to explore. On first launch, you'll see four **Atlas** demo decks — a single fictional project moving through its full lifecycle:
+Pulse ships ready to explore. On first launch, you'll see four **Atlas** demo decks and one **Atlas LinkedIn post** — a single fictional project moving through its full lifecycle:
 
 | Deck | Skill | Theme | The Moment |
 |---|---|---|---|
@@ -75,7 +75,9 @@ Pulse ships ready to explore. On first launch, you'll see four **Atlas** demo de
 | Sprint 2 Status | `/pulse-status` | Blue (light) | Week 5 — migration on track, review sessions slipping |
 | Daily Standup | `/pulse-standup` | Blue (light) | Day 8 — clearing the review backlog before it compounds |
 
-Click through all four. You'll see how the same project data tells a different story depending on who's in the room. You don't need a vault to explore the demos — just install Pulse and browse.
+You'll also find one **Atlas LinkedIn post** — the kind of insight someone on the team might share after seeing the Week 5 results. It renders in the LinkedIn post editor at `/posts/[id]`.
+
+Click through all five. You'll see how the same project data tells a different story depending on who's in the room and what the format demands. You don't need a vault to explore the demos — just install Pulse and browse.
 
 Under the hood:
 
@@ -121,7 +123,7 @@ npm run setup    # point it at your vault when prompted
 npm run dev
 ```
 
-Open `http://localhost:3000`. Four Atlas demo decks are ready to explore.
+Open `http://localhost:3000`. Four Atlas demo decks and one LinkedIn post are ready to explore.
 
 If you provide your vault path during setup, Pulse copies the skills and registers the MCP server. Restart Claude Code, then:
 
@@ -210,29 +212,6 @@ Each skill reads your project files and generates a specific artifact. Think of 
 
 ---
 
-## Newly Added: The LinkedIn Skill
-
-Pulse isn't just for decks. The `/pulse-linkedin` skill turns any project folder into a publish-ready LinkedIn post — grounded in what you actually built, not what you remember to summarize.
-
-```
-/pulse-linkedin Pulse
-```
-
-The skill reads your project files, extracts 3–5 content themes with hook seeds and pillar mapping, waits for you to pick one, then runs a three-pass pipeline against your personal voice profile. The result pushes to Pulse via MCP and renders at `/posts/[id]`.
-
-![LinkedIn Post Renderer](docs/pulse-linkedin-renderer.png)
-
-**Key design decisions:**
-
-- **Hook-first** — the opening line is written for the mobile fold constraint, not trimmed to fit after the fact. If the hook doesn't earn the scroll, the rest doesn't matter.
-- **Voice file as tiebreaker** — your writing examples override LinkedIn best practices. The post should sound like you, not like a thought leader template.
-- **Post memory** — tracks previously used angles in `published.md` to prevent theme repetition across posts.
-- **Relevancy gate** — runs silently before writing. If the selected angle is too navel-gazing for your audience, the skill redirects before investing in a draft.
-
-To use the LinkedIn skill, you need two files in your vault: `linkedin-voice.md` (your writing examples and anti-patterns) and `published.md` (an empty log the skill appends to after every run). See `skills/pulse-linkedin/SKILL.md` for the full skill and setup instructions.
-
----
-
 ## Themes
 
 Three built-in themes. Each one sets a different tone.
@@ -276,6 +255,29 @@ When a skill can't find data for a slide, it doesn't guess. It shows a **MISSING
 
 ---
 
+## The LinkedIn Skill
+
+Pulse isn't just for decks. The `/pulse-linkedin` skill turns any project folder into a publish-ready LinkedIn post — grounded in what you actually built, not what you remember to summarize.
+
+```
+/pulse-linkedin Pulse
+```
+
+The skill reads your project files, extracts 3–5 content themes with hook seeds and pillar mapping, waits for you to pick one, then runs a three-pass pipeline against your personal voice profile. The result pushes to Pulse via MCP and renders at `/posts/[id]`.
+
+![LinkedIn Post Renderer](docs/Pulse-Generator-Posts.gif)
+
+**Key design decisions:**
+
+- **Hook-first** — the opening line is written for the mobile fold constraint, not trimmed to fit after the fact. If the hook doesn't earn the scroll, the rest doesn't matter.
+- **Voice file as tiebreaker** — your writing examples override LinkedIn best practices. The post should sound like you, not like a thought leader template.
+- **Post memory** — tracks previously used angles in `published.md` to prevent theme repetition across posts.
+- **Relevancy gate** — runs silently before writing. If the selected angle is too navel-gazing for your audience, the skill redirects before investing in a draft.
+
+To use the LinkedIn skill, you need two files in your vault: `linkedin-voice.md` (your writing examples and anti-patterns) and `published.md` (an empty log the skill appends to after every run). See `skills/pulse-linkedin/SKILL.md` for the full skill and setup instructions.
+
+---
+
 ## Roadmap
 
 ### Shipped
@@ -288,7 +290,7 @@ When a skill can't find data for a slide, it doesn't guess. It shows a **MISSING
 - MISSING slide placeholders
 - Inline editor with keyboard shortcuts
 - Speaker notes, density toggle, print/export
-- Atlas demo decks showing a full project lifecycle
+- Atlas demo artifacts (4 decks + 1 LinkedIn post) showing a full project lifecycle
 
 ### Planned
 

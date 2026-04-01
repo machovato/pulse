@@ -819,15 +819,39 @@ const deck4 = {
   ]
 };
 
+// ─── Seeded LinkedIn Post ────────────────────────────────────────────────────
+// Same fictional Atlas project, but as a LinkedIn post — the kind of insight
+// someone on the team might share after the Week 5 status meeting.
+
+const post1 = {
+    project: "Atlas",
+    pillar: "knowledge-ops",
+    theme: "constraints-over-instructions",
+    hook: "We told 200 employees to 'just check the docs.' Then we measured what happened.",
+    body: `For three years, our documentation lived in six systems. Confluence for engineering. SharePoint for operations. Google Drive for "everything else." Slack pins for the stuff nobody could find anywhere.
+
+Everyone knew it was a problem. Nobody could quantify it.
+
+So we did. 5.2 hours per employee per week — spent hunting, cross-referencing, and rebuilding context that already existed somewhere. Across 200 people, that's 52,000 hours a year. Not on complex problems. On finding things.
+
+The fix wasn't a better search engine. It was a single system with enforced structure. When the documentation has one address and one format, people stop building personal workarounds. The workarounds were the real cost — not the tools.
+
+Three months into Atlas, support escalations tied to documentation dropped 34%. Not because we wrote better docs. Because people could find the ones we already had.`,
+    cta: "What's the most expensive 'everybody knows' problem in your org?",
+    hashtags: ["#KnowledgeManagement", "#Operations", "#Documentation"],
+    hook_char_count: 78,
+    total_char_count: 893,
+    voice_version: "1.0",
+    status: "Draft",
+};
+
 const decks = [deck4, deck3, deck2, deck1]; // Reverse chronological for seeding
 
 async function main() {
-    console.log("🌱 Seeding database with 4 example Atlas decks…");
+    console.log("🌱 Seeding database with 4 example Atlas decks and 1 LinkedIn post…");
 
     let count = 0;
     for (const deck of decks) {
-        // Find existing or create (upsert by title to be safe, though title is not unique in schema?)
-        // The previous code used create, so let's stick to create since it's meant to be run on empty DB
         await prisma.update.create({
             data: {
                 title: deck.meta.title,
@@ -843,7 +867,28 @@ async function main() {
         console.log(`✅ Seeded: ${deck.meta.title} (${deck.meta.template} template)`);
     }
 
-    console.log(`🎉 Seed complete. ${count} decks created. Visit /history to see your decks.`);
+    // Seed the Atlas LinkedIn post
+    const fullContent = [post1.hook, post1.body, post1.cta, post1.hashtags.join(" ")].join("\n\n");
+    await prisma.post.create({
+        data: {
+            project: post1.project,
+            pillar: post1.pillar,
+            theme: post1.theme,
+            hook: post1.hook,
+            body: post1.body,
+            cta: post1.cta,
+            hashtags: JSON.stringify(post1.hashtags),
+            hook_char_count: post1.hook_char_count,
+            total_char_count: post1.total_char_count,
+            voice_version: post1.voice_version,
+            content_json: JSON.stringify(post1),
+            source_raw: JSON.stringify(post1, null, 2),
+            status: post1.status,
+        },
+    });
+    console.log(`✅ Seeded: Atlas LinkedIn post (${post1.theme})`);
+
+    console.log(`🎉 Seed complete. ${count} decks and 1 post created. Visit /history to see your artifacts.`);
 }
 
 main()

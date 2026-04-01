@@ -21,6 +21,25 @@ function toBold(text: string): string {
     }).join("");
 }
 
+function fromBold(text: string): string {
+    return Array.from(text).map((c) => {
+        const code = c.codePointAt(0) || 0;
+        if (code >= 0x1d5d4 && code <= 0x1d5ed) return String.fromCharCode(code - 0x1d5d4 + 65);
+        if (code >= 0x1d5ee && code <= 0x1d607) return String.fromCharCode(code - 0x1d5ee + 97);
+        if (code >= 0x1d7ec && code <= 0x1d7f5) return String.fromCharCode(code - 0x1d7ec + 48);
+        return c;
+    }).join("");
+}
+
+function isBold(text: string): boolean {
+    const letters = Array.from(text).filter((c) => /\S/.test(c) && c !== "\u0332" && c !== "\u0336");
+    if (letters.length === 0) return false;
+    return letters.every((c) => {
+        const code = c.codePointAt(0) || 0;
+        return (code >= 0x1d5d4 && code <= 0x1d5ed) || (code >= 0x1d5ee && code <= 0x1d607) || (code >= 0x1d7ec && code <= 0x1d7f5) || !/[a-zA-Z0-9]/.test(c);
+    });
+}
+
 function toItalic(text: string): string {
     return Array.from(text).map((c) => {
         const code = c.charCodeAt(0);
@@ -30,12 +49,50 @@ function toItalic(text: string): string {
     }).join("");
 }
 
+function fromItalic(text: string): string {
+    return Array.from(text).map((c) => {
+        const code = c.codePointAt(0) || 0;
+        if (code >= 0x1d608 && code <= 0x1d621) return String.fromCharCode(code - 0x1d608 + 65);
+        if (code >= 0x1d622 && code <= 0x1d63b) return String.fromCharCode(code - 0x1d622 + 97);
+        return c;
+    }).join("");
+}
+
+function isItalic(text: string): boolean {
+    const letters = Array.from(text).filter((c) => /\S/.test(c) && c !== "\u0332" && c !== "\u0336");
+    if (letters.length === 0) return false;
+    return letters.every((c) => {
+        const code = c.codePointAt(0) || 0;
+        return (code >= 0x1d608 && code <= 0x1d621) || (code >= 0x1d622 && code <= 0x1d63b) || !/[a-zA-Z]/.test(c);
+    });
+}
+
 function toUnderline(text: string): string {
     return Array.from(text).map((c) => (c === " " || c === "\n" ? c : c + "\u0332")).join("");
 }
 
+function fromUnderline(text: string): string {
+    return text.replace(/\u0332/g, "");
+}
+
+function isUnderlined(text: string): boolean {
+    const chars = Array.from(text).filter((c) => c !== " " && c !== "\n");
+    if (chars.length === 0) return false;
+    return text.includes("\u0332");
+}
+
 function toStrikethrough(text: string): string {
     return Array.from(text).map((c) => (c === " " || c === "\n" ? c : c + "\u0336")).join("");
+}
+
+function fromStrikethrough(text: string): string {
+    return text.replace(/\u0336/g, "");
+}
+
+function isStrikethrough(text: string): boolean {
+    const chars = Array.from(text).filter((c) => c !== " " && c !== "\n");
+    if (chars.length === 0) return false;
+    return text.includes("\u0336");
 }
 
 // ─── Hook detection ─────────────────────────────────────────────────────────────
@@ -98,6 +155,7 @@ export function LinkedInPostRenderer({ post }: { post: LinkedInPostData }) {
     const [saved, setSaved] = useState(false);
     const [copied, setCopied] = useState(false);
     const [dirty, setDirty] = useState(false);
+    const [status, setStatus] = useState(post.status);
 
     const contentRef = useRef<HTMLTextAreaElement>(null);
 
@@ -124,14 +182,19 @@ export function LinkedInPostRenderer({ post }: { post: LinkedInPostData }) {
         return parts.join("\n\n");
     }, [content]);
 
-    const applyFormat = useCallback((transform: (text: string) => string) => {
+    const applyFormat = useCallback((
+        transform: (text: string) => string,
+        check: (text: string) => boolean,
+        reverse: (text: string) => string
+    ) => {
         const textarea = contentRef.current;
         if (!textarea) return;
         const start = textarea.selectionStart;
         const end = textarea.selectionEnd;
         if (start === end) return;
         const value = textarea.value;
-        const transformed = transform(value.substring(start, end));
+        const selected = value.substring(start, end);
+        const transformed = check(selected) ? reverse(selected) : transform(selected);
         setContent(value.substring(0, start) + transformed + value.substring(end));
         setDirty(true);
         requestAnimationFrame(() => {
@@ -162,6 +225,12 @@ export function LinkedInPostRenderer({ post }: { post: LinkedInPostData }) {
         setTimeout(() => setCopied(false), 2000);
     };
 
+    const handleToggleStatus = async () => {
+        const newStatus = status === "Draft" ? "Published" : "Draft";
+        const result = await updatePost(post.id, { status: newStatus });
+        if (result.success) setStatus(newStatus);
+    };
+
     return (
         <div className="w-full">
             {/* Meta bar — outside the unified box */}
@@ -172,12 +241,18 @@ export function LinkedInPostRenderer({ post }: { post: LinkedInPostData }) {
                 <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] bg-[var(--surface-secondary)] px-3 py-1.5 rounded-full">
                     <Hash className="w-3 h-3" />{post.pillar}
                 </span>
-                <span className={cn(
-                    "ml-auto text-xs font-semibold px-2.5 py-1 rounded-full",
-                    post.status === "Draft" ? "bg-amber-100 text-amber-700" : "bg-emerald-100 text-emerald-700"
-                )}>
-                    {post.status}
-                </span>
+                <button
+                    onClick={handleToggleStatus}
+                    className={cn(
+                        "ml-auto text-xs font-semibold px-2.5 py-1 rounded-full cursor-pointer transition-colors",
+                        status === "Draft"
+                            ? "bg-amber-100 text-amber-700 hover:bg-amber-200"
+                            : "bg-emerald-100 text-emerald-700 hover:bg-emerald-200"
+                    )}
+                    title={status === "Draft" ? "Click to mark as Published" : "Click to revert to Draft"}
+                >
+                    {status}
+                </button>
             </div>
 
             {/* ─── Unified container ────────────────────────────────────────── */}
@@ -185,16 +260,16 @@ export function LinkedInPostRenderer({ post }: { post: LinkedInPostData }) {
 
                 {/* Top toolbar — full width */}
                 <div className="flex items-center gap-1 px-4 py-2 border-b border-gray-100">
-                    <button onClick={() => applyFormat(toBold)} className="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors" title="Bold">
+                    <button onClick={() => applyFormat(toBold, isBold, fromBold)} className="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors" title="Bold">
                         <Bold className="w-4 h-4" />
                     </button>
-                    <button onClick={() => applyFormat(toItalic)} className="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors" title="Italic">
+                    <button onClick={() => applyFormat(toItalic, isItalic, fromItalic)} className="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors" title="Italic">
                         <Italic className="w-4 h-4" />
                     </button>
-                    <button onClick={() => applyFormat(toUnderline)} className="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors" title="Underline">
+                    <button onClick={() => applyFormat(toUnderline, isUnderlined, fromUnderline)} className="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors" title="Underline">
                         <Underline className="w-4 h-4" />
                     </button>
-                    <button onClick={() => applyFormat(toStrikethrough)} className="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors" title="Strikethrough">
+                    <button onClick={() => applyFormat(toStrikethrough, isStrikethrough, fromStrikethrough)} className="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors" title="Strikethrough">
                         <Strikethrough className="w-4 h-4" />
                     </button>
 
