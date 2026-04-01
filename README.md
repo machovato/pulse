@@ -325,4 +325,3 @@ Built by Tony Melendez. Inspired by [Dave Killeen's Dex](https://github.com/dave
 Designed in Claude Chat. Built with Claude Code and Gemini. Powered by Next.js, Framer Motion, Prisma, and Zod.
 
 Released under the MIT License. See `LICENSE` for details.
-  
