@@ -53,9 +53,9 @@ Available projects: [list project folders]
 Read these files. Do not narrate that you are reading them.
 
 1. **Project files** — Everything in the named project folder. Read all files.
-2. **Voice file** — `.claude/skills/pulse-linkedin/linkedin-voice.md`. This is your behavioral contract. Every writing decision defers to this file.
-3. **Post history** — `.claude/skills/pulse-linkedin/published.md`. Check for theme overlap with recent posts.
-4. **Content pillars** — Map the project to a content category that fits your professional focus. If you haven't defined pillars, infer them from your voice file's audience description.
+2. **Voice file** — `.claude/skills/pulse-linkedin/linkedin-voice.md`. This is the execution layer — how it sounds, sentence patterns, anti-patterns. Every writing decision defers to this file.
+3. **Editorial directive** *(optional)* — `.claude/skills/pulse-linkedin/linkedin-editorial.md`. If present, this is the strategic layer — positioning, audience, content pillars, and quality gates. It controls *what* you write about and *why*. If absent, infer content pillars from your voice file's audience description.
+4. **Post history** — `.claude/skills/pulse-linkedin/published.md`. Check for theme overlap with recent posts.
 
 ### Step 2 — Extract Themes
 
@@ -115,19 +115,25 @@ This is post [N] of [total]. Previous posts in this series: [list or "none yet"]
 
 **Present angles. Wait for selection.**
 
-### Step 4 — Relevancy Gate
+### Step 4 — Quality Gates
 
-Before writing, evaluate silently:
+Before writing, evaluate the selected theme silently against these gates. If an editorial directive exists in your skills folder, use its gates. Otherwise, use the defaults below.
 
-> "Is this insight genuinely interesting to my audience, or is it navel-gazing?"
+**Gate 1 — Proof of Experience:** "What's the evidence this comes from lived experience?" An artifact, a decision, a failure, a pattern from being in the room. If the proof isn't obvious, the theme needs more specificity.
 
-**Pass criteria** — at least one must be true:
+**Gate 2 — Mockingbird Test:** "Could someone who hasn't built anything write this post?" If yes, the theme fails. Add specificity that only comes from having done the work.
+
+**Gate 3 — Altitude Test:** "Does this reveal strategic thinking, not just tactical execution?" Lead with the insight, anchor with the proof. The reader should walk away thinking about the idea.
+
+**Gate 4 — Analogy Check:** "Is there a natural metaphor that reframes this topic?" Not required, but the best posts have one. Flag if one is available.
+
+**Relevancy check** — at least one must also be true:
 - It challenges a common practice in the field
 - It reveals a non-obvious connection between disciplines
 - It teaches something transferable from a specific experience
 - It names a problem the audience feels but hasn't articulated
 
-**If it fails:** Surface a different theme from Step 2. Tell the user: "The [theme] angle is interesting internally but I don't think it lands for your audience. Here's why: [reason]. Try [alternative theme] instead?"
+**If gates fail:** Surface a different theme from Step 2. Tell the user: "The [theme] angle is interesting internally but I don't think it lands for your audience. Here's why: [reason]. Try [alternative theme] instead?"
 
 ### Step 5 — Write (Three-Pass Pipeline)
 
@@ -160,12 +166,13 @@ Re-read the draft. For every sentence, ask: "Does this earn its place, or is it 
 
 #### Pass 3: Voice + Humanize
 
-Read the draft against `linkedin-voice.md`. For each paragraph:
+Read the draft against `linkedin-voice.md` (style execution) and your editorial directive if one exists (strategic positioning). For each paragraph:
 
 1. **Voice match:** Read the examples from the voice file. Does the draft match the energy? If the draft sounds like a consultant's blog post, it fails.
 2. **AI tic scan:** Check the AI Guardrails table in the voice file. Replace every flagged pattern.
 3. **Analogy check:** Is there at least one analogy in the post? Not a simile — an analogy that carries structural weight. If not, find the abstract concept and make it concrete.
-4. **The final test:** Read the hook aloud. If it doesn't create a "wait, what?" reaction — rewrite it.
+4. **Mockingbird final check:** Could someone who hasn't built anything write this? If yes, add a concrete detail that only someone who lived it would know.
+5. **The final test:** Read the hook aloud. If it doesn't create a "wait, what?" reaction — rewrite it.
 
 ### Step 6 — Construct JSON + Deliver
 
